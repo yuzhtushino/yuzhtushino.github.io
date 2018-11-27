@@ -1,0 +1,110 @@
+/*!
+ * macy-grid
+ */
+
+.macy-grid.macy-grid--about {
+	width: calc(100% - 40px);
+	height: 100%;
+	background-color: transparent;
+	margin: 20px 20px 0 20px;
+}
+
+.macy-grid.macy-grid--about:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+@media screen and (max-width: 480px) {
+	.macy-grid.macy-grid--about {
+		width: 100%;
+		margin: 20px 0 0 0;
+	}
+}
+
+/*!
+ * cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css
+ */
+
+.col {
+	background-color: #FFFFFF;
+	padding: 15px 15px 0 15px;
+}
+
+.col h1:first-child,
+.col h2:first-child {
+	margin-top: 0;
+}
+
+.col h1 {
+	line-height: 2.400rem;
+	word-wrap: break-word;
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	-o-hyphens: auto;
+	hyphens: auto;
+}
+
+.col h1 + h2 {
+	margin-top: 1.333rem;
+}
+
+.col a {
+	color: #0097A7;
+}
+
+.col a:focus,
+.col a:hover,
+.col a:active {
+	color: #0097A7;
+}
+
+/*!
+ * @see {@link https://github.com/mcstudios/glightbox/issues/22}
+ */
+
+.glightbox-open {
+	height: 100% !important;
+}
+
+/*!
+ * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
+ */
+
+/* Push */
+@-webkit-keyframes hvr-push {
+	50% {
+		-webkit-transform: scale(0.88);
+		transform: scale(0.88);
+	}
+
+	100% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+}
+
+@keyframes hvr-push {
+	50% {
+		-webkit-transform: scale(0.88);
+		transform: scale(0.88);
+	}
+
+	100% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+}
+
+.macy-grid.macy-grid--about .glightbox img:hover,
+.macy-grid.macy-grid--about .glightbox img:focus,
+.macy-grid.macy-grid--about .glightbox img:active {
+	-webkit-animation-name: hvr-push;
+	animation-name: hvr-push;
+	-webkit-animation-duration: 0.3s;
+	animation-duration: 0.3s;
+	-webkit-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: 1;
+	animation-iteration-count: 1;
+}

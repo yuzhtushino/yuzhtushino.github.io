@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--
+2. lazyload images
+3. remove font face, display block, opacity 1, visibility visible in critical inline css
+4. set font display swap in font face in css -->
+<html class="no-js" lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta property="og:image" content="/image_src.jpg" />
+		<meta name="robots" content="index,follow" />
+		<meta name="keywords" content="веб,разработка,дизайн,сайт,портфолио,фронтенд" />
+		<meta name="description" content="UWP web framework" /><title>UWP web framework</title>
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" /><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" /><link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" /><link rel="dns-prefetch" href="https://farm9.staticflickr.com" /><link rel="dns-prefetch" href="https://farm8.staticflickr.com" /><link rel="dns-prefetch" href="https://farm7.staticflickr.com" /><link rel="dns-prefetch" href="https://farm6.staticflickr.com" /><link rel="dns-prefetch" href="https://farm5.staticflickr.com" /><link rel="dns-prefetch" href="https://farm4.staticflickr.com" /><link rel="dns-prefetch" href="https://farm3.staticflickr.com" /><link rel="dns-prefetch" href="https://farm2.staticflickr.com" /><link rel="dns-prefetch" href="https://farm1.staticflickr.com" /><link rel="dns-prefetch" href="https://i.vimeocdn.com" /><link rel="dns-prefetch" href="https://f.vimeocdn.com" /><link rel="dns-prefetch" href="https://w.soundcloud.com" /><link rel="dns-prefetch" href="https://a.disquscdn.com" /><link rel="dns-prefetch" href="https://api-maps.yandex.ru" /><link rel="dns-prefetch" href="https://chart.googleapis.com" /><link rel="dns-prefetch" href="https://connect.mail.ru" /><link rel="dns-prefetch" href="https://connect.ok.ru" /><link rel="dns-prefetch" href="https://disqus.com" /><link rel="dns-prefetch" href="https://graph.facebook.com" /><link rel="dns-prefetch" href="https://mc.yandex.ru" /><link rel="dns-prefetch" href="https://www.google-analytics.com" /><link rel="dns-prefetch" href="https://yastatic.net" /><link rel="dns-prefetch" href="https://audiomack.com" /><link rel="dns-prefetch" href="https://api.audiomack.com" /><link rel="dns-prefetch" href="https://platform.twitter.com" /><link rel="dns-prefetch" href="https://www.instagram.com" />
+		<link rel="preconnect" href="https://lovespygithubio.disqus.com/embed.js" as="script" /><link rel="preconnect" href="https://mc.yandex.ru/metrika/watch.js" as="script" /><link rel="preconnect" href="https://www.google-analytics.com/analytics.js" as="script" /><link rel="preconnect" href="https://yastatic.net/share2/share.js" as="script" /><link rel="preconnect" href="https://vk.com/js/api/openapi.js?154" as="script" /><link rel="preconnect" href="https://www.instagram.com/embed.js" as="script" /><link rel="preconnect" href="https://platform.twitter.com/widgets.js" as="script" />
+		<!-- <link rel="preload" href="./libs/serguei-uwp/css/bundle.min.css" as="style" />
+		<link rel="preload" href="./libs/serguei-uwp/css/vendors.min.css" as="style" />
+		<link rel="preload" href="./libs/serguei-uwp/js/vendors.min.js" as="script" /> -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0097A7" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title" content="lovespy" />
+		<meta name="application-name" content="lovespy" />
+		<meta name="msapplication-TileColor" content="#0097A7" />
+		<meta name="theme-color" content="#0097A7" />
+		<link rel="yandex-tableau-widget" href="/yandex-tableau.json" />
+		<link rel="image_src" href="/image_src.jpg" type="image/jpeg" title="UWP web framework" />
+		<link rel="sitemap" href="/sitemap.xml" type="application/xml" />
+		<style>
+			/*!
+			 * critical.css
+			 * @see {@link https://github.com/addyosmani/critical}
+			 * npm install -g critical
+			 * >critical ../../index.html --base ../../ > css/critical.css
+			 * remove font face, display block, opacity 1, visibility visible
+			 */
+			/*!
+			 * custom critical
+			 */
+			body {
+				font-family: Roboto, sans-serif;
+				color: #212121 !important;
+				background-color: #F5F5F5 !important;
+				margin: 0;
+			}
+			html,
+			body {
+				height: 100%;
+			}
+			/*!
+			 * hide before scripts and styles loaded
+			 */
+			.macy-grid,
+			.uwp-header,
+			.uwp-main {
+				visibility: hidden;
+				opacity: 0;
+			}
+			.macy-grid.is-active {
+				visibility: visible;
+				opacity: 1;
+			}
+			template,
+			.macy-grid img,
+			.macy-grid iframe {
+				display: none;
+			}
+			.macy-grid.is-active img,
+			.macy-grid.is-active iframe {
+				display: block;
+			}
+			.macy-grid.macy-grid--home > .ac-container {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+					-ms-flex-direction: column;
+						flex-direction: column;
+				-webkit-box-pack: start;
+					-ms-flex-pack: start;
+						justify-content: flex-start;
+				background-color: rgb(255, 255, 255);
+				-webkit-box-sizing: border-box;
+						box-sizing: border-box;
+				-webkit-box-flex: 0;
+					-ms-flex: 0 0 auto;
+						flex: 0 0 auto;
+				padding: 15px;
+				font-family: Roboto,Segoe UI,Segoe MDL2 Assets,Helvetica Neue,sans-serif;
+				border: none;
+				padding: 15px !important;
+			}
+			.ac-iframe--hidden {
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				opacity: 0;
+				z-index: -999;
+			}
+			/*!
+			 * @see {@link https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.css}
+			 */
+			.github-fork-ribbon{width:12.1em;height:12.1em;position:absolute;overflow:hidden;top:0;right:0;z-index:9999;pointer-events:none;font-size:13px;text-decoration:none;text-indent:-999999px;}.github-fork-ribbon.fixed{position:fixed;}.github-fork-ribbon:before,.github-fork-ribbon:after{position:absolute;display:block;width:15.38em;height:1.54em;top:3.23em;right:-3.23em;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);}.github-fork-ribbon:before{content:"";padding:.38em 0;background-color:#a00;background-image:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0.15)));background-image:-webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:-o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.15));-webkit-box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);pointer-events:auto;}.github-fork-ribbon:after{content:attr(data-ribbon);color:#fff;font:700 1em "Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.54em;text-decoration:none;text-shadow:0 -.08em rgba(0,0,0,0.5);text-align:center;text-indent:0;padding:.15em 0;margin:.15em 0;border-width:.08em 0;border-style:dotted;border-color:#fff;border-color:rgba(255,255,255,0.7);}.github-fork-ribbon.left-top,.github-fork-ribbon.left-bottom{right:auto;left:0;}.github-fork-ribbon.left-bottom,.github-fork-ribbon.right-bottom{top:auto;bottom:0;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after{right:auto;left:-3.23em;}.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{top:auto;bottom:3.23em;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);}
+		</style>
+		<noscript>
+			<link rel="stylesheet" href="./libs/serguei-uwp/css/vendors.min.css" />
+			<link rel="stylesheet" href="./libs/serguei-uwp/css/bundle.min.css" />
+			<style>
+				.macy-grid,
+				.uwp-header,
+				.uwp-main {
+					visibility: visible;
+					opacity: 1;
+				}
+				.macy-grid img,
+				.macy-grid iframe {
+					display: block;
+				}
+			</style>
+		</noscript>
+		<script>
+			(function(){return (function templatePolyfill(){"use strict";if("content"in document.createElement("template")){return false;}var templates=document.getElementsByTagName("template");var plateLen=templates.length;for(var x=0;x<plateLen;++x){var template=templates[x];var content=template.childNodes;var fragment=document.createDocumentFragment();while(content[0]){fragment.appendChild(content[0]);}template.content=fragment;}}());})();
+			var imagesPreloaded=false;(function(m){m="[object Array]"===Object.prototype.toString.apply(m)?m:[m];var t=function(){return (imagesPreloaded=true);},f=function(){return (imagesPreloaded=false);},c=[];for(var i=0,l=m.length;i<l;i++){c[i]=new Image();c[i].onabort=f;c[i].onerror=f;c[i].onload=t;c[i].src=m[i];}}([
+"/image_src.jpg"
+			]));
+			console.log("Source code: https://github.com/englishextra/serguei-uwp-dev");
+		</script>
+	</head>
+	<body>
+		<a class="github-fork-ribbon left-bottom" href="https://github.com/englishextra/serguei-uwp-dev" target="_blank" rel="noopener" title="Fork me on GitHub" data-ribbon="Fork me on GitHub">Fork me on GitHub</a>
+		<script src="./libs/serguei-uwp/js/bundle.min.js" async=""></script>
+		<script src="/sw-register.min.js" async="" data-service-worker="/sw.min.js"></script>
+		<!-- Yandex.Metrika counter --><script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(d,w,c){(w[c]=w[c]||[]).push(function(){try{w.yaCounter50262577=new Ya.Metrika({id:50262577,webvisor:true,clickmap:true,trackLinks:true,accurateTrackBounce:true,trackHash:true});}catch(e){}});var n=d.getElementsByTagName("script")[0],s=d.createElement("script"),f=function(){n.parentNode.insertBefore(s,n);};s.type="text/javascript";s.async=true;s.src=(d.location.protocol=="https:"?"https:":"http:")+"//mc.yandex.ru/metrika/watch.js";if(w.opera=="[object Opera]"){d.addEventListener("DOMContentLoaded",f,false);}else{f();}}(document,window,"yandex_metrika_callbacks"));}</script><noscript><div><img src="//mc.yandex.ru/watch/50262577" style="position:absolute; left:-9999px;" alt="Illustration / Иллюстрация" /></div></noscript><!-- /Yandex.Metrika counter --><!-- Google Analytics --><script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments);};i[r].l=1*new Date();a=s.createElement(o);m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);}(window,document,"script","//www.google-analytics.com/analytics.js","ga"));ga("create","UA-125408914-1","auto");ga("send","pageview");}</script><!-- /Google Analytics -->
+	</body>
+</html>

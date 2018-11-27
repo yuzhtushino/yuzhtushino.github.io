@@ -1,0 +1,30 @@
+{
+	"name": "serguei-uwp-dev",
+	"short_name": "serguei-uwp-dev",
+	"manifest_version": 2,
+	"icons": [{
+		"src": "/android-chrome-192x192.png",
+		"sizes": "192x192",
+		"type": "image/png"
+	},
+	{
+		"src": "/android-chrome-256x256.png",
+		"sizes": "256x256",
+		"type": "image/png"
+	},
+	{
+		"src": "/android-chrome-512x512.png",
+		"sizes": "512x512",
+		"type": "image/png"
+	}],
+	"scope": "/",
+	"mjs_access_whitelist": [{
+		"url": "https://serguei-uwp-dev/"
+	}],
+	"start_url": "https://serguei-uwp-dev/",
+	"display": "standalone",
+	"orientation": "any",
+	"ms_TileColor": "#0097A7",
+	"theme_color": "#0097A7",
+	"background_color": "#0097A7"
+}
