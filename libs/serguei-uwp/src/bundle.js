@@ -710,7 +710,7 @@ $readMoreJS*/
 				"../../cdn/lightgallery.js/1.1.1/js/lg-thumbnail.js",
 				"../../cdn/lightgallery.js/1.1.1/js/lg-zoom.js",
 				"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-				"./node_modules/any-resize-event/dist/any-resize-event.js",
+				"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
 				"./node_modules/adaptivecards/dist/adaptivecards.js",
 				"./node_modules/macy/dist/macy.js"
 	]; */
