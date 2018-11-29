@@ -1,6 +1,6 @@
 {
-	"name": "serguei-uwp-dev",
-	"short_name": "serguei-uwp-dev",
+	"name": "yuzhtushino",
+	"short_name": "yuzhtushino",
 	"manifest_version": 2,
 	"icons": [{
 		"src": "/android-chrome-192x192.png",
@@ -19,9 +19,9 @@
 	}],
 	"scope": "/",
 	"mjs_access_whitelist": [{
-		"url": "https://serguei-uwp-dev/"
+		"url": "https://yuzhtushino.github.io/"
 	}],
-	"start_url": "https://serguei-uwp-dev/",
+	"start_url": "https://yuzhtushino.github.io/",
 	"display": "standalone",
 	"orientation": "any",
 	"ms_TileColor": "#0097A7",
