@@ -1,0 +1,5 @@
+/*! @import url(englishextra-ui-variables); *//*!
+ * macy-grid
+ */.macy-grid.macy-grid--pictures{width:100%;height:100%;background-color:transparent;margin:0}.macy-grid.macy-grid--pictures:after{content:"";display:table;clear:both}/*!
+ * @see {@link https://github.com/mcstudios/glightbox/issues/22}
+ */.glightbox-open{height:100%!important}

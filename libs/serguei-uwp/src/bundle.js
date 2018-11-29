@@ -524,6 +524,77 @@ $readMoreJS*/
 	root.manageReadMore = manageReadMore;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * UWP layout
+ */
+(function (root, document) {
+	"use strict";
+	var getElementsByClassName = "getElementsByClassName";
+	var getElementsByTagName = "getElementsByTagName";
+	var setAttribute = "setAttribute";
+	var getButtons = function () {
+		var container = document[getElementsByClassName]("layout-type-buttons")[0] || "";
+		return container ? (container[getElementsByTagName]("button") || "") : "";
+	};
+	root.layoutTypeToTabs = function (e) {
+		var evt = root.event || e;
+		evt.preventDefault();
+		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+			return (el.disabled = false);
+		});
+		evt.target.disabled = true;
+		document.body[setAttribute]("data-layout-type", "tabs");
+	};
+
+	root.layoutTypeToOverlay = function (e) {
+		var evt = root.event || e;
+		evt.preventDefault();
+		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+			return (el.disabled = false);
+		});
+		evt.target.disabled = true;
+		document.body[setAttribute]("data-layout-type", "overlay");
+	};
+
+	root.layoutTypeToDockedMinimized = function (e) {
+		var evt = root.event || e;
+		evt.preventDefault();
+		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+			return (el.disabled = false);
+		});
+		evt.target.disabled = true;
+		document.body[setAttribute]("data-layout-type", "docked-minimized");
+	};
+
+	root.layoutTypeToDocked = function (e) {
+		var evt = root.event || e;
+		evt.preventDefault();
+		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+			return (el.disabled = false);
+		});
+		evt.target.disabled = true;
+		document.body[setAttribute]("data-layout-type", "docked");
+	};
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * revealYandexMap
+ */
+(function (root, document) {
+	"use strict";
+	var parentNode = "parentNode";
+	var style = "style";
+	var revealYandexMap = function (_this) {
+		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
+		if (yandexMap) {
+			yandexMap.src = yandexMap.dataset.src;
+			yandexMap.classList.add("is-active");
+			if (_this[parentNode]) {
+				_this[parentNode][style].display = "none";
+			}
+		}
+	};
+	root.revealYandexMap = revealYandexMap;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * app logic
  */
 (function (root, document) {

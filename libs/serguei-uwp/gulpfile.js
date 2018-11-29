@@ -10,6 +10,8 @@ minifyCss = require("gulp-minify-css"),
 browserSync = require("browser-sync").create(),
 reload = browserSync.reload,
 babel = require("gulp-babel"),
+uglify = require("gulp-uglify"),
+rename = require("gulp-rename"),
 
 uwpcss = {
 	scss: "../../cdn/uwp-web-framework/2.0/scss/uwp.style.fixed.scss",
@@ -56,9 +58,29 @@ glightbox = {
 	css: "../../cdn/glightbox/1.0.8/css"
 },
 
-lightgallery =  {
+lightgallery = {
 	scss: "../../cdn/lightgallery.js/1.1.1/scss/lightgallery.fixed.scss",
 	css: "../../cdn/lightgallery.js/1.1.1/css"
+},
+
+includeStyle = {
+	scss: "./css/include-style/scss/*.scss",
+	css: "./css/include-style"
+},
+
+includeScript = {
+	src: "./js/include-script/src/*.js",
+	js: "./js/include-script"
+},
+
+bundlejs = {
+	src: "./src/bundle.js",
+	js: "./js"
+},
+
+bundlecss = {
+	scss: "./scss/bundle.scss",
+	css: "./css"
 };
 
 gulp.task("browser-sync", ["bundle-assets"], function () {
@@ -74,10 +96,52 @@ gulp.task("browser-sync", ["bundle-assets"], function () {
 	//gulp.watch("../../cdn/highlight.js/9.12.0/scss/**/*.scss", ["compile-highlightjs-scss"]);
 	gulp.watch("../../**/*.html").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/*.js").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/json/*.json").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/*.css").on("change", reload);
+	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-bundle-js"]);
+	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-bundle-css"]);
+	gulp.watch("../../libs/serguei-uwp/js/include-script/src/*.js", ["compile-include-script-js"]);
+	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
+	gulp.watch("../../libs/serguei-uwp/css/include-style/scss/*.scss", ["compile-include-style-scss"]);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/*.css").on("change", reload);
+});
+
+gulp.task("compile-bundle-css", function () {
+	gulp.src(bundlecss.scss)
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer({
+			browsers: ["last 2 versions"]
+		}))
+	.pipe(gulp.dest(bundlecss.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss())
+	.pipe(gulp.dest(bundlecss.css))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-include-style-scss", function () {
+	gulp.src(includeStyle.scss)
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer({
+			browsers: ["last 2 versions"]
+		}))
+	.pipe(gulp.dest(includeStyle.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss())
+	.pipe(gulp.dest(includeStyle.css))
+	.pipe(reload({
+			stream: true
+		}));
 });
 
 gulp.task("compile-uwp-web-framework-scss", function () {
@@ -200,11 +264,42 @@ gulp.task("compile-glightbox-scss", function () {
 		}));
 });
 
+gulp.task("compile-bundle-js", function () {
+	gulp.src(bundlejs.src)
+	.pipe(babel({
+			presets: ["@babel/env"],
+			plugins: ["@babel/plugin-transform-object-assign",
+				"@babel/plugin-transform-arrow-functions"]
+		}))
+	.pipe(gulp.dest(bundlejs.js))
+	.pipe(uglify())
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(gulp.dest(bundlejs.js));
+});
+
+gulp.task("compile-include-script-js", function () {
+	gulp.src(includeScript.src)
+	.pipe(babel({
+			presets: ["@babel/env"],
+			plugins: ["@babel/plugin-transform-object-assign",
+				"@babel/plugin-transform-arrow-functions"]
+		}))
+	.pipe(gulp.dest(includeScript.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(uglify())
+	.pipe(gulp.dest(includeScript.js));
+});
+
 gulp.task("babel-uwp-web-framework-js", function () {
 	gulp.src(uwpjs.src)
 	.pipe(babel({
 			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign"]
+			plugins: ["@babel/plugin-transform-object-assign",
+				"@babel/plugin-transform-arrow-functions"]
 		}))
 	.pipe(gulp.dest(uwpjs.js));
 });

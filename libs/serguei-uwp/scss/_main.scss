@@ -159,7 +159,11 @@ h5 {
  * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
  */
 
-.uwp-header button img {
+.uwp-header .uwp-menu-button {
+	cursor: pointer;
+}
+
+.uwp-header .uwp-menu-button img {
 	display: block;
 	width: 16px;
 	height: 16px;
@@ -176,7 +180,7 @@ h5 {
 	height: 16px;
 }
 
-.uwp-header button svg {
+.uwp-header .uwp-menu-button svg {
 	display: block;
 	width: 16px;
 	height: 16px;

@@ -109,7 +109,6 @@
 			UWP.head = document.head;
 			UWP.body = document.body;
 
-
 			/* UWP.pageTitle = document.createElement("h1"); */
 			var pageTitle = document.createElement("div");
 			pageTitle.setAttribute("class", "uwp-title");
@@ -123,7 +122,6 @@
 			/* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
 			UWP.header = header;
 			document.body.appendChild(UWP.header);
-
 
 			var main = document.createElement("div");
 			main.setAttribute("class", "uwp-main");
@@ -352,7 +350,10 @@
 		/* Puts a menu button in title bar */
 		addMenuButton: function addMenuButton() {
 			console.log("UWP.addMenuButton()");
-			UWP.menuButton = document.createElement("button");
+			/* UWP.menuButton = document.createElement("button"); */
+			var menuButton = document.createElement("button");
+			menuButton.setAttribute("class", "uwp-menu-button");
+			UWP.menuButton = menuButton;
 			/* UWP.menuButton.innerHTML = "&#xE700;"; */
 
 			/* var GlobalNavButton = document.createElement("img");
