@@ -174,7 +174,7 @@
 }
 
 .ac-color--accent {
-	color: $mainColorDarkened;
+	color: $UWPAccentColor;
 }
 
 .ac-color--default {
@@ -192,7 +192,7 @@
 /* .ac-selectable:hover,
 .ac-selectable:focus,
 .ac-selectable:active {
-	border: 1px solid $activeColor;
+	border: 1px solid $UWPActiveColor;
 } */
 
 .ac-iframe {
@@ -215,8 +215,8 @@
 	line-height: 12px;
 	font-weight: 400;
     text-align: center;
-	color: $mainColorDarkened;
-	border: 1px solid $mainColorDarkened;
+	color: $UWPAccentColor;
+	border: 1px solid $UWPAccentColor;
 	background-color: transparent;
 	border-radius: 2px;
 	white-space: nowrap;
@@ -234,20 +234,20 @@
 
 .ac-pushButton:not([disabled]):hover {
 	color: #FFFFFF;
-	background-color: $activeColor;
-	border: 1px solid $activeColor;
+	background-color: $UWPActiveColor;
+	border: 1px solid $UWPActiveColor;
 }
 
 .ac-pushButton:not([disabled]):active,
 .ac-pushButton:not([disabled]):focus {
-	color: $activeColor;
+	color: $UWPActiveColor;
 	background-color: #FFFFFF;
-	border: 1px solid $activeColor;
+	border: 1px solid $UWPActiveColor;
 }
 
 .ac-pushButton--primary {
 	color: #FFFFFF;
-	background-color: $mainColorDarkened;
+	background-color: $UWPAccentColor;
 }
 
 .ac-width--fit-width {

@@ -198,7 +198,7 @@ h5 {
 }
 
 .uwp-main a {
-	color: $mainColorDarkened;
+	color: $UWPAccentColor;
 }
 
 /* .uwp-main input[type="text"]:focus,
@@ -206,12 +206,12 @@ h5 {
 .uwp-main input[type="password"]:focus,
 .uwp-main input[type="number"]:focus,
 .uwp-main select:focus {
-	border-color: $mainColorDarkened;
+	border-color: $UWPAccentColor;
 }
 
 .uwp-main input[type="checkbox"]:checked+label:before {
-	background-color: $mainColorDarkened;
-	border-color: $mainColorDarkened;
+	background-color: $UWPAccentColor;
+	border-color: $UWPAccentColor;
 } */
 
 /*!
@@ -233,17 +233,17 @@ template {
 }
 
 [data-layout-type="tabs"] .uwp-header {
-	background-color: $mainColor !important;
+	background-color: $UWPmainColor !important;
 }
 
 [data-layout-type="overlay"] .uwp-header {
-	background-color: $mainColor !important;
+	background-color: $UWPmainColor !important;
 }
 
 [data-layout-type="docked-minimized"] .uwp-header {
-	background-color: $mainColorDarkened !important;
+	background-color: $UWPmainColorDarkened !important;
 }
 
 [data-layout-type="docked"] .uwp-header {
-	background-color: $mainColorDarkened !important;
+	background-color: $UWPmainColorDarkened !important;
 }

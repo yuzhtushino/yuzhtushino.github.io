@@ -10,7 +10,7 @@
  * fixes to uwp.style.fixed.css
  */.uwp-main{background-color:transparent}/*!
  * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
- */.uwp-header .uwp-menu-button{cursor:pointer}.uwp-nav li img{width:16px;height:16px}.uwp-nav li svg{width:16px;height:16px}.uwp-main a{color:#0097A7}/*!
+ */.uwp-header .uwp-menu-button{cursor:pointer}.uwp-nav li img{width:16px;height:16px}.uwp-nav li svg{width:16px;height:16px}.uwp-main a{color:#00838F}/*!
  * reveal on css loaded
  *//*!
  * .macy-grid visibility and opacity is set in js

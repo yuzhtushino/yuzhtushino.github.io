@@ -41,17 +41,17 @@
   margin-top: 1.333rem; }
 
 .col a {
-  color: #0097A7; }
+  color: #00838F; }
 
 .col a:focus,
 .col a:hover,
 .col a:active {
-  color: #0097A7; }
+  color: #00838F; }
 
 .col button {
   font-weight: 400;
-  color: #0097A7;
-  border: 1px solid #0097A7;
+  color: #00838F;
+  border: 1px solid #00838F;
   background-color: transparent;
   border-radius: 2px; }
 
@@ -62,18 +62,18 @@
 
 .col button:not([disabled]):hover {
   color: #FFFFFF;
-  background-color: #26c6da;
-  border: 1px solid #26c6da; }
+  background-color: #26C6DA;
+  border: 1px solid #26C6DA; }
 
 .col button:not([disabled]):active,
 .col button:not([disabled]):focus {
-  color: #26c6da;
+  color: #26C6DA;
   background-color: #FFFFFF;
-  border: 1px solid #26c6da; }
+  border: 1px solid #26C6DA; }
 
 .col button.primary {
   color: #FFFFFF;
-  background-color: #0097A7; }
+  background-color: #00838F; }
 
 .col .fit-width {
   width: 100%; }

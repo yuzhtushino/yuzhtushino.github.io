@@ -167,7 +167,7 @@
   background-repeat: no-repeat; }
 
 .ac-color--accent {
-  color: #0097A7; }
+  color: #00838F; }
 
 .ac-color--default {
   color: #212121; }
@@ -181,7 +181,7 @@
 /* .ac-selectable:hover,
 .ac-selectable:focus,
 .ac-selectable:active {
-	border: 1px solid $activeColor;
+	border: 1px solid $UWPActiveColor;
 } */
 .ac-iframe {
   width: 100%;
@@ -201,8 +201,8 @@
   line-height: 12px;
   font-weight: 400;
   text-align: center;
-  color: #0097A7;
-  border: 1px solid #0097A7;
+  color: #00838F;
+  border: 1px solid #00838F;
   background-color: transparent;
   border-radius: 2px;
   white-space: nowrap;
@@ -218,18 +218,18 @@
 
 .ac-pushButton:not([disabled]):hover {
   color: #FFFFFF;
-  background-color: #26c6da;
-  border: 1px solid #26c6da; }
+  background-color: #26C6DA;
+  border: 1px solid #26C6DA; }
 
 .ac-pushButton:not([disabled]):active,
 .ac-pushButton:not([disabled]):focus {
-  color: #26c6da;
+  color: #26C6DA;
   background-color: #FFFFFF;
-  border: 1px solid #26c6da; }
+  border: 1px solid #26C6DA; }
 
 .ac-pushButton--primary {
   color: #FFFFFF;
-  background-color: #0097A7; }
+  background-color: #00838F; }
 
 .ac-width--fit-width {
   width: 100%; }

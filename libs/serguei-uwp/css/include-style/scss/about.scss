@@ -52,19 +52,19 @@
 }
 
 .col a {
-	color: $mainColorDarkened;
+	color: $UWPAccentColor;
 }
 
 .col a:focus,
 .col a:hover,
 .col a:active {
-	color: $mainColorDarkened;
+	color: $UWPAccentColor;
 }
 
 .col button {
 	font-weight: 400;
-	color: $mainColorDarkened;
-	border: 1px solid $mainColorDarkened;
+	color: $UWPAccentColor;
+	border: 1px solid $UWPAccentColor;
 	background-color: transparent;
 	border-radius: 2px;
 }
@@ -77,20 +77,20 @@
 
 .col button:not([disabled]):hover {
 	color: #FFFFFF;
-	background-color: $activeColor;
-	border: 1px solid $activeColor;
+	background-color: $UWPActiveColor;
+	border: 1px solid $UWPActiveColor;
 }
 
 .col button:not([disabled]):active,
 .col button:not([disabled]):focus {
-	color: $activeColor;
+	color: $UWPActiveColor;
 	background-color: #FFFFFF;
-	border: 1px solid $activeColor;
+	border: 1px solid $UWPActiveColor;
 }
 
 .col button.primary {
 	color: #FFFFFF;
-	background-color: $mainColorDarkened;
+	background-color: $UWPAccentColor;
 }
 
 .col .fit-width {

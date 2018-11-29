@@ -172,19 +172,19 @@ h5 {
   height: 16px; }
 
 .uwp-main a {
-  color: #0097A7; }
+  color: #00838F; }
 
 /* .uwp-main input[type="text"]:focus,
 .uwp-main input[type="email"]:focus,
 .uwp-main input[type="password"]:focus,
 .uwp-main input[type="number"]:focus,
 .uwp-main select:focus {
-	border-color: $mainColorDarkened;
+	border-color: $UWPAccentColor;
 }
 
 .uwp-main input[type="checkbox"]:checked+label:before {
-	background-color: $mainColorDarkened;
-	border-color: $mainColorDarkened;
+	background-color: $UWPAccentColor;
+	border-color: $UWPAccentColor;
 } */
 /*!
  * reveal on css loaded
