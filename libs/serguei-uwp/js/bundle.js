@@ -500,7 +500,7 @@ $readMoreJS*/
   var classList = "classList";
   var getElementsByClassName = "getElementsByClassName";
   var isActiveClass = "is-active";
-  var macy;
+  root.handleMacy = null;
 
   var updateMacy = function updateMacy(delay) {
     var timeout = delay || 100;
@@ -510,12 +510,12 @@ $readMoreJS*/
       console.log("updateMacy");
     };
 
-    if (macy) {
+    if (root.handleMacy) {
       var timer = setTimeout(function () {
         clearTimeout(timer);
         timer = null;
         logThis();
-        macy.recalculate(true, true);
+        root.handleMacy.recalculate(true, true);
       }, timeout);
     }
   };
@@ -553,11 +553,12 @@ $readMoreJS*/
 
     if (macyContainer) {
       try {
-        if (macy) {
-          macy.remove();
+        if (root.handleMacy) {
+          root.handleMacy.remove();
+          root.handleMacy = null;
         }
 
-        macy = new Macy(settings);
+        root.handleMacy = new Macy(settings);
         macyContainer[classList].add(isActiveClass);
       } catch (err) {
         throw new Error("cannot init Macy " + err);

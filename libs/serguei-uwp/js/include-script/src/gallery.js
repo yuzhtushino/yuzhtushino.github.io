@@ -34,13 +34,13 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.js")) {
+			if (!scriptIsLoaded("../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js")) {
 				var load;
-				load = new loadJsCss(["../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.css",
-							"../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.js",
-							"../../cdn/lightgallery.js/1.1.1/js/lg-fullscreen.js",
-							"../../cdn/lightgallery.js/1.1.1/js/lg-thumbnail.js",
-							"../../cdn/lightgallery.js/1.1.1/js/lg-zoom.js"], initScript);
+				load = new loadJsCss(["../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
+							"../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-fullscreen.min.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-thumbnail.min.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-zoom.min.js"], initScript);
 			} else {
 				initScript();
 			}
