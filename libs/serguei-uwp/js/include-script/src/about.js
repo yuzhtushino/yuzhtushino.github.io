@@ -1,5 +1,6 @@
-/*global console, GLightbox, imagesLoaded, LazyLoad, manageExternalLinkAll,
-manageMacy, manageReadMore, updateMacyThrottled*/
+/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
+manageExternalLinkAll, manageMacy, manageReadMore, scriptIsLoaded,
+updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -19,12 +20,27 @@ manageMacy, manageReadMore, updateMacyThrottled*/
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
-		var manageGlightbox = function (glightboxClass) {
-			if (root.GLightbox) {
-				var glightbox;
-				glightbox = GLightbox({
-						selector: glightboxClass
-					});
+		root.handleGLightbox = null;
+		var manageGlightbox = function (macyGrid) {
+			var initScript = function () {
+				if (root.GLightbox) {
+					if (root.handleGLightbox) {
+						root.handleGLightbox.destroy();
+						root.handleGLightbox = null;
+					}
+					if (macyGrid) {
+						root.handleGLightbox = GLightbox({
+								selector: glightboxClass
+							});
+					}
+				}
+			};
+			if (!scriptIsLoaded("../../cdn/glightbox/1.0.8/js/glightbox.fixed.js")) {
+				var load;
+				load = new loadJsCss(["../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
+							"../../cdn/glightbox/1.0.8/js/glightbox.fixed.js"], initScript);
+			} else {
+				initScript();
 			}
 		};
 

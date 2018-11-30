@@ -1,5 +1,5 @@
-/*global console, imagesLoaded, LazyLoad, lightGallery, manageExternalLinkAll,
-manageMacy, updateMacyThrottled*/
+/*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss,
+manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -19,13 +19,30 @@ manageMacy, updateMacyThrottled*/
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
+		root.handleLightGallery = null;
 		var manageLightGallery = function (macyGrid) {
-			if (root.lightGallery) {
-				if (macyGrid) {
-					lightGallery(macyGrid, {
-						autoplayControls: false
-					});
+			var initScript = function () {
+				if (root.lightGallery) {
+					if (root.handleLightGallery) {
+						root.handleLightGallery.destroy(true);
+						root.handleLightGallery = null;
+					}
+					if (macyGrid) {
+						root.handleLightGallery = lightGallery(macyGrid, {
+								autoplayControls: false
+							});
+					}
 				}
+			};
+			if (!scriptIsLoaded("../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.js")) {
+				var load;
+				load = new loadJsCss(["../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.css",
+							"../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-fullscreen.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-thumbnail.js",
+							"../../cdn/lightgallery.js/1.1.1/js/lg-zoom.js"], initScript);
+			} else {
+				initScript();
 			}
 		};
 

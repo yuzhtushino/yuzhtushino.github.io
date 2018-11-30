@@ -81,6 +81,29 @@ $readMoreJS*/
 	root.loadJsCss = loadJsCss;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * scriptIsLoaded
+ */
+(function (root, document) {
+	"use strict";
+	var getAttribute = "getAttribute";
+	var getElementsByTagName = "getElementsByTagName";
+	var _length = "length";
+	var scriptIsLoaded = function (scriptSrc) {
+		var scriptAll,
+		i,
+		l;
+		for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
+			if (scriptAll[i][getAttribute]("src") === scriptSrc) {
+				scriptAll = i = l = null;
+				return true;
+			}
+		}
+		scriptAll = i = l = null;
+		return false;
+	};
+	root.scriptIsLoaded = scriptIsLoaded;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * throttle
  */
 (function (root) {

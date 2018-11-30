@@ -272,7 +272,8 @@ gulp.task("compile-bundle-js", function () {
 	.pipe(babel({
 			presets: ["@babel/env"],
 			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions"]
+				"@babel/plugin-transform-arrow-functions",
+				"@babel/plugin-transform-async-to-generator"]
 		}))
 	.pipe(gulp.dest(bundlejs.js))
 	.pipe(uglify())
@@ -287,7 +288,8 @@ gulp.task("compile-include-script-js", function () {
 	.pipe(babel({
 			presets: ["@babel/env"],
 			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions"]
+				"@babel/plugin-transform-arrow-functions",
+				"@babel/plugin-transform-async-to-generator"]
 		}))
 	.pipe(gulp.dest(includeScript.js))
 	.pipe(rename(function (path) {
@@ -302,7 +304,8 @@ gulp.task("babel-uwp-web-framework-js", function () {
 	.pipe(babel({
 			presets: ["@babel/env"],
 			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions"]
+				"@babel/plugin-transform-arrow-functions",
+				"@babel/plugin-transform-async-to-generator"]
 		}))
 	.pipe(gulp.dest(uwpjs.js));
 });
