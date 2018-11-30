@@ -1,5 +1,7 @@
 /*!
  * @see {@link https://github.com/mildrenben/surface/blob/master/gulpfile.js}
+ * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
+ * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
  */
 // gulpfile.js
 var gulp = require("gulp"),
@@ -12,6 +14,7 @@ reload = browserSync.reload,
 babel = require("gulp-babel"),
 uglify = require("gulp-uglify"),
 rename = require("gulp-rename"),
+/* path = require("path"), */
 
 uwpcss = {
 	scss: "../../cdn/uwp-web-framework/2.0/scss/uwp.style.fixed.scss",

@@ -125,7 +125,8 @@
 
 			var main = document.createElement("div");
 			main.setAttribute("class", "uwp-main");
-			/* UWP.main = document.getElementsByClassName("uwp-header")[0] || ""; */
+			main.setAttribute("role", "main");
+			/* UWP.main = document.getElementsByClassName("uwp-main")[0] || ""; */
 			UWP.main = main;
 			document.body.appendChild(UWP.main);
 			/* Gets user-set config */
