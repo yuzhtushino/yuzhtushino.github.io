@@ -3,7 +3,7 @@ call "%~dp0.autoprefixer.bat"
 call "%~dp0.beautify-css.bat"
 call "%~dp0.cleancss.bat"
 call "%~dp0.babel.bat"
-:: call "%~dp0.babel-plugins.bat"
+
 :: call "%~dp0.webpack.bat"
 :: call "%~dp0.browserify.bat"
 call "%~dp0.uglifyjs.bat"
