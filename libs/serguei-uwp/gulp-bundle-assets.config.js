@@ -59,7 +59,7 @@ module.exports = {
 				"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 				"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
 				// "./node_modules/adaptivecards/dist/adaptivecards.js",
-				"./node_modules/macy/dist/macy.js"
+				"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 			],
 			"options": {
 				rev: false,
@@ -128,7 +128,7 @@ module.exports = {
 				"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 				"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
 				// "./node_modules/adaptivecards/dist/adaptivecards.js",
-				"./node_modules/macy/dist/macy.js"
+				"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 			],
 			"options": {
 				rev: false,

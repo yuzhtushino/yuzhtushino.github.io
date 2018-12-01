@@ -602,7 +602,7 @@ $readMoreJS*/
       var renderedCard = adaptiveCard.render();
       acGrid[appendChild](renderedCard);
 
-      if ("function" === typeof callback) {
+      if (callback && "function" === typeof callback) {
         callback();
       }
 
@@ -750,6 +750,8 @@ $readMoreJS*/
 (function (root, document) {
   "use strict";
 
+  var classList = "classList";
+  var dataset = "dataset";
   var parentNode = "parentNode";
   var style = "style";
 
@@ -757,8 +759,8 @@ $readMoreJS*/
     var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 
     if (yandexMap) {
-      yandexMap.src = yandexMap.dataset.src;
-      yandexMap.classList.add("is-active");
+      yandexMap.src = yandexMap[dataset].src;
+      yandexMap[classList].add("is-active");
 
       if (_this[parentNode]) {
         _this[parentNode][style].display = "none";

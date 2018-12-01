@@ -120,20 +120,39 @@
       pageTitle.style.display = "none";
       UWP.pageTitle = pageTitle;
       document.body.appendChild(UWP.pageTitle);
-      var header = document.createElement("div");
-      header.setAttribute("class", "uwp-header");
-      /* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
+      UWP.header = null;
 
-      UWP.header = header;
-      document.body.appendChild(UWP.header);
-      var main = document.createElement("div");
-      main.setAttribute("class", "uwp-main");
-      main.setAttribute("role", "main");
-      /* UWP.main = document.getElementsByClassName("uwp-main")[0] || ""; */
+      var _UWP_header = document.getElementsByClassName("uwp-header")[0] || "";
 
-      UWP.main = main;
-      document.body.appendChild(UWP.main);
+      if (!_UWP_header) {
+        var header = document.createElement("div");
+        header.setAttribute("class", "uwp-header");
+        main.setAttribute("role", "navigation");
+        /* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
+
+        UWP.header = header;
+        document.body.appendChild(UWP.header);
+      } else {
+        UWP.header = _UWP_header;
+      }
+
+      UWP.main = null;
+
+      var _uwp_main = document.getElementsByClassName("uwp-main")[0] || "";
+
+      if (!_uwp_main) {
+        var main = document.createElement("div");
+        main.setAttribute("class", "uwp-main");
+        main.setAttribute("role", "main");
+        /* UWP.main = document.getElementsByClassName("uwp-main")[0] || ""; */
+
+        UWP.main = main;
+        document.body.appendChild(UWP.main);
+      } else {
+        UWP.main = _uwp_main;
+      }
       /* Gets user-set config */
+
 
       UWP.getConfig(params);
       /* Set page title */
