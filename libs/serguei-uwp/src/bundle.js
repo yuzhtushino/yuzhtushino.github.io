@@ -479,7 +479,7 @@ $readMoreJS*/
 			adaptiveCard.parse(cardObj);
 			var renderedCard = adaptiveCard.render();
 			acGrid[appendChild](renderedCard);
-			if ("function" === typeof callback) {
+			if (callback && "function" === typeof callback) {
 				callback();
 			}
 			adaptiveCard = renderedCard = null;

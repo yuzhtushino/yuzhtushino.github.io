@@ -258,7 +258,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 			i = l = null;
 			macyGrid.innerHTML = html;
-			if ("function" === typeof callback) {
+			if (callback && "function" === typeof callback) {
 				callback();
 			} */
 			var count = 0;
@@ -276,7 +276,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				macyGrid[appendChild](a);
 				count++;
 				if (count === macyItems[_length]) {
-					if ("function" === typeof callback) {
+					if (callback && "function" === typeof callback) {
 						callback();
 					}
 				}
