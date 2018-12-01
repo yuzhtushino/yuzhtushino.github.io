@@ -100,6 +100,23 @@
 				padding: 15px 15px 0 15px;
 			}
 			/*!
+			 * loading placeholder text
+			 */
+			.loading-container {
+				width: 100%;
+				height: 100%;
+				position: relative;
+			}
+			.loading-container__text {
+				margin: 0;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+			}
+			/*!
 			 * @see {@link https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.css}
 			 */
 			.github-fork-ribbon{width:12.1em;height:12.1em;position:absolute;overflow:hidden;top:0;right:0;z-index:9999;pointer-events:none;font-size:13px;text-decoration:none;text-indent:-999999px;}.github-fork-ribbon.fixed{position:fixed;}.github-fork-ribbon:before,.github-fork-ribbon:after{position:absolute;display:block;width:15.38em;height:1.54em;top:3.23em;right:-3.23em;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);}.github-fork-ribbon:before{content:"";padding:.38em 0;background-color:#a00;background-image:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0.15)));background-image:-webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:-o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.15));-webkit-box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);pointer-events:auto;}.github-fork-ribbon:after{content:attr(data-ribbon);color:#fff;font:700 1em "Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.54em;text-decoration:none;text-shadow:0 -.08em rgba(0,0,0,0.5);text-align:center;text-indent:0;padding:.15em 0;margin:.15em 0;border-width:.08em 0;border-style:dotted;border-color:#fff;border-color:rgba(255,255,255,0.7);}.github-fork-ribbon.left-top,.github-fork-ribbon.left-bottom{right:auto;left:0;}.github-fork-ribbon.left-bottom,.github-fork-ribbon.right-bottom{top:auto;bottom:0;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after{right:auto;left:-3.23em;}.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{top:auto;bottom:3.23em;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);}
@@ -129,6 +146,12 @@
 		</script>
 	</head>
 	<body>
+		<div class="uwp-header" role="navigation"></div>
+		<div class="uwp-main" role="main">
+			<div class="loading-container">
+				<p class="loading-container__text">Загрузка...</p>
+			</div>
+		</div>
 		<!-- <a class="github-fork-ribbon left-bottom" href="https://github.com/englishextra/serguei-uwp-dev" target="_blank" rel="noopener" title="Fork me on GitHub" data-ribbon="Fork me on GitHub">Fork me on GitHub</a> -->
 		<script src="./libs/serguei-uwp/js/bundle.min.js" async=""></script>
 		<script src="/sw-register.min.js" async="" data-service-worker="/sw.min.js"></script>
