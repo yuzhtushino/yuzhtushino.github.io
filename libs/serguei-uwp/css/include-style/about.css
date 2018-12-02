@@ -89,9 +89,9 @@
 /*!
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  */
-.glightbox-open {
-  height: 100% !important; }
-
+/* .glightbox-open {
+	height: 100% !important;
+} */
 /*!
  * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
  */

@@ -5,7 +5,7 @@
 .macy-grid.macy-grid--home {
   width: calc(100% - 40px);
   /*!
-	 * the scrollbar will show 
+	 * the scrollbar will show
 	 * if it is a child container
 	 * that has no height 100%
 	 */
@@ -229,12 +229,9 @@
 /*!
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  */
-.glightbox-open {
-  height: 100% !important; }
-
-/*!
- * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
- */
+/* .glightbox-open {
+	height: 100% !important;
+} */
 /* Push */
 @keyframes hvr-push {
   50% {

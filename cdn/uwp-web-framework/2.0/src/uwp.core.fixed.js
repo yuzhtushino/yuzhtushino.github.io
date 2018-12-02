@@ -405,7 +405,6 @@
 		addMenuButton: function addMenuButton() {
 			console.log("UWP.addMenuButton()");
 
-
 			UWP.menuButton = null;
 			var _uwp_menu_button = document.getElementsByClassName("uwp-menu-button")[0] || "";
 			if (!_uwp_menu_button) {

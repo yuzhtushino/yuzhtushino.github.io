@@ -3,6 +3,7 @@
 		$hex: str-slice(ie-hex-str($string), 4);
 		$string:unquote("#{$hex}");
 	}
+
 	$string: '%23'+$string;
 	@return $string;
 }
@@ -10,10 +11,6 @@
 /*!
  * root
  */
-
-* {
-	box-sizing: border-box;
-}
 
 /*!
  * Default CSS Values for HTML Elements
@@ -152,69 +149,9 @@ h5 {
 	color: $clr-grey-900;
 }
 
-.uwp-main {
-	color: $clr-grey-900;
-	background-color: transparent;
-}
-
-/*!
- * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
- */
-
-.uwp-header .uwp-menu-button {
-	cursor: pointer;
-}
-
-.uwp-header .uwp-menu-button img {
+template {
 	display: block;
-	width: 16px;
-	height: 16px;
-	margin: 0;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -50%);
 }
-
-.uwp-nav li img {
-	width: 16px;
-	height: 16px;
-}
-
-.uwp-header .uwp-menu-button svg {
-	display: block;
-	width: 16px;
-	height: 16px;
-	margin: 0;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -50%);
-}
-
-.uwp-nav li svg {
-	width: 16px;
-	height: 16px;
-}
-
-.uwp-main a {
-	color: $UWPAccentColor;
-}
-
-/* .uwp-main input[type="text"]:focus,
-.uwp-main input[type="email"]:focus,
-.uwp-main input[type="password"]:focus,
-.uwp-main input[type="number"]:focus,
-.uwp-main select:focus {
-	border-color: $UWPAccentColor;
-}
-
-.uwp-main input[type="checkbox"]:checked+label:before {
-	background-color: $UWPAccentColor;
-	border-color: $UWPAccentColor;
-} */
 
 /*!
  * reveal on css loaded
@@ -230,8 +167,43 @@ h5 {
 	opacity: 1;
 }
 
-template {
+.uwp-main {
+	color: $clr-grey-900;
+	background-color: transparent;
+}
+
+.uwp-main a {
+	color: $UWPAccentColor;
+}
+
+.uwp-main img {
+	max-width: 100%;
+}
+
+.uwp-header .uwp-menu-button {
+	cursor: pointer;
+}
+
+.uwp-header .uwp-menu-button img,
+.uwp-header .uwp-menu-button svg {
 	display: block;
+	width: 16px;
+	height: 16px;
+	/*!
+	 * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
+	 */
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+.uwp-nav li img,
+.uwp-nav li svg {
+	width: 16px;
+	height: 16px;
 }
 
 [data-layout-type="tabs"] .uwp-header {

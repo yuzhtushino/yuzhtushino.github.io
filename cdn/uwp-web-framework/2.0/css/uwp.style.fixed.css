@@ -11,10 +11,7 @@
 body {
   font-family: Segoe UI, Segoe MDL2 Assets;
   font-size: 15px;
-  line-height: 1.5;
-  /* height: 100vh;
-	display: flex;
-	overflow: hidden; */ }
+  line-height: 1.5; }
 
 /*!
  * To avoid the address bar on mobile chrome wont hide on scroll down:
@@ -27,14 +24,18 @@ body {
 .uwp-container {
   display: -ms-flexbox;
   display: flex;
-  width: 100%;
-  /*!
-	 * if height 100%
-	 * the chrome on mobile
-	 * won't hide addressbar on scroll
-	 * but we need that
-	 */
-  height: 100%; }
+  width: 100%; }
+
+/*!
+ * if height 100%
+ * the chrome on mobile
+ * won't hide addressbar on scroll
+ */
+[data-layout-type="tabs"] .uwp-container,
+[data-layout-type="overlay"] .uwp-container,
+[data-layout-type="docked-minimized"] .uwp-container,
+[data-layout-type="docked"] .uwp-container {
+  height: auto; }
 
 [data-layout-type="tabs"] .uwp-container,
 [data-layout-type="overlay"] .uwp-container {
@@ -44,41 +45,6 @@ body {
 [data-layout-type="docked-minimized"] .uwp-container {
   -ms-flex-direction: row;
       flex-direction: row; }
-
-/* h1 {
-	display: none;
-}
-
-h2 {
-	display: none;
-}
-
-h3,
-h4,
-h5 {
-	color: black;
-	font-weight: 300;
-}
-
-h3:not(:first-child),
-h4:not(:first-child),
-h5:not(:first-child) {
-	margin-top: 0.5em;
-}
-
-h3 {
-	font-size: 34px;
-}
-
-h4 {
-	font-size: 24px;
-}
-
-h5 {
-	font-size: 20px;
-} */
-img {
-  max-width: 100%; }
 
 /* Top level navigation */
 .uwp-header {
@@ -94,6 +60,7 @@ img {
 
 [data-layout-type="tabs"] .uwp-header {
   width: 100%;
+  position: fixed;
   background: #e6e6e6;
   color: #5c5c5c; }
 
@@ -166,9 +133,13 @@ img {
   margin-bottom: 4px;
   font-size: 16px; }
 
+[data-layout-type="tabs"] .uwp-main {
+  margin-top: 66px; }
+
 [data-layout-type="overlay"] .uwp-header {
   width: 100%;
   height: 44px;
+  position: fixed;
   background: #fafafa;
   color: #323232;
   display: -ms-flexbox;
@@ -311,6 +282,9 @@ img {
   line-height: 24px;
   color: #323232; }
 
+[data-layout-type="overlay"] .uwp-main {
+  margin-top: 44px; }
+
 [data-layout-type="docked-minimized"] .uwp-header {
   width: 44px;
   height: 100%;
@@ -339,7 +313,7 @@ img {
   outline: none;
   background-color: transparent;
   vertical-align: top;
-  position: relative;
+  position: fixed;
   z-index: 999;
   font-size: 20px;
   color: inherit; }
@@ -446,6 +420,9 @@ img {
 [data-layout-type="docked"] .uwp-header {
   width: 250px;
   height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
   background: #fafafa;
   color: #323232;
   display: -ms-flexbox;
@@ -547,6 +524,9 @@ img {
   line-height: 24px;
   color: #323232; }
 
+[data-layout-type="docked"] .uwp-main {
+  margin-left: 250px; }
+
 /* Commands */
 .uwp-nav[data-type="commands"] {
   width: 100%;
@@ -613,161 +593,6 @@ img {
   100% {
     margin-top: 0; } }
 
-/* .uwp-main a {
-	color: rgb(0, 120, 215);
-} */
-/* Form */
-/* .uwp-main input[type="text"],
-.uwp-main input[type="email"],
-.uwp-main input[type="password"],
-.uwp-main input[type="number"],
-.uwp-main select {
-	display: block;
-	width: 384px;
-	height: 32px;
-	max-width: 100%;
-	min-width: 80px;
-	margin: 4px 0;
-	padding: 0 11px;
-	font: inherit;
-	border: 2px solid rgb(150, 150, 150);
-}
-
-.uwp-main input[type="text"]:hover,
-.uwp-main input[type="email"]:hover,
-.uwp-main input[type="password"]:hover,
-.uwp-main nput[type="number"]:hover,
-.uwp-main select:hover {
-	border-color: rgb(50, 50, 50);
-}
-
-.uwp-main input[type="text"]:focus,
-.uwp-main input[type="email"]:focus,
-.uwp-main input[type="password"]:focus,
-.uwp-main input[type="number"]:focus,
-.uwp-main select:focus {
-	border-color: rgb(0, 120, 215);
-}
-
-.uwp-main input[type="checkbox"] {
-	display: none;
-}
-
-.uwp-main input[type="checkbox"]+label:before {
-	content: '?';
-	display: inline-block;
-	vertical-align: -2px;
-	width: 14px;
-	height: 14px;
-	color: white;
-	font-size: 14px;
-	line-height: 18px;
-	border: 2px solid rgb(50, 50, 50);
-	margin-right: 8px;
-}
-
-.uwp-main input[type="checkbox"]+label:hover:before {
-	border-color: rgb(0, 0, 0);
-}
-
-.uwp-main input[type="checkbox"]:checked+label:before {
-	background-color: rgb(0, 120, 215);
-	border-color: rgb(0, 120, 215);
-}
-
-.uwp-main input[type="checkbox"]:checked+label:hover:before {
-	border-color: rgb(0, 0, 0);
-}
-
-.uwp-main input[disabled] {
-	opacity: 0.5;
-}
-
-.uwp-main option {
-	height: 32px;
-	padding: 4px 11px;
-	font: inherit;
-	background-color: rgb(240, 240, 240);
-}
-
-.uwp-main option:hover {
-	background-color: rgb(220, 220, 220);
-}
-
-.uwp-main button {
-	margin: 0.18em 0;
-	padding: 0.18em 1.8em;
-	border: 2px solid rgb(205, 205, 205);
-	background-color: rgb(205, 205, 205);
-	font-size: 16px;
-}
-
-.uwp-main button[disabled] {
-	color: rgb(165, 165, 165);
-}
-
-.uwp-main button:not([disabled]):hover {
-	border-color: rgb(140, 140, 140);
-}
-
-.uwp-main button:not([disabled]):active {
-	border-color: rgb(150, 150, 150);
-	background-color: rgb(150, 150, 150);
-} */
-/* Section */
-/* .uwp-main section {
-	padding: 12px;
-}
-
-.uwp-main section ul {
-	margin-left: 1em;
-}
-
-.uwp-main section[data-type="list"] {
-	padding: 0;
-}
-
-.uwp-main section[data-type="list"] h3 {
-	display: none;
-}
-
-.uwp-main section p+p,
-.uwp-main section ul+p {
-	margin-top: 0.5em;
-}
-
-.uwp-main section[data-type="list"] ul {
-	margin: 0;
-}
-
-.uwp-main section[data-type="list"] ul li {
-	padding: 12px;
-	display: flex;
-}
-
-.uwp-main section[data-type="list"] ul li:hover {
-	background-color: rgb(230, 230, 230);
-}
-
-.uwp-main section[data-type="list"] ul li div[data-type="contact-photo"] {
-	width: 48px;
-	height: 48px;
-	margin-right: 12px;
-}
-
-.uwp-main section[data-type="list"] ul li div[data-type="contact-photo"] img {
-	border-radius: 100%;
-}
-
-.uwp-main section[data-type="list"] ul li h4 {
-	font-size: 18px;
-	font-weight: 500;
-}
-
-.uwp-main section[data-type="list"] ul li p {
-	font-size: 13px;
-	margin: 0;
-} */
 .uwp-main.uwp-main--error {
   text-align: center; }
 
@@ -801,20 +626,30 @@ img {
  * a hack to hide addressbar on mobile chrome
  * on scroll down
  */
-[data-layout-type="tabs"] .uwp-container,
+/* [data-layout-type="tabs"] .uwp-container,
 [data-layout-type="overlay"] .uwp-container,
-[data-layout-type="docked-minimized"] .uwp-container {
-  height: auto; }
+[data-layout-type="docked-minimized"] .uwp-container,
+[data-layout-type="docked"] .uwp-container {
+	height: auto;
+}
 
 [data-layout-type="tabs"] .uwp-header,
 [data-layout-type="overlay"] .uwp-header {
-  position: fixed; }
-
-[data-layout-type="docked-minimized"] .uwp-header .uwp-menu-button {
-  position: fixed !important; }
+	position: fixed;
+}
 
 [data-layout-type="tabs"] .uwp-main {
-  margin-top: 66px; }
+	margin-top: 66px;
+}
 
 [data-layout-type="overlay"] .uwp-main {
-  margin-top: 44px; }
+	margin-top: 44px;
+}
+
+[data-layout-type="docked-minimized"] .uwp-header .uwp-menu-button {
+	position: fixed;
+}
+
+[data-layout-type="docked"] .uwp-main {
+	margin-left: 250px;
+} */

@@ -9,7 +9,7 @@
 .macy-grid.macy-grid--home {
 	width: calc(100% - 40px);
 	/*!
-	 * the scrollbar will show 
+	 * the scrollbar will show
 	 * if it is a child container
 	 * that has no height 100%
 	 */
@@ -204,7 +204,7 @@
 	font-size: 12px;
 	line-height: 12px;
 	font-weight: 400;
-    text-align: center;
+	text-align: center;
 	color: $UWPAccentColor;
 	border: 1px solid $UWPAccentColor;
 	background-color: transparent;
@@ -248,13 +248,9 @@
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  */
 
-.glightbox-open {
+/* .glightbox-open {
 	height: 100% !important;
-}
-
-/*!
- * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
- */
+} */
 
 /* Push */
 
