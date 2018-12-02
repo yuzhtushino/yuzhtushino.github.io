@@ -5,6 +5,10 @@
 * {
   box-sizing: border-box; }
 
+/*!
+ * Default CSS Values for HTML Elements
+ * @see {@link https://www.w3schools.com/cssref/css_default_values.asp}
+ */
 html,
 body {
   height: 100%; }
@@ -23,8 +27,6 @@ body {
   font-weight: 400;
   font-size: 1.000rem;
   line-height: 1.333rem;
-  /* font-size: 1.000rem;
-	line-height: 1.333rem; */
   width: 100%;
   color: #212121;
   -webkit-text-size-adjust: none;

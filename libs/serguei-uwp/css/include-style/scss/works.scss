@@ -8,7 +8,11 @@
 
 .macy-grid.macy-grid--works {
 	width: 100%;
-	height: 100%;
+	/*!
+	 * the scrollbar will show 
+	 * if it is a child container
+	 * that has no height 100%
+	 */
 	background-color: transparent;
 	margin: 0;
 }

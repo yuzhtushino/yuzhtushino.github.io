@@ -117,15 +117,26 @@
 
 			document.body.appendChild(UWP.pageTitle);
 
+			UWP.container = null;
+			var _uwp_container = document.getElementsByClassName("uwp-container")[0] || "";
+			if (!_uwp_container) {
+				var container = document.createElement("div");
+				container.setAttribute("class", "uwp-container");
+				container.setAttribute("role", "document");
+				UWP.container = container;
+				document.body.appendChild(UWP.container);
+			} else {
+				UWP.container = _uwp_container;
+			}
+
 			UWP.header = null;
 			var _UWP_header = document.getElementsByClassName("uwp-header")[0] || "";
 			if (!_UWP_header) {
 				var header = document.createElement("div");
 				header.setAttribute("class", "uwp-header");
 				header.setAttribute("role", "navigation");
-				/* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
 				UWP.header = header;
-				document.body.appendChild(UWP.header);
+				UWP.container.appendChild(UWP.header);
 			} else {
 				UWP.header = _UWP_header;
 			}
@@ -136,9 +147,8 @@
 				var main = document.createElement("div");
 				main.setAttribute("class", "uwp-main");
 				main.setAttribute("role", "main");
-				/* UWP.main = document.getElementsByClassName("uwp-main")[0] || ""; */
 				UWP.main = main;
-				document.body.appendChild(UWP.main);
+				UWP.container.appendChild(UWP.main);
 			} else {
 				UWP.main = _uwp_main;
 			}
@@ -150,7 +160,6 @@
 				loading.setAttribute("class", "uwp-loading");
 				loading.setAttribute("role", "main");
 				loading.innerHTML = '<div class="uwp-loading__part"><div class="uwp-loading__rotator"></div></div><div class="uwp-loading__part uwp-loading__part--bottom"><div class="uwp-loading__rotator"></div></div>\n';
-				/* UWP.loading = document.getElementsByClassName("uwp-loading")[0] || ""; */
 				UWP.loading = loading;
 				document.body.appendChild(UWP.loading);
 			} else {
@@ -395,30 +404,39 @@
 		/* Puts a menu button in title bar */
 		addMenuButton: function addMenuButton() {
 			console.log("UWP.addMenuButton()");
-			/* UWP.menuButton = document.createElement("button"); */
-			var menuButton = document.createElement("button");
-			menuButton.setAttribute("class", "uwp-menu-button");
-			UWP.menuButton = menuButton;
+
+
+			UWP.menuButton = null;
+			var _uwp_menu_button = document.getElementsByClassName("uwp-menu-button")[0] || "";
+			if (!_uwp_menu_button) {
+				var menuButton = document.createElement("button");
+				menuButton.setAttribute("class", "uwp-menu-button");
+				menuButton.setAttribute("aria-label", "Menu");
+				menuButton.innerHTML = '<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="scale(1.75 1.75) translate(0 0)" d="M1024 320h-1024v-64h1024v64zm0 512h-1024v-64h1024v64zm0-256.5h-1024v-63.5h1024v63.5z"/></svg>';
+				UWP.menuButton = menuButton;
+				UWP.header.prependChild(UWP.menuButton);
+			} else {
+				UWP.menuButton = _uwp_menu_button;
+			}
+
 			/* UWP.menuButton.innerHTML = "&#xE700;"; */
 
 			/* var GlobalNavButton = document.createElement("img");
 			GlobalNavButton.src = "./static/img/svg/GlobalNavButton.svg";
 			UWP.menuButton.appendChild(GlobalNavButton); */
 
-			UWP.menuButton.innerHTML = '<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="scale(1.75 1.75) translate(0 0)" d="M1024 320h-1024v-64h1024v64zm0 512h-1024v-64h1024v64zm0-256.5h-1024v-63.5h1024v63.5z"/></svg>';
-			UWP.menuButton.setAttribute("aria-label", "Menu");
-
 			/* var headerNav = UWP.header.getElementsByTagName("nav")[0] || ""; */
-			var headerNav = UWP.header.getElementsByClassName("uwp-nav")[0] || "";
 
-			UWP.menuList = headerNav || "";
-			UWP.menuButton.addEventListener("click", function () {
-				UWP.menuList.classList.toggle("active");
-			});
-			UWP.main.addEventListener("click", function () {
-				UWP.menuList.classList.remove("active");
-			});
-			UWP.header.prependChild(UWP.menuButton);
+			UWP.menuList = UWP.header.getElementsByClassName("uwp-nav")[0] || "";
+
+			if (UWP.menuList) {
+				UWP.menuButton.addEventListener("click", function () {
+					UWP.menuList.classList.toggle("active");
+				});
+				UWP.main.addEventListener("click", function () {
+					UWP.menuList.classList.remove("active");
+				});
+			}
 		},
 
 		/* Puts content in place */

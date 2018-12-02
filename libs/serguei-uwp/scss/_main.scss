@@ -3,7 +3,6 @@
 		$hex: str-slice(ie-hex-str($string), 4);
 		$string:unquote("#{$hex}");
 	}
-
 	$string: '%23'+$string;
 	@return $string;
 }
@@ -15,6 +14,11 @@
 * {
 	box-sizing: border-box;
 }
+
+/*!
+ * Default CSS Values for HTML Elements
+ * @see {@link https://www.w3schools.com/cssref/css_default_values.asp}
+ */
 
 html,
 body {
@@ -36,8 +40,6 @@ body {
 	font-weight: 400;
 	font-size: 1.000rem;
 	line-height: 1.333rem;
-	/* font-size: 1.000rem;
-	line-height: 1.333rem; */
 	width: 100%;
 	color: $clr-grey-900;
 	text-size-adjust: none;

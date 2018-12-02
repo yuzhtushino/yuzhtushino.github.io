@@ -12,17 +12,36 @@ body {
   font-family: Segoe UI, Segoe MDL2 Assets;
   font-size: 15px;
   line-height: 1.5;
-  height: 100vh;
+  /* height: 100vh;
+	display: flex;
+	overflow: hidden; */ }
+
+/*!
+ * To avoid the address bar on mobile chrome wont hide on scroll down:
+ * dont body display flex - make a body child div container with display flex
+ * dont make body height 100% > div height 100% --
+ * should be body height 100% > div without height 100%
+ * body height 100% > div without height 100% > div height 100% --
+ * the last div will show vertical scrollbar on load
+ */
+.uwp-container {
   display: -ms-flexbox;
   display: flex;
-  overflow: hidden; }
+  width: 100%;
+  /*!
+	 * if height 100%
+	 * the chrome on mobile
+	 * won't hide addressbar on scroll
+	 * but we need that
+	 */
+  height: 100%; }
 
-body[data-layout-type="tabs"],
-body[data-layout-type="overlay"] {
+[data-layout-type="tabs"] .uwp-container,
+[data-layout-type="overlay"] .uwp-container {
   -ms-flex-direction: column;
       flex-direction: column; }
 
-body[data-layout-type="docked-minimized"] {
+[data-layout-type="docked-minimized"] .uwp-container {
   -ms-flex-direction: row;
       flex-direction: row; }
 
@@ -777,3 +796,25 @@ img {
 [data-layout-type="docked"] .uwp-main.uwp-main--error .uwp-error {
   top: 50%;
   left: calc(50% + 125px); }
+
+/*!
+ * a hack to hide addressbar on mobile chrome
+ * on scroll down
+ */
+[data-layout-type="tabs"] .uwp-container,
+[data-layout-type="overlay"] .uwp-container,
+[data-layout-type="docked-minimized"] .uwp-container {
+  height: auto; }
+
+[data-layout-type="tabs"] .uwp-header,
+[data-layout-type="overlay"] .uwp-header {
+  position: fixed; }
+
+[data-layout-type="docked-minimized"] .uwp-header .uwp-menu-button {
+  position: fixed !important; }
+
+[data-layout-type="tabs"] .uwp-main {
+  margin-top: 66px; }
+
+[data-layout-type="overlay"] .uwp-main {
+  margin-top: 44px; }

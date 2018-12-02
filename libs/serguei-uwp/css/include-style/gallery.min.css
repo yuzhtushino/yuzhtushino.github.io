@@ -1,4 +1,8 @@
 /*! @import url(englishextra-ui-variables); *//*!
  * macy-grid
- */.macy-grid.macy-grid--gallery{width:100%;height:100%;background-color:transparent;margin:0}.macy-grid.macy-grid--gallery:after{content:"";display:table;clear:both}
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImdhbGxlcnkubWluLmNzcyIsImdhbGxlcnkuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUVBLDhCQUNFLE1DR0MsS0FFSCxPQUFBLEtBQ0MsaUJBQVksWUFDWixPQUFBLEVERkQsb0NBQ0UsUUFBUyxHQ01YLFFBQUEsTUFDQyxNQUFBIiwiZmlsZSI6ImdhbGxlcnkubWluLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi8qISBAaW1wb3J0IHVybChlbmdsaXNoZXh0cmEtdWktdmFyaWFibGVzKTsgKi8vKiFcbiAqIG1hY3ktZ3JpZFxuICovLm1hY3ktZ3JpZC5tYWN5LWdyaWQtLWdhbGxlcnl7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJTtiYWNrZ3JvdW5kLWNvbG9yOnRyYW5zcGFyZW50O21hcmdpbjowfS5tYWN5LWdyaWQubWFjeS1ncmlkLS1nYWxsZXJ5OmFmdGVye2NvbnRlbnQ6XCJcIjtkaXNwbGF5OnRhYmxlO2NsZWFyOmJvdGh9IiwiQGltcG9ydCBcIi4uLy4uLy4uL3Njc3MvdmFyaWFibGVzXCI7XG5AaW1wb3J0IFwiLi4vLi4vLi4vc2Nzcy9tYXRlcmlhbC1jb2xvclwiO1xuQGltcG9ydCBcIi4uLy4uLy4uL3Njc3MvY3VzdG9tLWNvbG9yXCI7XG5cbi8qIVxuICogbWFjeS1ncmlkXG4gKi9cblxuLm1hY3ktZ3JpZC5tYWN5LWdyaWQtLWdhbGxlcnkge1xuXHR3aWR0aDogMTAwJTtcblx0aGVpZ2h0OiAxMDAlO1xuXHRiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDtcblx0bWFyZ2luOiAwO1xufVxuXG4ubWFjeS1ncmlkLm1hY3ktZ3JpZC0tZ2FsbGVyeTphZnRlciB7XG5cdGNvbnRlbnQ6IFwiXCI7XG5cdGRpc3BsYXk6IHRhYmxlO1xuXHRjbGVhcjogYm90aDtcbn1cbiJdfQ== */
+ */.macy-grid.macy-grid--gallery{width:100%;/*!
+	 * the scrollbar will show 
+	 * if it is a child container
+	 * that has no height 100%
+	 */background-color:transparent;margin:0}.macy-grid.macy-grid--gallery:after{content:"";display:table;clear:both}
+/*# sourceMappingURL=gallery.min.css.map */

@@ -120,6 +120,20 @@
       pageTitle.style.display = "none";
       UWP.pageTitle = pageTitle;
       document.body.appendChild(UWP.pageTitle);
+      UWP.container = null;
+
+      var _uwp_container = document.getElementsByClassName("uwp-container")[0] || "";
+
+      if (!_uwp_container) {
+        var container = document.createElement("div");
+        container.setAttribute("class", "uwp-container");
+        container.setAttribute("role", "document");
+        UWP.container = container;
+        document.body.appendChild(UWP.container);
+      } else {
+        UWP.container = _uwp_container;
+      }
+
       UWP.header = null;
 
       var _UWP_header = document.getElementsByClassName("uwp-header")[0] || "";
@@ -128,10 +142,8 @@
         var header = document.createElement("div");
         header.setAttribute("class", "uwp-header");
         header.setAttribute("role", "navigation");
-        /* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
-
         UWP.header = header;
-        document.body.appendChild(UWP.header);
+        UWP.container.appendChild(UWP.header);
       } else {
         UWP.header = _UWP_header;
       }
@@ -144,10 +156,8 @@
         var main = document.createElement("div");
         main.setAttribute("class", "uwp-main");
         main.setAttribute("role", "main");
-        /* UWP.main = document.getElementsByClassName("uwp-main")[0] || ""; */
-
         UWP.main = main;
-        document.body.appendChild(UWP.main);
+        UWP.container.appendChild(UWP.main);
       } else {
         UWP.main = _uwp_main;
       }
@@ -161,8 +171,6 @@
         loading.setAttribute("class", "uwp-loading");
         loading.setAttribute("role", "main");
         loading.innerHTML = '<div class="uwp-loading__part"><div class="uwp-loading__rotator"></div></div><div class="uwp-loading__part uwp-loading__part--bottom"><div class="uwp-loading__rotator"></div></div>\n';
-        /* UWP.loading = document.getElementsByClassName("uwp-loading")[0] || ""; */
-
         UWP.loading = loading;
         document.body.appendChild(UWP.loading);
       } else {
