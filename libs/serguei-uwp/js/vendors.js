@@ -1198,7 +1198,7 @@ var LazyLoad = function () {
       if (!_UWP_header) {
         var header = document.createElement("div");
         header.setAttribute("class", "uwp-header");
-        main.setAttribute("role", "navigation");
+        header.setAttribute("role", "navigation");
         /* UWP.header = document.getElementsByClassName("uwp-header")[0] || ""; */
 
         UWP.header = header;
@@ -1222,6 +1222,39 @@ var LazyLoad = function () {
       } else {
         UWP.main = _uwp_main;
       }
+
+      UWP.loading = null;
+
+      var _uwp_loading = document.getElementsByClassName("uwp-loading")[0] || "";
+
+      if (!_uwp_loading) {
+        var loading = document.createElement("div");
+        loading.setAttribute("class", "uwp-loading");
+        loading.setAttribute("role", "main");
+        loading.innerHTML = '<div class="uwp-loading__part"><div class="uwp-loading__rotator"></div></div><div class="uwp-loading__part uwp-loading__part--bottom"><div class="uwp-loading__rotator"></div></div>\n';
+        /* UWP.loading = document.getElementsByClassName("uwp-loading")[0] || ""; */
+
+        UWP.loading = loading;
+        document.body.appendChild(UWP.loading);
+      } else {
+        UWP.loading = _uwp_loading;
+      }
+
+      UWP.revealUWPLoading = function () {
+        UWP.loading.classList.add("is-active");
+      };
+
+      UWP.concealUWPLoading = function () {
+        var timer = setTimeout(function () {
+          clearTimeout(timer);
+          timer = null;
+          UWP.loading.classList.remove("is-active");
+        }, 1000);
+      };
+
+      UWP.removeUWPLoading = function () {
+        UWP.loading.classList.remove("is-active");
+      };
       /* Gets user-set config */
 
 
@@ -1496,14 +1529,15 @@ var LazyLoad = function () {
 
       function displayError(title) {
         UWP.main.classList.add("error");
-        UWP.main.innerHTML = "\n\t\t\t\t<div class=\"error-container\">\n\t\t\t\t\t<p>".concat(title, "</p>\n\t\t\t\t\t<p><a href=\"javascript:void(0);\">Go Home</a></p>\n\t\t\t\t</div>\n\t\t\t");
-        var mainA = UWP.main.getElementsByTagName("a")[0] || "";
+        UWP.main.innerHTML = "\n\t\t\t\t<div class=\"error-container\">\n\t\t\t\t\t<p>".concat(title, "</p>\n\t\t\t\t\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t\t\t\t</div>\n\t\t\t");
+        var mainA = UWP.main.getElementsByClassName("error-link")[0] || "";
         mainA.addEventListener("click", function (event) {
           event.stopPropagation();
           event.preventDefault();
           UWP.navigate(UWP.config.home);
         });
         UWP.updateNavigation();
+        UWP.removeUWPLoading();
       }
 
       var URL = "".concat(UWP.config.includes, "/").concat(target, ".html");
@@ -1530,6 +1564,7 @@ var LazyLoad = function () {
             displayError("Something went wrong");
           }
 
+          UWP.revealUWPLoading();
           var elTitle = page ? page.getElementsByTagName("page-title")[0] || "" : "";
           var pageTitle = elTitle.textContent || "";
           var elBody = page ? page.getElementsByTagName("page-content")[0] || "" : "";
@@ -1587,6 +1622,7 @@ var LazyLoad = function () {
           }
 
           UWP.updateNavigation();
+          UWP.concealUWPLoading();
         }
       };
 

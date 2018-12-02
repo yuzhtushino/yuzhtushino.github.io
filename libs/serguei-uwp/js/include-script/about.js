@@ -134,7 +134,7 @@ updateMacyThrottled*/
     };
 
     var addMacyItems = function addMacyItems(macyGrid, callback) {
-      if ("function" === typeof callback) {
+      if (callback && "function" === typeof callback) {
         callback();
       }
     };

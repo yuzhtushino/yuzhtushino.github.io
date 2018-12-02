@@ -4,7 +4,8 @@
 	 * @see {@link https://css-tricks.com/couple-takes-sticky-footer/}
 	 * Sticky Footer
 	 * The position relative on body is required to make it work.
-	 */}/*!
+	 */
+  }/*!
  * englishextra specific rules
  */a{color:inherit;text-decoration:none}img{border:0;-ms-interpolation-mode:bicubic;vertical-align:bottom}p:first-child{margin-top:0}p:last-child{margin-bottom:0}.uwp-header .uwp-menu-button img,.uwp-header .uwp-menu-button svg{margin:0 -50% 0 0;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;display:block}.bolder,b,strong{font-weight:700}.italic,em,i{font-style:italic}.underline,u{text-decoration:underline}::-moz-selection{color:#212121;background-color:#b3e5fc}::selection{color:#212121;background-color:#b3e5fc}:-ms-input-placeholder{color:#757575!important;opacity:1}::placeholder{color:#757575!important;opacity:1}.uwp-main,h1,h2,h3,h4,h5{color:#212121}body,button,html,input,textarea{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-shadow:.063rem .063rem .063rem rgba(0,0,0,.004)}/*!
  * fixes to uwp.style.fixed.css
@@ -15,3 +16,4 @@
  *//*!
  * .macy-grid visibility and opacity is set in js
  */.uwp-header,.uwp-main{visibility:visible;opacity:1}template{display:block}[data-layout-type=tabs] .uwp-header,[data-layout-type=overlay] .uwp-header{background-color:#373737!important}[data-layout-type=docked-minimized] .uwp-header,[data-layout-type=docked] .uwp-header{background-color:#0097A7!important}
+/*# sourceMappingURL=bundle.min.css.map */

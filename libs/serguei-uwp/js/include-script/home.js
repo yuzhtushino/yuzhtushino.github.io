@@ -484,7 +484,7 @@ updateMacyThrottled*/
           count++;
 
           if (count === macyItems[_length]) {
-            if ("function" === typeof callback) {
+            if (callback && "function" === typeof callback) {
               callback();
             }
           }
@@ -616,7 +616,7 @@ updateMacyThrottled*/
         macyGrid.innerHTML = "";
         manageAC(macyGrid, callback);
       } else {
-        if ("function" === typeof callback) {
+        if (callback && "function" === typeof callback) {
           callback();
         }
       }
