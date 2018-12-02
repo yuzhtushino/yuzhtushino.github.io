@@ -102,12 +102,12 @@
 			/*!
 			 * loading placeholder text
 			 */
-			.loading-container {
+			/*.uwp-loading {
 				width: 100%;
 				height: 100%;
-				position: relative;
+				position: absolute;
 			}
-			.loading-container__text {
+			.uwp-loading__text {
 				margin: 0;
 				position: absolute;
 				top: 50%;
@@ -115,6 +115,89 @@
 				margin-right: -50%;
 				-webkit-transform: translate(-50%, -50%);
 				transform: translate(-50%, -50%);
+			}*/
+			/*!
+			 * @see {@link http://epic-spinners.epicmax.co}
+			 * @see {@link https://github.com/epicmaxco/epic-spinners}
+			 */
+			.uwp-loading,
+			.uwp-loading * {
+				-webkit-box-sizing: border-box;
+						box-sizing: border-box;
+			}
+			.uwp-loading {
+				height: 60px;
+				width: 60px;
+				/*! @see {@link https://www.w3.org/Style/Examples/007/center.en.html#hv3} */
+				margin: 0;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				-webkit-transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+			}
+			.uwp-loading .uwp-loading__part {
+				overflow: hidden;
+				height: calc(60px / 2);
+				width: 60px;
+			}
+			.uwp-loading .uwp-loading__part.uwp-loading__part--bottom {
+				-webkit-transform: rotate(180deg) scale(-1, 1);
+						transform: rotate(180deg) scale(-1, 1);
+			}
+			.uwp-loading .uwp-loading__rotator {
+				width: 60px;
+				height: 60px;
+				border: calc(60px / 7) solid transparent;
+				border-right-color: #26C6DA;
+				border-top-color: #26C6DA;
+				border-radius: 50%;
+				-webkit-box-sizing: border-box;
+						box-sizing: border-box;
+				-webkit-animation: uwp-loading-animation 3s ease-in-out infinite;
+						animation: uwp-loading-animation 3s ease-in-out infinite;
+				-webkit-transform: rotate(-200deg);
+						transform: rotate(-200deg);
+			}
+			@-webkit-keyframes uwp-loading-animation {
+				0% {
+					border-width: calc(60px / 7);
+				}
+				25% {
+					border-width: calc(60px / 23.33);
+				}
+				50% {
+					-webkit-transform: rotate(115deg);
+							transform: rotate(115deg);
+					border-width: calc(60px / 7);
+				}
+				75% {
+					border-width: calc(60px / 23.33);
+				}
+				100% {
+					border-width: calc(60px / 7);
+				}
+			}
+			@keyframes uwp-loading-animation {
+				0% {
+					border-width: calc(60px / 7);
+				}
+				25% {
+					border-width: calc(60px / 23.33);
+				}
+				50% {
+					-webkit-transform: rotate(115deg);
+							transform: rotate(115deg);
+					border-width: calc(60px / 7);
+				}
+				75% {
+					border-width: calc(60px / 23.33);
+				}
+				100% {
+					border-width: calc(60px / 7);
+				}
 			}
 			/*!
 			 * @see {@link https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.css}
@@ -148,9 +231,17 @@
 	<body>
 		<div class="uwp-header" role="navigation"></div>
 		<div class="uwp-main" role="main">
-			<div class="loading-container">
-				<p class="loading-container__text">Загрузка...</p>
+			<div class="uwp-loading">
+				<div class="uwp-loading__part">
+					<div class="uwp-loading__rotator"></div>
+				</div>
+				<div class="uwp-loading__part uwp-loading__part--bottom">
+					<div class="uwp-loading__rotator"></div>
+				</div>
 			</div>
+			<!-- <div class="uwp-loading">
+				<p class="uwp-loading__text">Загрузка...</p>
+			</div> -->
 		</div>
 		<!-- <a class="github-fork-ribbon left-bottom" href="https://github.com/englishextra/serguei-uwp-dev" target="_blank" rel="noopener" title="Fork me on GitHub" data-ribbon="Fork me on GitHub">Fork me on GitHub</a> -->
 		<script src="./libs/serguei-uwp/js/bundle.min.js" async=""></script>
