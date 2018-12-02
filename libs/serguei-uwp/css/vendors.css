@@ -2056,10 +2056,31 @@ img {
 	font-size: 13px;
 	margin: 0;
 } */
-.uwp-main.error {
+.uwp-main.uwp-main--error {
   text-align: center; }
 
-.uwp-main.error .error-container {
+.uwp-main.uwp-main--error .uwp-error {
   position: relative;
-  margin-top: calc(50vh - 44px);
-  transform: translateY(-50%); }
+  /*! @see {@link https://www.w3.org/Style/Examples/007/center.en.html#hv3} */
+  margin: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%); }
+
+[data-layout-type="tabs"] .uwp-main.uwp-main--error .uwp-error {
+  top: calc(50% + 33px);
+  left: 50%; }
+
+[data-layout-type="overlay"] .uwp-main.uwp-main--error .uwp-error {
+  top: calc(50% + 22px);
+  left: 50%; }
+
+[data-layout-type="docked-minimized"] .uwp-main.uwp-main--error .uwp-error {
+  top: 50%;
+  left: calc(50% + 22px); }
+
+[data-layout-type="docked"] .uwp-main.uwp-main--error .uwp-error {
+  top: 50%;
+  left: calc(50% + 125px); }

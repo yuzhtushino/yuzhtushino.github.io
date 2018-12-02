@@ -1523,13 +1523,13 @@ var LazyLoad = function () {
       /* Clears the page content */
 
 
-      UWP.main.classList.remove("error");
+      UWP.main.classList.remove("uwp-main--error");
       UWP.main.innerHTML = "";
       /* Displays error message */
 
       function displayError(title) {
-        UWP.main.classList.add("error");
-        UWP.main.innerHTML = "\n\t\t\t\t<div class=\"error-container\">\n\t\t\t\t\t<p>".concat(title, "</p>\n\t\t\t\t\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t\t\t\t</div>\n\t\t\t");
+        UWP.main.classList.add("uwp-main--error");
+        UWP.main.innerHTML = "\n\t\t\t\t<div class=\"uwp-error\">\n\t\t\t\t\t<p>".concat(title, "</p>\n\t\t\t\t\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t\t\t\t</div>\n\t\t\t");
         var mainA = UWP.main.getElementsByClassName("error-link")[0] || "";
         mainA.addEventListener("click", function (event) {
           event.stopPropagation();

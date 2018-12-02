@@ -130,6 +130,22 @@
 				visibility: visible;
 				opacity: 1;
 			}
+			[data-layout-type="tabs"] .uwp-loading {
+				top: calc(50% + 33px);
+				left: 50%;
+			}
+			[data-layout-type="overlay"] .uwp-loading {
+				top: calc(50% + 22px);
+				left: 50%;
+			}
+			[data-layout-type="docked-minimized"] .uwp-loading {
+				top: 50%;
+				left: calc(50% + 22px);
+			}
+			[data-layout-type="docked"] .uwp-loading {
+				top: 50%;
+				left: calc(50% + 125px);
+			}
 			.uwp-loading .uwp-loading__part {
 				overflow: hidden;
 				height: calc(60px / 2);
