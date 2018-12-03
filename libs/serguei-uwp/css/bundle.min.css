@@ -8,7 +8,7 @@
 	 * Sticky Footer
 	 * The position relative on body is required to make it work.
 	 */
-  }/*!
+	}/*!
  * englishextra specific rules
  */a{color:inherit;text-decoration:none}img{border:0;-ms-interpolation-mode:bicubic;vertical-align:bottom}p:first-child{margin-top:0}p:last-child{margin-bottom:0}.bolder,b,strong{font-weight:700}.italic,em,i{font-style:italic}.underline,u{text-decoration:underline}*,::before,:after{box-sizing:border-box}::-moz-selection{color:#212121;background-color:#b3e5fc}::selection{color:#212121;background-color:#b3e5fc}:-ms-input-placeholder{color:#757575!important;opacity:1}::placeholder{color:#757575!important;opacity:1}.uwp-main,h1,h2,h3,h4,h5{color:#212121}body,button,html,input,textarea{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-shadow:.063rem .063rem .063rem rgba(0,0,0,.004)}/*!
  * fixes to uwp.style.fixed.css
@@ -16,7 +16,7 @@
  * reveal on css loaded
  *//*!
  * .macy-grid visibility and opacity is set in js
- */.uwp-header,.uwp-main{visibility:visible;opacity:1}.uwp-main{background-color:transparent}.uwp-main a{color:#00838F}.uwp-main img{max-width:100%}.uwp-header .uwp-menu-button{cursor:pointer}.uwp-header .uwp-menu-button img,.uwp-header .uwp-menu-button svg{display:block;width:16px;height:16px;/*!
+ */.uwp-header,.uwp-main{visibility:visible;opacity:1}.uwp-main{background-color:transparent}.uwp-main a{color:#00838f}.uwp-main img{max-width:100%}.uwp-menu-button{cursor:pointer}.uwp-menu-button img,.uwp-menu-button svg{display:block;width:16px;height:16px;/*!
 	 * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
-	 */margin:0 -50% 0 0;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.uwp-nav li img,.uwp-nav li svg{width:16px;height:16px}[data-layout-type=tabs] .uwp-header,[data-layout-type=overlay] .uwp-header{background-color:#373737!important}[data-layout-type=docked-minimized] .uwp-header,[data-layout-type=docked] .uwp-header{background-color:#0097A7!important}
+	 */margin:0 -50% 0 0;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.uwp-nav li img,.uwp-nav li svg{width:16px;height:16px}[data-layout-type=tabs] .uwp-header,[data-layout-type=overlay] .uwp-header{background-color:#373737!important}[data-layout-type=docked-minimized] .uwp-header,[data-layout-type=docked] .uwp-header{background-color:#0097a7!important}
 /*# sourceMappingURL=bundle.min.css.map */

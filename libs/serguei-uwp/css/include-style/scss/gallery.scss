@@ -6,13 +6,13 @@
  * macy-grid
  */
 
+/*!
+ * the scrollbar will show 
+ * if it is a child container
+ * that has no height 100%
+ */
 .macy-grid.macy-grid--gallery {
 	width: 100%;
-	/*!
-	 * the scrollbar will show 
-	 * if it is a child container
-	 * that has no height 100%
-	 */
 	background-color: transparent;
 	margin: 0;
 }

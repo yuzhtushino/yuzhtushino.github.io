@@ -6,13 +6,13 @@
  * macy-grid
  */
 
+/*!
+ * the scrollbar will show
+ * if it is a child container
+ * that has no height 100%
+ */
 .macy-grid.macy-grid--home {
 	width: calc(100% - 40px);
-	/*!
-	 * the scrollbar will show
-	 * if it is a child container
-	 * that has no height 100%
-	 */
 	background-color: transparent;
 	margin: 20px 20px 0 20px;
 }
@@ -59,21 +59,6 @@
 	padding: 15px !important;
 }
 
-.ac-container--column {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	box-sizing: border-box;
-	min-width: 0px;
-}
-
-.ac-container--wrapper {
-	display: flex;
-	align-items: flex-start;
-	justify-content: flex-start;
-	box-sizing: border-box;
-}
-
 .ac-columnSet {
 	display: flex;
 	justify-content: flex-start;
@@ -90,26 +75,6 @@
 	overflow-wrap: break-word;
 	box-sizing: border-box;
 	flex: 0 0 auto;
-}
-
-.ac-container__div-vertical-margin {
-	width: 8px;
-	overflow: hidden;
-	flex: 0 0 auto;
-}
-
-.ac-container__div-horizontal-margin {
-	height: 8px;
-	overflow: hidden;
-	flex: 0 0 auto;
-}
-
-.ac-display--block {
-	display: block;
-}
-
-.ac-display--flex {
-	display: flex;
 }
 
 .ac-factset {
@@ -132,15 +97,6 @@
 .ac-fact-value {
 	padding: 0px 0px 0px 10px;
 	vertical-align: top;
-}
-
-.ac-margin--top-10 {
-	margin-top: 10px;
-}
-
-.ac-size--small {
-	font-size: 12px;
-	line-height: 15.96px;
 }
 
 .ac-textBlock--h3 {
@@ -175,22 +131,6 @@
 	border-radius: 50%;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-}
-
-.ac-color--accent {
-	color: $UWPAccentColor;
-}
-
-.ac-color--default {
-	color: $clr-grey-900;
-}
-
-.ac-color--subtle {
-	color: $clr-grey-600;
-}
-
-.ac-weight--bolder {
-	font-weight: bolder !important;
 }
 
 /* .ac-selectable:hover,
@@ -240,8 +180,68 @@
 	background-color: $UWPAccentColor;
 }
 
+.ac-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	box-sizing: border-box;
+	min-width: 0px;
+}
+
+.ac-wrapper {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	box-sizing: border-box;
+}
+
+.ac-vertical-margin {
+	width: 8px;
+	overflow: hidden;
+	flex: 0 0 auto;
+}
+
+.ac-horizontal-margin {
+	height: 8px;
+	overflow: hidden;
+	flex: 0 0 auto;
+}
+
+.ac-display--block {
+	display: block;
+}
+
+.ac-display--flex {
+	display: flex;
+}
+
+.ac-color--accent {
+	color: $UWPAccentColor;
+}
+
+.ac-color--default {
+	color: $clr-grey-900;
+}
+
+.ac-color--subtle {
+	color: $clr-grey-600;
+}
+
+.ac-size--small {
+	font-size: 12px;
+	line-height: 15.96px;
+}
+
+.ac-weight--bolder {
+	font-weight: bolder !important;
+}
+
 .ac-width--fit-width {
 	width: 100%;
+}
+
+.ac-margin--top-10 {
+	margin-top: 10px;
 }
 
 /*!

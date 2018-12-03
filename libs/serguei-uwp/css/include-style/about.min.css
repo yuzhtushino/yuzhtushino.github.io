@@ -1,12 +1,12 @@
 /*! @import url(englishextra-ui-variables); *//*!
  * macy-grid
- */.col a,.col a:active,.col a:focus,.col a:hover,.col button{color:#00838F}.macy-grid.macy-grid--about{width:calc(100% - 40px);/*!
-	 * the scrollbar will show 
-	 * if it is a child container
-	 * that has no height 100%
-	 */background-color:transparent;margin:20px 20px 0}.macy-grid.macy-grid--about:after{content:"";display:table;clear:both}@media screen and (max-width:480px){.macy-grid.macy-grid--about{width:100%;margin:20px 0 0}}/*!
+ *//*!
+ * the scrollbar will show
+ * if it is a child container
+ * that has no height 100%
+ */.col a,.col a:active,.col a:focus,.col a:hover,.col button{color:#00838f}.macy-grid.macy-grid--about{width:calc(100% - 40px);background-color:transparent;margin:20px 20px 0}.macy-grid.macy-grid--about:after{content:"";display:table;clear:both}@media screen and (max-width:480px){.macy-grid.macy-grid--about{width:100%;margin:20px 0 0}}/*!
  * cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css
- */.col{background-color:#FFF;padding:15px 15px 0}.col h1:first-child,.col h2:first-child{margin-top:0}.col h1{line-height:2.4rem;word-wrap:break-word;-o-hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.col h1+h2{margin-top:1.333rem}.col button{font-weight:400;border:1px solid #00838F;background-color:transparent;border-radius:2px}.col button[disabled]{color:#757575;background-color:transparent;border:1px solid #757575}.col button:not([disabled]):hover{color:#FFF;background-color:#26C6DA;border:1px solid #26C6DA}.col button:not([disabled]):active,.col button:not([disabled]):focus{color:#26C6DA;background-color:#FFF;border:1px solid #26C6DA}.col button.primary{color:#FFF;background-color:#00838F}.col .fit-width{width:100%}.col p.smaller{font-size:.875rem;line-height:1.333rem}/*!
+ */.col{background-color:#fff;padding:15px 15px 0}.col h1:first-child,.col h2:first-child{margin-top:0}.col h1{line-height:2.4rem;word-wrap:break-word;-o-hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.col h1+h2{margin-top:1.333rem}.col button{font-weight:400;border:1px solid #00838f;background-color:transparent;border-radius:2px}.col button[disabled]{color:#757575;background-color:transparent;border:1px solid #757575}.col button:not([disabled]):hover{color:#fff;background-color:#26c6da;border:1px solid #26c6da}.col button:not([disabled]):active,.col button:not([disabled]):focus{color:#26c6da;background-color:#fff;border:1px solid #26c6da}.col button.primary{color:#fff;background-color:#00838f}.col .fit-width{width:100%}.col p.smaller{font-size:.875rem;line-height:1.333rem}/*!
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  *//*!
  * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}

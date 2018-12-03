@@ -55,19 +55,19 @@
 
 @keyframes lg-right-end {
   0% {
-    left: 0; }
+	left: 0; }
   50% {
-    left: -30px; }
+	left: -30px; }
   100% {
-    left: 0; } }
+	left: 0; } }
 
 @keyframes lg-left-end {
   0% {
-    left: 0; }
+	left: 0; }
   50% {
-    left: 30px; }
+	left: 30px; }
   100% {
-    left: 0; } }
+	left: 0; } }
 
 .lg-outer.lg-right-end .lg-object {
   animation: lg-right-end 0.3s;
@@ -209,7 +209,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 
 @media (min-width: 1025px) {
   .lg-outer .lg-thumb-item {
-    transition: border-color 0.25s ease; } }
+	transition: border-color 0.25s ease; } }
 
 .lg-outer .lg-thumb-item.active, .lg-outer .lg-thumb-item:hover {
   border-color: #a90707; }

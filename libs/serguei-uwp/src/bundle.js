@@ -671,8 +671,7 @@ $readMoreJS*/
 	/* var scripts = [
 				"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 				"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-				"../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
-				"../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.css",
+				"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
 				"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 	]; */
 
@@ -726,19 +725,12 @@ $readMoreJS*/
 	}
 
 	/* var scripts = [
-				"../../cdn/glightbox/1.0.8/js/glightbox.fixed.js",
 				"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-autoplay.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-fullscreen.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-hash.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-share.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-thumbnail.js",
-				"../../cdn/lightgallery.js/1.1.1/js/lg-zoom.js",
+				"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+				"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
 				"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 				"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-				"./node_modules/adaptivecards/dist/adaptivecards.js",
-				"./node_modules/macy/dist/macy.js"
+				"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 	]; */
 
 	scripts.push("./libs/serguei-uwp/js/vendors.min.js");

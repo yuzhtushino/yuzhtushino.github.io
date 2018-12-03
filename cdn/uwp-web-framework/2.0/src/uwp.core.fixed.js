@@ -88,17 +88,17 @@
 
 		/* Default config */
 		config: {
-				pageTitle: "UWP web framework",
-				layoutType: "docked-minimized",
-				activeColor: "#26C6DA",
-				mainColor: "#373737",
-				mainColorDarkened: "#0097A7",
-				includes: "./includes/serguei-uwp",
-				includeScript: "./libs/serguei-uwp/js/include-script",
-				includeStyle: "./libs/serguei-uwp/css/include-style",
-				navContainer: "nav-container",
-				home: "home",
-				hashNavKey: "page"
+			pageTitle: "UWP web framework",
+			layoutType: "docked-minimized",
+			activeColor: "#26C6DA",
+			mainColor: "#373737",
+			mainColorDarkened: "#0097A7",
+			includes: "./includes/serguei-uwp",
+			includeScript: "./libs/serguei-uwp/js/include-script",
+			includeStyle: "./libs/serguei-uwp/css/include-style",
+			navContainer: "nav-container",
+			home: "home",
+			hashNavKey: "page"
 		},
 
 		/* Main init function */
@@ -358,9 +358,9 @@
 					var mainColor_brightness = calculateBrightness(mainColor_RGB);
 
 					if (mainColor_brightness >= 128) {
-						UWP.body.classList.add("theme-light");
+						UWP.body.classList.add("uwp-theme--light");
 					} else {
-						UWP.body.classList.add("theme-dark");
+						UWP.body.classList.add("uwp-theme--dark");
 					}
 
 					var mainColorDarkened = mainColor_RGB.map(function (color) {
@@ -386,9 +386,9 @@
 					var activeColor_brightness = calculateBrightness(activeColor_RGB);
 
 					if (activeColor_brightness >= 128) {
-						UWP.body.classList.add("active-light");
+						UWP.body.classList.add("uwp-theme--active-light");
 					} else {
-						UWP.body.classList.add("active-dark");
+						UWP.body.classList.add("uwp-theme--active-dark");
 					}
 				}
 
@@ -514,7 +514,7 @@
 					UWP.main.innerHTML = "";
 					UWP.main.innerHTML = pageBody;
 
-					UWP.main.classList.remove("start-animation");
+					UWP.main.classList.remove("uwp-main--with-animation");
 
 					/*!
 					 * @see {@link https://stackoverflow.com/questions/30453078/uncaught-typeerror-cannot-set-property-offsetwidth-of-htmlelement-which-has/53089566#53089566}
@@ -523,7 +523,7 @@
 						return UWP.main.offsetWidth;
 					})();
 
-					UWP.main.classList.add("start-animation");
+					UWP.main.classList.add("uwp-main--with-animation");
 					/* Puts the new page title in place */
 
 					UWP.pageTitle.innerHTML = pageTitle;
@@ -572,4 +572,3 @@
 	};
 	root.UWP = UWP;
 })("undefined" !== typeof window ? window : void 0, document);
-

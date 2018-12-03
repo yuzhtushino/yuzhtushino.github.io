@@ -8,53 +8,57 @@
  */
 html,
 body {
-  height: 100%; }
+	height: 100%;
+}
 
 html {
-  font-size: 15px;
-  line-height: 20px;
-  /**
+	font-size: 15px;
+	line-height: 20px;
+	/**
 	 * set the parent to background transparent
 	 * and position relative to parent, absolute for child
 	 */
-  background-color: transparent; }
+	background-color: transparent;
+}
 
 body {
-  font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
-  font-weight: 400;
-  font-size: 1.000rem;
-  line-height: 1.333rem;
-  width: 100%;
-  color: #212121;
-  -webkit-text-size-adjust: none;
-      -ms-text-size-adjust: none;
-          text-size-adjust: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -moz-font-feature-settings: "liga", "kern";
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  overflow-x: hidden;
-  /* user-select: none; */
-  margin: 0;
-  padding: 0;
-  /*!
+	font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.333rem;
+	width: 100%;
+	color: #212121;
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	text-size-adjust: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-moz-font-feature-settings: "liga", "kern";
+	-webkit-touch-callout: none;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+	overflow-x: hidden;
+	/* user-select: none; */
+	margin: 0;
+	padding: 0;
+	/*!
 	 * @see {@link https://css-tricks.com/couple-takes-sticky-footer/}
 	 * Sticky Footer
 	 * The position relative on body is required to make it work.
 	 */
-  /* min-height: 100%;
+	/* min-height: 100%;
 	position: relative;
-	padding-bottom: 3.500rem; */ }
+	padding-bottom: 3.500rem; */
+}
 
 /*!
  * englishextra specific rules
  */
 a {
-  color: inherit;
-  text-decoration: none; }
+	color: inherit;
+	text-decoration: none;
+}
 
 a:focus,
 a:active,
@@ -62,63 +66,76 @@ button:focus,
 button:active,
 select:focus,
 select:active {
-  -webkit-tap-highlight-color: transparent;
-  outline: none; }
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+}
 
 img {
-  border: 0;
-  -ms-interpolation-mode: bicubic;
-  vertical-align: bottom; }
+	border: 0;
+	-ms-interpolation-mode: bicubic;
+	vertical-align: bottom;
+}
 
 p:first-child {
-  margin-top: 0; }
+	margin-top: 0;
+}
 
 p:last-child {
-  margin-bottom: 0; }
+	margin-bottom: 0;
+}
 
 b,
 strong,
 .bolder {
-  font-weight: bold; }
+	font-weight: bold;
+}
 
 i,
 em,
 .italic {
-  font-style: italic; }
+	font-style: italic;
+}
 
 u,
 .underline {
-  text-decoration: underline; }
+	text-decoration: underline;
+}
 
 *,
 *:after,
 *::before {
-  box-sizing: border-box; }
+	box-sizing: border-box;
+}
 
 ::-moz-selection {
-  color: #212121;
-  background-color: #b3e5fc; }
+	color: #212121;
+	background-color: #b3e5fc;
+}
 
 ::selection {
-  color: #212121;
-  background-color: #b3e5fc; }
+	color: #212121;
+	background-color: #b3e5fc;
+}
 
 :-ms-input-placeholder {
-  color: #757575 !important;
-  opacity: 1; }
+	color: #757575 !important;
+	opacity: 1;
+}
 
 ::placeholder {
-  color: #757575 !important;
-  opacity: 1; }
+	color: #757575 !important;
+	opacity: 1;
+}
 
 html,
 body,
 input,
 textarea,
 button {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-shadow: 0.063rem 0.063rem 0.063rem rgba(0, 0, 0, 0.004); }
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-shadow: 0.063rem 0.063rem 0.063rem rgba(0, 0, 0, 0.004);
+}
 
 /*!
  * fixes to uwp.style.fixed.css
@@ -128,10 +145,12 @@ h2,
 h3,
 h4,
 h5 {
-  color: #212121; }
+	color: #212121;
+}
 
 template {
-  display: block; }
+	display: block;
+}
 
 /*!
  * reveal on css loaded
@@ -142,50 +161,61 @@ template {
  */
 .uwp-header,
 .uwp-main {
-  visibility: visible;
-  opacity: 1; }
+	visibility: visible;
+	opacity: 1;
+}
 
 .uwp-main {
-  color: #212121;
-  background-color: transparent; }
+	color: #212121;
+	background-color: transparent;
+}
 
 .uwp-main a {
-  color: #00838F; }
+	color: #00838f;
+}
 
 .uwp-main img {
-  max-width: 100%; }
+	max-width: 100%;
+}
 
-.uwp-header .uwp-menu-button {
-  cursor: pointer; }
+.uwp-menu-button {
+	cursor: pointer;
+}
 
-.uwp-header .uwp-menu-button img,
-.uwp-header .uwp-menu-button svg {
-  display: block;
-  width: 16px;
-  height: 16px;
-  /*!
+.uwp-menu-button img,
+.uwp-menu-button svg {
+	display: block;
+	width: 16px;
+	height: 16px;
+	/*!
 	 * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
 	 */
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%); }
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
 
 .uwp-nav li img,
 .uwp-nav li svg {
-  width: 16px;
-  height: 16px; }
+	width: 16px;
+	height: 16px;
+}
 
 [data-layout-type="tabs"] .uwp-header {
-  background-color: #373737 !important; }
+	background-color: #373737 !important;
+}
 
 [data-layout-type="overlay"] .uwp-header {
-  background-color: #373737 !important; }
+	background-color: #373737 !important;
+}
 
 [data-layout-type="docked-minimized"] .uwp-header {
-  background-color: #0097A7 !important; }
+	background-color: #0097a7 !important;
+}
 
 [data-layout-type="docked"] .uwp-header {
-  background-color: #0097A7 !important; }
+	background-color: #0097a7 !important;
+}

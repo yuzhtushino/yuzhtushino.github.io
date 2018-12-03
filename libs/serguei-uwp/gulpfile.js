@@ -1,21 +1,37 @@
 /*!
  * @see {@link https://github.com/mildrenben/surface/blob/master/gulpfile.js}
  * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
- * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
+ * @see {@link https://gulpjs.com/plugins/blackList.json}
  */
 // gulpfile.js
 var gulp = require("gulp"),
 sass = require("gulp-sass"),
-sourcemaps = require('gulp-sourcemaps'),
-uglify = require("gulp-uglify"),
-minifyCss = require("gulp-minify-css"),
-babel = require("gulp-babel"),
-bundle = require("gulp-bundle-assets"),
-rename = require("gulp-rename"),
 autoprefixer = require("gulp-autoprefixer"),
+minifyCss = require("gulp-minify-css"),
+uglify = require("gulp-uglify"),
+sourcemaps = require('gulp-sourcemaps'),
+rename = require("gulp-rename"),
+bundle = require("gulp-bundle-assets"),
 browserSync = require("browser-sync").create(),
 reload = browserSync.reload,
 /* path = require("path"), */
+babel = require("gulp-babel"),
+babelOptions = {
+	presets: ["@babel/env"],
+	plugins: ["@babel/plugin-transform-object-assign",
+		"@babel/plugin-transform-arrow-functions",
+		"@babel/plugin-transform-async-to-generator"]
+},
+prettier = require("gulp-prettier"),
+/*!
+ * @see {@link https://prettier.io/docs/en/options.html}
+ */
+prettierOptions = {
+	"tabWidth": 4,
+	"useTabs": true,
+	"endOfLine": "lf",
+	"printWidth:": 80
+},
 
 uwp = {
 	src: "../../cdn/uwp-web-framework/2.0/src/uwp.core.fixed.js",
@@ -119,6 +135,7 @@ gulp.task("compile-material-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(material.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -140,6 +157,7 @@ gulp.task("compile-roboto-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(roboto.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -161,6 +179,7 @@ gulp.task("compile-roboto-mono-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(robotomono.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -182,6 +201,7 @@ gulp.task("compile-bundlejscss-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(bundlejscss.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -197,12 +217,8 @@ gulp.task("compile-bundlejscss-css", function () {
 gulp.task("compile-bundlejscss-js", function () {
 	gulp.src(bundlejscss.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(bundlejscss.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -224,6 +240,7 @@ gulp.task("compile-include-style-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(includeStyle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -239,12 +256,8 @@ gulp.task("compile-include-style-css", function () {
 gulp.task("compile-include-script-js", function () {
 	gulp.src(includeScript.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(includeScript.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -266,6 +279,7 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(typeboost.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -287,6 +301,7 @@ gulp.task("compile-uwp-web-framework-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(uwp.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -302,12 +317,8 @@ gulp.task("compile-uwp-web-framework-css", function () {
 gulp.task("compile-uwp-web-framework-js", function () {
 	gulp.src(uwp.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(uwp.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -329,6 +340,7 @@ gulp.task("compile-highlightjs-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(highlightjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -344,12 +356,8 @@ gulp.task("compile-highlightjs-css", function () {
 gulp.task("compile-highlightjs-js", function () {
 	gulp.src(highlightjs.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(highlightjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -371,6 +379,7 @@ gulp.task("compile-lightgalleryjs-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(lightgalleryjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -386,12 +395,8 @@ gulp.task("compile-lightgalleryjs-css", function () {
 gulp.task("compile-lightgalleryjs-js", function () {
 	gulp.src(lightgalleryjs.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(lightgalleryjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -413,6 +418,7 @@ gulp.task("compile-glightbox-css", function () {
 	.pipe(autoprefixer({
 			browsers: ["last 2 versions"]
 		}))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(glightbox.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -428,12 +434,8 @@ gulp.task("compile-glightbox-css", function () {
 gulp.task("compile-glightbox-js", function () {
 	gulp.src(glightbox.src)
 	.pipe(sourcemaps.init())
-	.pipe(babel({
-			presets: ["@babel/env"],
-			plugins: ["@babel/plugin-transform-object-assign",
-				"@babel/plugin-transform-arrow-functions",
-				"@babel/plugin-transform-async-to-generator"]
-		}))
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
 	.pipe(gulp.dest(glightbox.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
