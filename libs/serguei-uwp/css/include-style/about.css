@@ -30,7 +30,7 @@
  * cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css
  */
 .col {
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 	padding: 15px 15px 0 15px;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .col h1 {
-	line-height: 2.4rem;
+	line-height: 2.400rem;
 	word-wrap: break-word;
 	-o-hyphens: auto;
 	-webkit-hyphens: auto;
@@ -48,24 +48,24 @@
 	hyphens: auto;
 }
 
-.col h1 + h2 {
+.col h1+h2 {
 	margin-top: 1.333rem;
 }
 
 .col a {
-	color: #00838f;
+	color: #00838F;
 }
 
 .col a:focus,
 .col a:hover,
 .col a:active {
-	color: #00838f;
+	color: #00838F;
 }
 
 .col button {
 	font-weight: 400;
-	color: #00838f;
-	border: 1px solid #00838f;
+	color: #00838F;
+	border: 1px solid #00838F;
 	background-color: transparent;
 	border-radius: 2px;
 }
@@ -77,21 +77,21 @@
 }
 
 .col button:not([disabled]):hover {
-	color: #ffffff;
-	background-color: #26c6da;
-	border: 1px solid #26c6da;
+	color: #FFFFFF;
+	background-color: #26C6DA;
+	border: 1px solid #26C6DA;
 }
 
 .col button:not([disabled]):active,
 .col button:not([disabled]):focus {
-	color: #26c6da;
-	background-color: #ffffff;
-	border: 1px solid #26c6da;
+	color: #26C6DA;
+	background-color: #FFFFFF;
+	border: 1px solid #26C6DA;
 }
 
 .col button.primary {
-	color: #ffffff;
-	background-color: #00838f;
+	color: #FFFFFF;
+	background-color: #00838F;
 }
 
 .col .fit-width {
@@ -117,6 +117,7 @@
 	50% {
 		transform: scale(0.96);
 	}
+
 	100% {
 		transform: scale(1);
 	}

@@ -41,14 +41,14 @@
 .ac-dateInput 	date input
 .ac-timeInput 	time input
 .ac-multichoiceInput 	multichoice input */
-.macy-grid.macy-grid--home > .ac-container {
+.macy-grid.macy-grid--home>.ac-container {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-direction: column;
 	flex-direction: column;
 	-ms-flex-pack: start;
 	justify-content: flex-start;
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 	box-sizing: border-box;
 	-ms-flex: 0 0 auto;
 	flex: 0 0 auto;
@@ -150,8 +150,8 @@
 	line-height: 12px;
 	font-weight: 400;
 	text-align: center;
-	color: #00838f;
-	border: 1px solid #00838f;
+	color: #00838F;
+	border: 1px solid #00838F;
 	background-color: transparent;
 	border-radius: 2px;
 	white-space: nowrap;
@@ -168,21 +168,21 @@
 }
 
 .ac-pushButton:not([disabled]):hover {
-	color: #ffffff;
-	background-color: #26c6da;
-	border: 1px solid #26c6da;
+	color: #FFFFFF;
+	background-color: #26C6DA;
+	border: 1px solid #26C6DA;
 }
 
 .ac-pushButton:not([disabled]):active,
 .ac-pushButton:not([disabled]):focus {
-	color: #26c6da;
-	background-color: #ffffff;
-	border: 1px solid #26c6da;
+	color: #26C6DA;
+	background-color: #FFFFFF;
+	border: 1px solid #26C6DA;
 }
 
 .ac-pushButton--primary {
-	color: #ffffff;
-	background-color: #00838f;
+	color: #FFFFFF;
+	background-color: #00838F;
 }
 
 .ac-column {
@@ -230,7 +230,7 @@
 }
 
 .ac-color--accent {
-	color: #00838f;
+	color: #00838F;
 }
 
 .ac-color--default {
@@ -269,6 +269,7 @@
 	50% {
 		transform: scale(0.96);
 	}
+
 	100% {
 		transform: scale(1);
 	}

@@ -657,9 +657,20 @@ updateMacyThrottled*/
 				macyGrid.innerHTML = "";
 				manageAC(macyGrid, callback);
 			} else {
-				if (callback && "function" === typeof callback) {
-					callback();
+				var acContainer = document[getElementsByClassName]("ac-container") || "";
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = acContainer[_length]; i < l; i += 1) {
+					acContainer[i][classList].add("is-rendered-macy-grid-item");
+					count++;
+					if (count === acContainer[_length]) {
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
 				}
+				i = l = null;
 			}
 		};
 

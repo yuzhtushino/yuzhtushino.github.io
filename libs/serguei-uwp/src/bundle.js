@@ -656,16 +656,31 @@ $readMoreJS*/
 				hashNavKey: "page"
 			});
 		}
-		var switchLayoutType = function (x) {
-			if (x.matches) {
-				document.body.setAttribute("data-layout-type", "overlay");
-			} else {
-				document.body.setAttribute("data-layout-type", "docked-minimized");
-			}
+
+		var switchLayoutType = function () {
+
+			var addMq = function (mqString, callback) {
+				var handle = function (x) {
+					if (x.matches) {
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				};
+				var mq = root.matchMedia(mqString);
+				handle(mq);
+				mq.addListener(handle);
+			};
+
+			var mqCallback = function (attrName, layoutType) {
+				document.body.setAttribute(attrName, layoutType);
+			};
+
+			addMq("(max-width: 639px)", mqCallback.bind(null, "data-layout-type", "overlay"));
+			addMq("(min-width: 640px) and (max-width: 1023px)", mqCallback.bind(null, "data-layout-type", "tabs"));
+			addMq("(min-width: 1024px)", mqCallback.bind(null, "data-layout-type", "docked-minimized"));
 		};
-		var layoutTypeTreshold = root.matchMedia("(max-width: 360px)");
-		switchLayoutType(layoutTypeTreshold);
-		layoutTypeTreshold.addListener(switchLayoutType);
+		switchLayoutType();
 	};
 
 	/* var scripts = [

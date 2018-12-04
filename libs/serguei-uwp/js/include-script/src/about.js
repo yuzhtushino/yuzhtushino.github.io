@@ -126,9 +126,20 @@ updateMacyThrottled*/
 		};
 
 		var addMacyItems = function (macyGrid, callback) {
-			if (callback && "function" === typeof callback) {
-				callback();
-			}
+				var col = document[getElementsByClassName]("col") || "";
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = col[_length]; i < l; i += 1) {
+					col[i][classList].add("is-rendered-macy-grid-item");
+					count++;
+					if (count === col[_length]) {
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				}
+				i = l = null;
 		};
 
 		if (macyGrid) {

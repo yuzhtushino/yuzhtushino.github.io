@@ -1,9 +1,9 @@
+/*global require */
 /*!
  * @see {@link https://github.com/mildrenben/surface/blob/master/gulpfile.js}
  * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
  * @see {@link https://gulpjs.com/plugins/blackList.json}
  */
-// gulpfile.js
 var gulp = require("gulp"),
 sass = require("gulp-sass"),
 autoprefixer = require("gulp-autoprefixer"),
@@ -18,10 +18,14 @@ bundle = require("gulp-bundle-assets"),
 browserSync = require("browser-sync").create(),
 reload = browserSync.reload,
 /* path = require("path"), */
+/*!
+ * @see {@link https://github.com/babel/babel/issues/7910}
+ */
 babel = require("gulp-babel"),
 babelOptions = {
-	presets: ["@babel/env"],
-	plugins: ["@babel/plugin-transform-object-assign",
+	"sourceType": "script",
+	"presets": ["@babel/env"],
+	"plugins": ["@babel/plugin-transform-object-assign",
 		"@babel/plugin-transform-arrow-functions",
 		"@babel/plugin-transform-async-to-generator"]
 },
@@ -29,52 +33,68 @@ babelOptions = {
  * @see {@link https://github.com/beautify-web/js-beautify}
  * a JSON-formatted file indicated by the --config parameter
  * a .jsbeautifyrc file containing JSON data at any level of the filesystem above $PWD
- * better use that for HTML formatting
+ * using external config may cause
+ * failure to find it
+ * if the input/output files reside higher
+ * than the config file itself
  */
-/* beautify = require("gulp-beautify"),
-beautifyOptions = {
-	"config": ".jsbeautifyrc"
-}, */
 /* beautifyOptions = {
-    "indent_size": 4,
-    "indent_char": "\t",
-    "indent_with_tabs": true,
-    "editorconfig": false,
-    "eol": "\n",
-    "end_with_newline": true,
-    "indent_level": 0,
-    "preserve_newlines": true,
-    "max_preserve_newlines": 10,
-    "newline_between_rules": true,
-    "space_in_paren": false,
-    "space_in_empty_paren": false,
-    "jslint_happy": false,
-    "space_after_anon_function": true,
-    "space_after_named_function": false,
-    "brace_style": "collapse",
-    "unindent_chained_methods": false,
-    "break_chained_methods": true,
-    "keep_array_indentation": true,
-    "unescape_strings": false,
-    "wrap_line_length": 0,
-    "e4x": false,
-    "comma_first": false,
-    "operator_position": "before-newline"
+"config": ".jsbeautifyrc"
 }, */
+beautify = require("gulp-jsbeautifier"),
+beautifyOptions = {
+	"editorconfig": false,
+	"indent_size": 4,
+	"indent_char": "\t",
+	"indent_with_tabs": true,
+	"eol": "\n",
+	"end_with_newline": true,
+	"indent_level": 0,
+	"preserve_newlines": true,
+	"max_preserve_newlines": 10,
+	"html": {
+		"indent_inner_html": true,
+		"indent_scripts": false,
+		"js": {},
+		"css": {}
+	},
+	"css": {
+		"newline_between_rules": true
+	},
+	"js": {
+		"space_in_paren": false,
+		"space_in_empty_paren": false,
+		"jslint_happy": false,
+		"space_after_anon_function": true,
+		"space_after_named_function": false,
+		"brace_style": "collapse",
+		"unindent_chained_methods": false,
+		"break_chained_methods": true,
+		"keep_array_indentation": true,
+		"unescape_strings": false,
+		"wrap_line_length": 0,
+		"e4x": false,
+		"comma_first": false,
+		"operator_position": "before-newline"
+	}
+},
 /*!
  * @see {@link https://prettier.io/docs/en/options.html}
- * better use that for JS and CSS formatting
+ * using external config may cause
+ * failure to find it
+ * if the input/output files reside higher
+ * than the config file itself
  */
-prettier = require("gulp-prettier"),
 /* prettierOptions = {
-	"config": ".prettierrc"
+"config": ".prettierrc"
 } */
+/* prettier = require("gulp-prettier"),
 prettierOptions = {
-	"tabWidth": 4,
-	"useTabs": true,
-	"endOfLine": "lf",
-	"printWidth:": 80
-},
+"tabWidth": 4,
+"useTabs": true,
+"endOfLine": "lf",
+"printWidth:": 0
+}, */
 
 uwp = {
 	src: "../../cdn/uwp-web-framework/2.0/src/uwp.core.fixed.js",
@@ -139,7 +159,7 @@ includeScript = {
 	js: "./js/include-script"
 },
 
-bundlejscss = {
+libBundles = {
 	src: "./src/bundle.js",
 	js: "./js",
 	scss: "./scss/bundle.scss",
@@ -161,11 +181,11 @@ gulp.task("browser-sync", ["bundle-assets"], function () {
 	gulp.watch("../../libs/serguei-uwp/css/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/scss/*.scss", ["compile-include-style-css"]);
-	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-bundlejscss-css"]);
+	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libBundles-css"]);
 	gulp.watch("../../libs/serguei-uwp/js/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/src/*.js", ["compile-include-script-js"]);
-	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-bundlejscss-js"]);
+	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libBundles-js"]);
 	gulp.watch("../../libs/serguei-uwp/json/*.json").on("change", reload);
 });
 
@@ -176,8 +196,8 @@ gulp.task("compile-material-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(material.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -197,8 +217,8 @@ gulp.task("compile-roboto-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(roboto.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -218,8 +238,8 @@ gulp.task("compile-roboto-mono-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(robotomono.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -232,40 +252,40 @@ gulp.task("compile-roboto-mono-css", function () {
 		}));
 });
 
-gulp.task("compile-bundlejscss-css", function () {
-	gulp.src(bundlejscss.scss)
+gulp.task("compile-libBundles-css", function () {
+	gulp.src(libBundles.scss)
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(gulp.dest(bundlejscss.css))
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
+	.pipe(gulp.dest(libBundles.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(bundlejscss.css))
+	.pipe(gulp.dest(libBundles.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
-gulp.task("compile-bundlejscss-js", function () {
-	gulp.src(bundlejscss.src)
+gulp.task("compile-libBundles-js", function () {
+	gulp.src(libBundles.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(gulp.dest(bundlejscss.js))
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
+	.pipe(gulp.dest(libBundles.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(bundlejscss.js))
+	.pipe(gulp.dest(libBundles.js))
 	.pipe(reload({
 			stream: true
 		}));
@@ -278,8 +298,8 @@ gulp.task("compile-include-style-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(includeStyle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -296,8 +316,8 @@ gulp.task("compile-include-script-js", function () {
 	gulp.src(includeScript.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(includeScript.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -317,8 +337,8 @@ gulp.task("compile-typeboost-uwp-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(typeboost.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -338,8 +358,8 @@ gulp.task("compile-uwp-web-framework-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(uwp.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -356,8 +376,8 @@ gulp.task("compile-uwp-web-framework-js", function () {
 	gulp.src(uwp.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(uwp.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -377,8 +397,8 @@ gulp.task("compile-highlightjs-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(highlightjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -395,8 +415,8 @@ gulp.task("compile-highlightjs-js", function () {
 	gulp.src(highlightjs.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(highlightjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -416,8 +436,8 @@ gulp.task("compile-lightgalleryjs-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(lightgalleryjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -434,8 +454,8 @@ gulp.task("compile-lightgalleryjs-js", function () {
 	gulp.src(lightgalleryjs.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(lightgalleryjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -455,8 +475,8 @@ gulp.task("compile-glightbox-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(glightbox.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -473,8 +493,8 @@ gulp.task("compile-glightbox-js", function () {
 	gulp.src(glightbox.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
 	.pipe(gulp.dest(glightbox.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";

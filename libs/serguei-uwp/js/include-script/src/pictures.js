@@ -219,6 +219,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				img[setAttribute]("src", transparentPixel);
 				img[setAttribute]("class", dataSrcLazyClass);
 				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
+				a[classList].add("is-rendered-macy-grid-item");
 				macyGrid[appendChild](a);
 				count++;
 				if (count === macyItems[_length]) {
