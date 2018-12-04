@@ -159,7 +159,7 @@ includeScript = {
 	js: "./js/include-script"
 },
 
-libBundles = {
+libbundles = {
 	src: "./src/bundle.js",
 	js: "./js",
 	scss: "./scss/bundle.scss",
@@ -181,11 +181,11 @@ gulp.task("browser-sync", ["bundle-assets"], function () {
 	gulp.watch("../../libs/serguei-uwp/css/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/scss/*.scss", ["compile-include-style-css"]);
-	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libBundles-css"]);
+	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libbundles-css"]);
 	gulp.watch("../../libs/serguei-uwp/js/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/src/*.js", ["compile-include-script-js"]);
-	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libBundles-js"]);
+	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libbundles-js"]);
 	gulp.watch("../../libs/serguei-uwp/json/*.json").on("change", reload);
 });
 
@@ -252,8 +252,8 @@ gulp.task("compile-roboto-mono-css", function () {
 		}));
 });
 
-gulp.task("compile-libBundles-css", function () {
-	gulp.src(libBundles.scss)
+gulp.task("compile-libbundles-css", function () {
+	gulp.src(libbundles.scss)
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -261,31 +261,31 @@ gulp.task("compile-libBundles-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	/* .pipe(prettier(prettierOptions)) */
 	.pipe(beautify(beautifyOptions))
-	.pipe(gulp.dest(libBundles.css))
+	.pipe(gulp.dest(libbundles.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libBundles.css))
+	.pipe(gulp.dest(libbundles.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
-gulp.task("compile-libBundles-js", function () {
-	gulp.src(libBundles.src)
+gulp.task("compile-libbundles-js", function () {
+	gulp.src(libbundles.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	/* .pipe(prettier(prettierOptions)) */
 	.pipe(beautify(beautifyOptions))
-	.pipe(gulp.dest(libBundles.js))
+	.pipe(gulp.dest(libbundles.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libBundles.js))
+	.pipe(gulp.dest(libbundles.js))
 	.pipe(reload({
 			stream: true
 		}));
