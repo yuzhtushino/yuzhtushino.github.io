@@ -137,6 +137,7 @@ updateMacyThrottled*/
 			"href": "https://www.npmjs.com/~englishextra",
 			"src": "./libs/serguei-uwp/img/works-screenshots/@1x/www.npmjs.com-englishextra.jpg"
     }];
+		var isRenderedMacyItemClass = "is-rendered-macy-item";
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -157,16 +158,16 @@ updateMacyThrottled*/
 			var i, l;
 
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				var a = document.createElement("a");
-				a[setAttribute]("href", macyItems[i].href);
-				a[setAttribute]("aria-label", "Ссылка");
+				var macyItem = document.createElement("a");
+				macyItem[classList].add(isRenderedMacyItemClass);
+				macyItem[setAttribute]("href", macyItems[i].href);
+				macyItem[setAttribute]("aria-label", "Ссылка");
 				var img = document.createElement("img");
-				a[appendChild](img);
+				macyItem[appendChild](img);
 				img[setAttribute]("src", transparentPixel);
 				img[setAttribute]("class", dataSrcLazyClass);
 				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-				a[classList].add("is-rendered-macy-grid-item");
-				macyGrid[appendChild](a);
+				macyGrid[appendChild](macyItem);
 				count++;
 
 				if (count === macyItems[_length]) {

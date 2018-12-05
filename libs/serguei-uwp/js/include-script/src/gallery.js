@@ -247,6 +247,8 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		];
 
+		var isRenderedMacyItemClass = "is-rendered-macy-item";
+		
 		var addMacyItems = function (macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
@@ -265,16 +267,16 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				var a = document.createElement("a");
-				a[setAttribute]("href", macyItems[i].href);
-				a[setAttribute]("aria-label", "Показать картинку");
+				var macyItem = document.createElement("a");
+				macyItem[classList].add(isRenderedMacyItemClass);
+				macyItem[setAttribute]("href", macyItems[i].href);
+				macyItem[setAttribute]("aria-label", "Показать картинку");
 				var img = document.createElement("img");
-				a[appendChild](img);
+				macyItem[appendChild](img);
 				img[setAttribute]("src", transparentPixel);
 				img[setAttribute]("class", dataSrcLazyClass);
 				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-				a[classList].add("is-rendered-macy-grid-item");
-				macyGrid[appendChild](a);
+				macyGrid[appendChild](macyItem);
 				count++;
 				if (count === macyItems[_length]) {
 					if (callback && "function" === typeof callback) {

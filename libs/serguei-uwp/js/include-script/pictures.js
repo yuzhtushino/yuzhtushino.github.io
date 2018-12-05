@@ -196,6 +196,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			"src": "./libs/serguei-uwp/img/serguei-pictures/@1x/36229259776_09b4755088_z.jpg",
 			"href": "./libs/serguei-uwp/img/serguei-pictures/@2x/36229259776_09b4755088_z.jpg"
     }];
+		var isRenderedMacyItemClass = "is-rendered-macy-item";
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -216,17 +217,17 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			var i, l;
 
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				var a = document.createElement("a");
-				a[setAttribute]("href", macyItems[i].href);
-				a[setAttribute]("class", glightboxClass);
-				a[setAttribute]("aria-label", "Показать картинку");
+				var macyItem = document.createElement("a");
+				macyItem[classList].add(isRenderedMacyItemClass);
+				macyItem[setAttribute]("href", macyItems[i].href);
+				macyItem[setAttribute]("class", glightboxClass);
+				macyItem[setAttribute]("aria-label", "Показать картинку");
 				var img = document.createElement("img");
-				a[appendChild](img);
+				macyItem[appendChild](img);
 				img[setAttribute]("src", transparentPixel);
 				img[setAttribute]("class", dataSrcLazyClass);
 				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-				a[classList].add("is-rendered-macy-grid-item");
-				macyGrid[appendChild](a);
+				macyGrid[appendChild](macyItem);
 				count++;
 
 				if (count === macyItems[_length]) {

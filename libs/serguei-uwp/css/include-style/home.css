@@ -139,11 +139,6 @@
 	background-repeat: no-repeat;
 }
 
-/* .ac-selectable:hover,
-.ac-selectable:focus,
-.ac-selectable:active {
-	border: 1px solid $UWPActiveColor;
-} */
 .ac-pushButton {
 	width: 120px;
 	font-size: 12px;
@@ -185,6 +180,11 @@
 	background-color: #00838F;
 }
 
+/* .ac-selectable:hover,
+.ac-selectable:focus,
+.ac-selectable:active {
+	border: 1px solid $UWPActiveColor;
+} */
 .ac-column {
 	display: -ms-flexbox;
 	display: flex;

@@ -609,20 +609,25 @@ updateMacyThrottled*/
 			onMacyResize();
 		};
 
+		var isRenderedMacyItemClass = "is-rendered-macy-item";
+
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			if (root.AdaptiveCards) {
 				macyGrid.innerHTML = "";
 				manageAC(macyGrid, callback);
 			} else {
-				var acContainer = document[getElementsByClassName]("ac-container") || "";
+				var macyItems = document[getElementsByClassName]("ac-container") || "";
 				var count = 0;
 				var i, l;
 
-				for (i = 0, l = acContainer[_length]; i < l; i += 1) {
-					acContainer[i][classList].add("is-rendered-macy-grid-item");
+				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+					if (!macyItems[i][classList].contains(isRenderedMacyItemClass)) {
+						macyItems[i][classList].add(isRenderedMacyItemClass);
+					}
+
 					count++;
 
-					if (count === acContainer[_length]) {
+					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {
 							callback();
 						}

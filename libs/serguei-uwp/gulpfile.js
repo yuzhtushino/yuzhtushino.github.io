@@ -3,6 +3,7 @@
  * @see {@link https://github.com/mildrenben/surface/blob/master/gulpfile.js}
  * @see {@link https://www.webstoemp.com/blog/gulp-setup/}
  * @see {@link https://gulpjs.com/plugins/blackList.json}
+ * @see {@link https://hackernoon.com/how-to-automate-all-the-things-with-gulp-b21a3fc96885}
  */
 var gulp = require("gulp"),
 sass = require("gulp-sass"),
@@ -159,7 +160,7 @@ includeScript = {
 	js: "./js/include-script"
 },
 
-libbundles = {
+libbundle = {
 	src: "./src/bundle.js",
 	js: "./js",
 	scss: "./scss/bundle.scss",
@@ -181,11 +182,11 @@ gulp.task("browser-sync", ["bundle-assets"], function () {
 	gulp.watch("../../libs/serguei-uwp/css/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/*.css").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/css/include-style/scss/*.scss", ["compile-include-style-css"]);
-	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libbundles-css"]);
+	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libbundle-css"]);
 	gulp.watch("../../libs/serguei-uwp/js/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
 	gulp.watch("../../libs/serguei-uwp/js/include-script/src/*.js", ["compile-include-script-js"]);
-	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libbundles-js"]);
+	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libbundle-js"]);
 	gulp.watch("../../libs/serguei-uwp/json/*.json").on("change", reload);
 });
 
@@ -252,8 +253,8 @@ gulp.task("compile-roboto-mono-css", function () {
 		}));
 });
 
-gulp.task("compile-libbundles-css", function () {
-	gulp.src(libbundles.scss)
+gulp.task("compile-libbundle-css", function () {
+	gulp.src(libbundle.scss)
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -261,31 +262,31 @@ gulp.task("compile-libbundles-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	/* .pipe(prettier(prettierOptions)) */
 	.pipe(beautify(beautifyOptions))
-	.pipe(gulp.dest(libbundles.css))
+	.pipe(gulp.dest(libbundle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libbundles.css))
+	.pipe(gulp.dest(libbundle.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
-gulp.task("compile-libbundles-js", function () {
-	gulp.src(libbundles.src)
+gulp.task("compile-libbundle-js", function () {
+	gulp.src(libbundle.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	/* .pipe(prettier(prettierOptions)) */
 	.pipe(beautify(beautifyOptions))
-	.pipe(gulp.dest(libbundles.js))
+	.pipe(gulp.dest(libbundle.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libbundles.js))
+	.pipe(gulp.dest(libbundle.js))
 	.pipe(reload({
 			stream: true
 		}));
