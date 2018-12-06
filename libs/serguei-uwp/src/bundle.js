@@ -262,16 +262,16 @@ $readMoreJS*/
 					return _full ? ":" + _location.port : _location.port;
 				}
 			};
-			var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
+			var _isAbsolute = (0 === url.indexOf("// ") || !!~url.indexOf(":// "));
 			var _locationHref = root.location || "";
 			var _origin = function () {
-				var o = _locationHref.protocol + "//" + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
+				var o = _locationHref.protocol + "// " + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
 				return o || "";
 			};
 			var _isCrossDomain = function () {
 				var c = document[createElement]("a");
 				c.href = url;
-				var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
+				var v = c.protocol + "// " + c.hostname + (c.port ? ":" + c.port : "");
 				return v !== _origin();
 			};
 			var _link = document[createElement]("a");

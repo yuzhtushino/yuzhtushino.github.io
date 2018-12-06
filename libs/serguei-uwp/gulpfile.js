@@ -176,6 +176,7 @@ libbundle = {
 
 vendors = {
 	src: [
+		// "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
 		"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
 		"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
 		"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
@@ -202,7 +203,7 @@ vendorsJsOptions = {
 };
 
 gulp.task("browser-sync", [
-		//"bundle-assets"
+		// "bundle-assets"
 	], function () {
 	browserSync.init({
 		server: "../../"
