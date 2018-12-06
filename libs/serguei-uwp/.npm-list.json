@@ -47,11 +47,6 @@
       "from": "gulp-babel@latest",
       "resolved": "https://registry.npmjs.org/gulp-babel/-/gulp-babel-8.0.0.tgz"
     },
-    "gulp-bundle-assets": {
-      "version": "2.29.0",
-      "from": "gulp-bundle-assets@2.29.0",
-      "resolved": "https://registry.npmjs.org/gulp-bundle-assets/-/gulp-bundle-assets-2.29.0.tgz"
-    },
     "gulp-cli": {
       "version": "1.4.0",
       "from": "gulp-cli@1.4.0",
@@ -61,11 +56,6 @@
       "version": "2.6.1",
       "from": "gulp-concat@latest",
       "resolved": "https://registry.npmjs.org/gulp-concat/-/gulp-concat-2.6.1.tgz"
-    },
-    "gulp-jsbeautifier": {
-      "version": "2.1.2",
-      "from": "gulp-jsbeautifier@latest",
-      "resolved": "https://registry.npmjs.org/gulp-jsbeautifier/-/gulp-jsbeautifier-2.1.2.tgz"
     },
     "gulp-minify-css": {
       "version": "1.2.2",

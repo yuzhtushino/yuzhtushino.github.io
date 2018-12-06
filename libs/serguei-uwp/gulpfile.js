@@ -15,7 +15,7 @@ minifyCss = require("gulp-minify-css"),
 uglify = require("gulp-uglify"),
 sourcemaps = require('gulp-sourcemaps'),
 rename = require("gulp-rename"),
-bundle = require("gulp-bundle-assets"),
+/* bundle = require("gulp-bundle-assets"), */
 browserSync = require("browser-sync").create(),
 reload = browserSync.reload,
 /* path = require("path"), */
@@ -42,7 +42,7 @@ babelOptions = {
 /* beautifyOptions = {
 "config": ".jsbeautifyrc"
 }, */
-beautify = require("gulp-jsbeautifier"),
+/* beautify = require("gulp-jsbeautifier"),
 beautifyOptions = {
 	"editorconfig": false,
 	"indent_size": 4,
@@ -78,7 +78,7 @@ beautifyOptions = {
 		"comma_first": false,
 		"operator_position": "before-newline"
 	}
-},
+}, */
 /*!
  * @see {@link https://prettier.io/docs/en/options.html}
  * using external config may cause
@@ -89,13 +89,13 @@ beautifyOptions = {
 /* prettierOptions = {
 "config": ".prettierrc"
 } */
-/* prettier = require("gulp-prettier"),
+prettier = require("gulp-prettier"),
 prettierOptions = {
 "tabWidth": 4,
 "useTabs": true,
 "endOfLine": "lf",
 "printWidth:": 0
-}, */
+},
 
 concat = require("gulp-concat"),
 
@@ -234,8 +234,8 @@ gulp.task("compile-material-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(material.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -255,8 +255,8 @@ gulp.task("compile-roboto-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(roboto.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -276,8 +276,8 @@ gulp.task("compile-roboto-mono-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(robotomono.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -297,8 +297,8 @@ gulp.task("compile-libbundle-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(libbundle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -315,8 +315,8 @@ gulp.task("compile-libbundle-js", function () {
 	gulp.src(libbundle.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(libbundle.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -336,8 +336,8 @@ gulp.task("compile-include-style-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(includeStyle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -354,8 +354,8 @@ gulp.task("compile-include-script-js", function () {
 	gulp.src(includeScript.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(includeScript.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -375,8 +375,8 @@ gulp.task("compile-vendors-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(concat(vendorsCssOptions))
 	.pipe(gulp.dest(vendors.css))
 	.pipe(rename(function (path) {
@@ -394,8 +394,8 @@ gulp.task("compile-vendors-js", function () {
 	gulp.src(vendors.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(concat(vendorsJsOptions))
 	.pipe(gulp.dest(vendors.js))
 	.pipe(rename(function (path) {
@@ -416,8 +416,8 @@ gulp.task("compile-typeboost-uwp-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(typeboost.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -437,8 +437,8 @@ gulp.task("compile-muicss-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(muicss.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -458,8 +458,8 @@ gulp.task("compile-uwp-web-framework-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(uwp.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -476,8 +476,8 @@ gulp.task("compile-uwp-web-framework-js", function () {
 	gulp.src(uwp.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(uwp.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -497,8 +497,8 @@ gulp.task("compile-highlightjs-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(highlightjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -515,8 +515,8 @@ gulp.task("compile-highlightjs-js", function () {
 	gulp.src(highlightjs.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(highlightjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -536,8 +536,8 @@ gulp.task("compile-lightgalleryjs-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(lightgalleryjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -554,8 +554,8 @@ gulp.task("compile-lightgalleryjs-js", function () {
 	gulp.src(lightgalleryjs.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(lightgalleryjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -575,8 +575,8 @@ gulp.task("compile-glightbox-css", function () {
 			errLogToConsole: true
 		}))
 	.pipe(autoprefixer(autoprefixerOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(glightbox.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -593,8 +593,8 @@ gulp.task("compile-glightbox-js", function () {
 	gulp.src(glightbox.src)
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
-	/* .pipe(prettier(prettierOptions)) */
-	.pipe(beautify(beautifyOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(gulp.dest(glightbox.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";

@@ -16,7 +16,7 @@
  * reveal on css loaded
  *//*!
  * .macy-grid visibility and opacity is set in js
- */.uwp-header,.uwp-main{visibility:visible;opacity:1}.uwp-main{background-color:transparent}.uwp-main a{color:#00838F}.uwp-main img{max-width:100%}.uwp-menu-button{cursor:pointer}.uwp-menu-button img,.uwp-menu-button svg{display:block;width:16px;height:16px;/*!
+ */.uwp-header,.uwp-main{visibility:visible;opacity:1}.uwp-main{background-color:transparent}.uwp-main a{color:#00838f}.uwp-main img{max-width:100%}.uwp-menu-button{cursor:pointer}.uwp-menu-button img,.uwp-menu-button svg{display:block;width:16px;height:16px;/*!
 	 * @see {@link https://www.w3.org/Style/Examples/007/center.en.html}
-	 */margin:0 -50% 0 0;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.uwp-nav li img,.uwp-nav li svg{width:16px;height:16px}[data-layout-type=tabs] .uwp-header,[data-layout-type=overlay] .uwp-header{background-color:#373737!important}[data-layout-type=docked-minimized] .uwp-header,[data-layout-type=docked] .uwp-header{background-color:#0097A7!important}
+	 */margin:0 -50% 0 0;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.uwp-nav li img,.uwp-nav li svg{width:16px;height:16px}[data-layout-type=tabs] .uwp-header,[data-layout-type=overlay] .uwp-header{background-color:#373737!important}[data-layout-type=docked-minimized] .uwp-header,[data-layout-type=docked] .uwp-header{background-color:#0097a7!important}
 /*# sourceMappingURL=bundle.min.css.map */

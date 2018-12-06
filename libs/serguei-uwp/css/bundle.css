@@ -24,7 +24,7 @@ html {
 body {
 	font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
 	font-weight: 400;
-	font-size: 1.000rem;
+	font-size: 1rem;
 	line-height: 1.333rem;
 	width: 100%;
 	color: #212121;
@@ -171,7 +171,7 @@ template {
 }
 
 .uwp-main a {
-	color: #00838F;
+	color: #00838f;
 }
 
 .uwp-main img {
@@ -213,9 +213,9 @@ template {
 }
 
 [data-layout-type="docked-minimized"] .uwp-header {
-	background-color: #0097A7 !important;
+	background-color: #0097a7 !important;
 }
 
 [data-layout-type="docked"] .uwp-header {
-	background-color: #0097A7 !important;
+	background-color: #0097a7 !important;
 }
