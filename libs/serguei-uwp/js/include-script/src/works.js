@@ -6,7 +6,7 @@ updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function () {
+	var runWorks = function () {
 
 		var appendChild = "appendChild";
 		var classList = "classList";
@@ -198,6 +198,6 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	run();
+	runWorks();
 
 })("undefined" !== typeof window ? window : this, document);

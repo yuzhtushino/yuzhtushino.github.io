@@ -948,8 +948,8 @@ $readMoreJS*/
 			timer = null;
 			var load;
 			load = new loadJsCss([
-      /* forcedHTTP + "://fonts.googleapis.com/css?family=Roboto+Mono%7CRoboto:300,400,500,700&subset=cyrillic,latin-ext", */
-      "./libs/serguei-uwp/css/vendors.min.css"], onFontsLoadedCallback);
+	  /* forcedHTTP + "://fonts.googleapis.com/css?family=Roboto+Mono%7CRoboto:300,400,500,700&subset=cyrillic,latin-ext", */
+	  "./libs/serguei-uwp/css/vendors.min.css"], onFontsLoadedCallback);
 		};
 
 		var req;

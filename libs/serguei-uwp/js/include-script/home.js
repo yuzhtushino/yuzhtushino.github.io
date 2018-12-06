@@ -8,7 +8,7 @@ updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function run() {
+	var runHome = function runHome() {
 		var classList = "classList";
 		var getElementsByClassName = "getElementsByClassName";
 		var location = "location";
@@ -658,5 +658,5 @@ updateMacyThrottled*/
 		}
 	};
 
-	run();
+	runHome();
 })("undefined" !== typeof window ? window : this, document);

@@ -631,7 +631,7 @@ var LazyLoad = function () {
 		window.dispatchEvent(event);
 	};
 	/* Auto initialization of one or more instances of lazyload, depending on the
-	    options passed in (plain object or an array) */
+		options passed in (plain object or an array) */
 
 
 	function autoInitialize(classObj, options) {
@@ -1304,6 +1304,7 @@ var LazyLoad = function () {
 				var main = document.createElement("div");
 				main.setAttribute("class", "uwp-main");
 				main.setAttribute("role", "main");
+				main.innerHTML = '<div class="uwp-error"><p>Loading&#8230;</p></div>\n';
 				UWP.main = main;
 				UWP.container.appendChild(UWP.main);
 			} else {
@@ -1631,12 +1632,10 @@ var LazyLoad = function () {
 			/* Clears the page content */
 
 
-			UWP.main.classList.remove("uwp-main--error");
 			UWP.main.innerHTML = "";
 			/* Displays error message */
 
 			function displayError(title) {
-				UWP.main.classList.add("uwp-main--error");
 				UWP.main.innerHTML = "\n\t<div class=\"uwp-error\">\n\t<p>".concat(title, "</p>\n\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t</div>\n\t");
 				var mainA = UWP.main.getElementsByClassName("error-link")[0] || "";
 				mainA.addEventListener("click", function (event) {

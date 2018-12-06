@@ -8,7 +8,7 @@ updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function run() {
+	var runAbout = function runAbout() {
 		var classList = "classList";
 		var getElementsByClassName = "getElementsByClassName";
 		var querySelectorAll = "querySelectorAll";
@@ -175,5 +175,5 @@ updateMacyThrottled*/
 		}
 	};
 
-	run();
+	runAbout();
 })("undefined" !== typeof window ? window : this, document);

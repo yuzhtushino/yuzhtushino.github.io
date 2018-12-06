@@ -7,7 +7,7 @@ updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function run() {
+	var runWorks = function runWorks() {
 		var appendChild = "appendChild";
 		var classList = "classList";
 		var getElementsByClassName = "getElementsByClassName";
@@ -203,5 +203,5 @@ updateMacyThrottled*/
 		}
 	};
 
-	run();
+	runWorks();
 })("undefined" !== typeof window ? window : this, document);

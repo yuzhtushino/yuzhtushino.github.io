@@ -7,7 +7,7 @@ updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function () {
+	var runAbout = function () {
 
 		var classList = "classList";
 		var getElementsByClassName = "getElementsByClassName";
@@ -167,6 +167,6 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	run();
+	runAbout();
 
 })("undefined" !== typeof window ? window : this, document);

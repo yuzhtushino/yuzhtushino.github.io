@@ -6,7 +6,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 (function (root, document) {
 	"use strict";
 
-	var run = function () {
+	var runPictures = function () {
 
 		var appendChild = "appendChild";
 		var classList = "classList";
@@ -256,6 +256,6 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	run();
+	runPictures();
 
 })("undefined" !== typeof window ? window : this, document);
