@@ -99,6 +99,11 @@ prettierOptions = {
 
 concat = require("gulp-concat"),
 
+muicss = {
+	scss: "../../cdn/mui/0.9.39/scss/mui.scss",
+	css: "../../cdn/mui/0.9.39/css"
+},
+
 uwp = {
 	src: "../../cdn/uwp-web-framework/2.0/src/uwp.core.fixed.js",
 	js: "../../cdn/uwp-web-framework/2.0/js",
@@ -419,6 +424,27 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(typeboost.css))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-muicss-css", function () {
+	gulp.src(muicss.scss)
+	.pipe(sourcemaps.init())
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer(autoprefixerOptions))
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
+	.pipe(gulp.dest(muicss.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(muicss.css))
 	.pipe(reload({
 			stream: true
 		}));

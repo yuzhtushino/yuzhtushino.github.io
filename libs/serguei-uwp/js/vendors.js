@@ -631,7 +631,7 @@ var LazyLoad = function () {
 		window.dispatchEvent(event);
 	};
 	/* Auto initialization of one or more instances of lazyload, depending on the
-		options passed in (plain object or an array) */
+	    options passed in (plain object or an array) */
 
 
 	function autoInitialize(classObj, options) {
