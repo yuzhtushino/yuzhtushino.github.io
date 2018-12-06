@@ -133,9 +133,7 @@ updateMacyThrottled*/
 				var i,
 				l;
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					if (!macyItems[i][classList].contains(isRenderedMacyItemClass)) {
-						macyItems[i][classList].add(isRenderedMacyItemClass);
-					}
+					macyItems[i][classList].add(isRenderedMacyItemClass);
 					count++;
 					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {

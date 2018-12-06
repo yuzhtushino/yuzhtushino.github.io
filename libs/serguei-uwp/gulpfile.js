@@ -97,6 +97,8 @@ prettierOptions = {
 "printWidth:": 0
 }, */
 
+concat = require("gulp-concat"),
+
 uwp = {
 	src: "../../cdn/uwp-web-framework/2.0/src/uwp.core.fixed.js",
 	js: "../../cdn/uwp-web-framework/2.0/js",
@@ -165,9 +167,38 @@ libbundle = {
 	js: "./js",
 	scss: "./scss/bundle.scss",
 	css: "./css"
+},
+
+vendors = {
+	src: [
+		"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+		"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+		"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+		"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+		"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+		"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+	],
+	js: "./js",
+	scss: [
+		"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+		"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+		"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+		"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+	],
+	css: "./css"
+},
+vendorsCssOptions = {
+	path: "vendors.css",
+	newLine: "\n"
+},
+vendorsJsOptions = {
+	path: "vendors.js",
+	newLine: "\n"
 };
 
-gulp.task("browser-sync", ["bundle-assets"], function () {
+gulp.task("browser-sync", [
+		//"bundle-assets"
+	], function () {
 	browserSync.init({
 		server: "../../"
 	});
@@ -326,6 +357,47 @@ gulp.task("compile-include-script-js", function () {
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(includeScript.js))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-vendors-css", function () {
+	gulp.src(vendors.scss)
+	.pipe(sourcemaps.init())
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer(autoprefixerOptions))
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
+	.pipe(concat(vendorsCssOptions))
+	.pipe(gulp.dest(vendors.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(vendors.css))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-vendors-js", function () {
+	gulp.src(vendors.src)
+	.pipe(sourcemaps.init())
+	.pipe(babel(babelOptions))
+	/* .pipe(prettier(prettierOptions)) */
+	.pipe(beautify(beautifyOptions))
+	.pipe(concat(vendorsJsOptions))
+	.pipe(gulp.dest(vendors.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(vendors.js))
 	.pipe(reload({
 			stream: true
 		}));
