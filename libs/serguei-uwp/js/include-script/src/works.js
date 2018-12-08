@@ -1,18 +1,19 @@
 /*global console, imagesLoaded, LazyLoad, manageExternalLinkAll, manageMacy,
-updateMacyThrottled*/
+runWorks, updateMacyThrottled*/
 /*!
  * page logic
  */
 (function (root, document) {
 	"use strict";
 
-	var runWorks = function () {
+	var getElementsByClassName = "getElementsByClassName";
 
-		var appendChild = "appendChild";
+	root.runWorks = function () {
+
+		/*var appendChild = "appendChild";*/
 		var classList = "classList";
-		var getElementsByClassName = "getElementsByClassName";
 		var querySelectorAll = "querySelectorAll";
-		var setAttribute = "setAttribute";
+		/*var setAttribute = "setAttribute";*/
 		var _addEventListener = "addEventListener";
 		var _length = "length";
 
@@ -54,8 +55,11 @@ updateMacyThrottled*/
 
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
+		var isActiveClass = "is-active";
+
 		var onMacyRender = function () {
-			updateMacyThrottled();
+			macyGrid[classList].add(isActiveClass);
+			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -83,6 +87,20 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
+			manageMacy(macyGridClass, {
+				trueOrder: false,
+				waitForImages: false,
+				margin: 0,
+				columns: 4,
+				breakAt: {
+					1280: 4,
+					1024: 3,
+					960: 2,
+					640: 2,
+					480: 1,
+					360: 1
+				}
+			});
 			onMacyRender();
 			onMacyResize();
 		};
@@ -135,23 +153,30 @@ updateMacyThrottled*/
 			}
 		];
 
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
-		
+		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+
 		var addMacyItems = function (macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/* var html = "";
+			/*!
+			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+			 */
+			var html = [];
+			var count = 0;
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				html += '<a href="' + macyItems[i].href + '" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n';
+				html.push('<a href="' + macyItems[i].href + '" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcLazyClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				count++;
+				if (count === macyItems[_length]) {
+					macyGrid.innerHTML = html.join("");
+					if (callback && "function" === typeof callback) {
+						callback();
+					}
+				}
 			}
 			i = l = null;
-			macyGrid.innerHTML = html;
-			if (callback && "function" === typeof callback) {
-				callback();
-			} */
-			var count = 0;
+			/* var count = 0;
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
@@ -172,24 +197,10 @@ updateMacyThrottled*/
 					}
 				}
 			}
-			i = l = null;
+			i = l = null; */
 		};
 
 		if (macyGrid) {
-			manageMacy(macyGridClass, {
-				trueOrder: false,
-				waitForImages: false,
-				margin: 0,
-				columns: 4,
-				breakAt: {
-					1280: 4,
-					1024: 3,
-					960: 2,
-					640: 2,
-					480: 1,
-					360: 1
-				}
-			});
 
 			addMacyItems(macyGrid, onMacyManage);
 		}
@@ -198,6 +209,9 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	runWorks();
+
+	/* if (document[getElementsByClassName]("macy-grid--works")[0]) {
+		runWorks();
+	} */
 
 })("undefined" !== typeof window ? window : this, document);

@@ -1,18 +1,20 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, runPictures, scriptIsLoaded,
+updateMacyThrottled*/
 /*!
  * page logic
  */
 (function (root, document) {
 	"use strict";
 
-	var runPictures = function () {
+	var getElementsByClassName = "getElementsByClassName";
 
-		var appendChild = "appendChild";
+	root.runPictures = function () {
+
+		/*var appendChild = "appendChild";*/
 		var classList = "classList";
-		var getElementsByClassName = "getElementsByClassName";
 		var querySelectorAll = "querySelectorAll";
-		var setAttribute = "setAttribute";
+		/*var setAttribute = "setAttribute";*/
 		var _addEventListener = "addEventListener";
 		var _length = "length";
 
@@ -36,10 +38,10 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
 				var load;
-				load = new loadJsCss(["../../cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-							"../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
 			} else {
 				initScript();
 			}
@@ -83,8 +85,11 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
+		var isActiveClass = "is-active";
+
 		var onMacyRender = function () {
-			updateMacyThrottled();
+			macyGrid[classList].add(isActiveClass);
+			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -113,6 +118,20 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
+			manageMacy(macyGridClass, {
+				trueOrder: false,
+				waitForImages: false,
+				margin: 0,
+				columns: 4,
+				breakAt: {
+					1280: 4,
+					1024: 3,
+					960: 2,
+					640: 2,
+					480: 1,
+					360: 1
+				}
+			});
 			onMacyRender();
 			onMacyResize();
 		};
@@ -192,23 +211,30 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		];
 
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
-		
+		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+
 		var addMacyItems = function (macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/* var html = "";
+			/*!
+			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+			 */
+			var html = [];
+			var count = 0;
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				html += '<a href="' + macyItems[i].href + '" class="' + glightboxClass + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n';
+				html.push('<a href="' + macyItems[i].href + '" class="' + glightboxClass + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcLazyClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				count++;
+				if (count === macyItems[_length]) {
+					macyGrid.innerHTML = html.join("");
+					if (callback && "function" === typeof callback) {
+						callback();
+					}
+				}
 			}
 			i = l = null;
-			macyGrid.innerHTML = html;
-			if (callback && "function" === typeof callback) {
-				callback();
-			} */
-			var count = 0;
+			/* var count = 0;
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
@@ -230,24 +256,10 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					}
 				}
 			}
-			i = l = null;
+			i = l = null; */
 		};
 
 		if (macyGrid) {
-			manageMacy(macyGridClass, {
-				trueOrder: false,
-				waitForImages: false,
-				margin: 0,
-				columns: 4,
-				breakAt: {
-					1280: 4,
-					1024: 3,
-					960: 2,
-					640: 2,
-					480: 1,
-					360: 1
-				}
-			});
 
 			addMacyItems(macyGrid, onMacyManage);
 		}
@@ -256,6 +268,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	runPictures();
+
+	/* if (document[getElementsByClassName]("macy-grid--pictures")[0]) {
+		runPictures();
+	} */
 
 })("undefined" !== typeof window ? window : this, document);

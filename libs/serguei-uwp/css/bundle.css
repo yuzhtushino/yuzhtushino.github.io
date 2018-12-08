@@ -137,28 +137,20 @@ button {
 	text-shadow: 0.063rem 0.063rem 0.063rem rgba(0, 0, 0, 0.004);
 }
 
-/*!
- * fixes to uwp.style.fixed.css
- */
-h1,
-h2,
-h3,
-h4,
-h5 {
-	color: #212121;
-}
-
 template {
 	display: block;
 }
 
 /*!
+ * fixes to uwp.style.fixed.scss
+ */
+/*!
  * reveal on css loaded
  */
-/* .macy-grid, */
 /*!
  * .macy-grid visibility and opacity is set in js
  */
+/* .macy-grid, */
 .uwp-header,
 .uwp-main {
 	visibility: visible;
@@ -172,6 +164,15 @@ template {
 
 .uwp-main a {
 	color: #00838f;
+}
+
+.uwp-main h1,
+.uwp-main h2,
+.uwp-main h3,
+.uwp-main h4,
+.uwp-main h5,
+.uwp-main h6 {
+	color: #212121;
 }
 
 .uwp-main img {
@@ -218,4 +219,317 @@ template {
 
 [data-layout-type="docked"] .uwp-header {
 	background-color: #0097a7 !important;
+}
+
+/*!
+ * fixes to  typeboost-uwp.scss
+ */
+.col {
+	background-color: #ffffff;
+	padding: 15px 15px 0 15px;
+}
+
+.col h1:first-child,
+.col h2:first-child {
+	margin-top: 0;
+}
+
+.col h1 {
+	line-height: 2.4rem;
+	word-wrap: break-word;
+	-o-hyphens: auto;
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
+
+.col h1 + h2 {
+	margin-top: 1.333rem;
+}
+
+.col a {
+	color: #00838f;
+}
+
+.col a:focus,
+.col a:hover,
+.col a:active {
+	color: #00838f;
+}
+
+.col button {
+	font-weight: 400;
+	color: #00838f;
+	border: 1px solid #00838f;
+	background-color: transparent;
+	border-radius: 2px;
+}
+
+.col button[disabled] {
+	color: #757575;
+	background-color: transparent;
+	border: 1px solid #757575;
+}
+
+.col button:not([disabled]):hover {
+	color: #ffffff;
+	background-color: #26c6da;
+	border: 1px solid #26c6da;
+}
+
+.col button:not([disabled]):active,
+.col button:not([disabled]):focus {
+	color: #26c6da;
+	background-color: #ffffff;
+	border: 1px solid #26c6da;
+}
+
+.col button.primary {
+	color: #ffffff;
+	background-color: #00838f;
+}
+
+.col .fit-width {
+	width: 100%;
+}
+
+.col p.smaller {
+	font-size: 0.875rem;
+	line-height: 1.333rem;
+}
+
+/*!
+ * fixes to adaptivecards.js
+ * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/native-styling}
+ */
+/* .ac-container 	containers
+.ac-selectable 	elements with selectAction
+.ac-image 	image
+.ac-pushButton 	actions rendered like buttons
+.ac-linkButton 	actions rendered like links
+.ac-input 	input controls
+.ac-textInput 	text input
+.ac-multiline 	multiline text input
+.ac-numberInput 	number input
+.ac-dateInput 	date input
+.ac-timeInput 	time input
+.ac-multichoiceInput 	multichoice input */
+.ac-columnSet {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	box-sizing: border-box;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-textBlock {
+	overflow: hidden;
+	text-align: left;
+	font-size: 14px;
+	line-height: 18.62px;
+	font-weight: 400;
+	overflow-wrap: break-word;
+	box-sizing: border-box;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-factset {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-style: none;
+	border-collapse: collapse;
+	display: block;
+	overflow: hidden;
+	box-sizing: border-box;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-fact-title {
+	padding: 0px;
+	max-width: 150px;
+	vertical-align: top;
+}
+
+.ac-fact-value {
+	padding: 0px 0px 0px 10px;
+	vertical-align: top;
+}
+
+.ac-textBlock--h3 {
+	overflow: hidden;
+	text-align: left;
+	font-size: 17px;
+	line-height: 22.61px;
+	font-weight: 400;
+	overflow-wrap: break-word;
+	box-sizing: border-box;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-textBlock--h2 {
+	overflow: hidden;
+	text-align: left;
+	font-size: 17px;
+	line-height: 22.61px;
+	font-weight: 400;
+	overflow-wrap: break-word;
+	box-sizing: border-box;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-image {
+	max-height: 100%;
+	min-width: 0px;
+	width: 100%;
+}
+
+.ac-image--person {
+	border-radius: 50%;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+
+.ac-pushButton {
+	width: 120px;
+	font-size: 12px;
+	line-height: 12px;
+	font-weight: 400;
+	text-align: center;
+	color: #00838f;
+	border: 1px solid #00838f;
+	background-color: transparent;
+	border-radius: 2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 8px 14px;
+	cursor: pointer;
+}
+
+.ac-pushButton[disabled] {
+	color: #757575;
+	background-color: transparent;
+	border: 1px solid #757575;
+}
+
+.ac-pushButton:not([disabled]):hover {
+	color: #ffffff;
+	background-color: #26c6da;
+	border: 1px solid #26c6da;
+}
+
+.ac-pushButton:not([disabled]):active,
+.ac-pushButton:not([disabled]):focus {
+	color: #26c6da;
+	background-color: #ffffff;
+	border: 1px solid #26c6da;
+}
+
+.ac-pushButton--primary {
+	color: #ffffff;
+	background-color: #00838f;
+}
+
+/* .ac-selectable:hover,
+.ac-selectable:focus,
+.ac-selectable:active {
+	border: 1px solid $UWPActiveColor;
+} */
+.ac-column {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	box-sizing: border-box;
+	min-width: 0px;
+}
+
+.ac-wrapper {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: start;
+	align-items: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	box-sizing: border-box;
+}
+
+.ac-vertical-margin {
+	width: 8px;
+	overflow: hidden;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-horizontal-margin {
+	height: 8px;
+	overflow: hidden;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+}
+
+.ac-display--block {
+	display: block;
+}
+
+.ac-display--flex {
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.ac-color--accent {
+	color: #00838f;
+}
+
+.ac-color--default {
+	color: #212121;
+}
+
+.ac-color--subtle {
+	color: #757575;
+}
+
+.ac-size--small {
+	font-size: 12px;
+	line-height: 15.96px;
+}
+
+.ac-weight--bolder {
+	font-weight: bolder !important;
+}
+
+.ac-width--fit-width {
+	width: 100%;
+}
+
+.ac-margin--top-10 {
+	margin-top: 10px;
+}
+
+/*!
+ * fixes to glightbox.fixed.scss
+ * @see {@link https://github.com/mcstudios/glightbox/issues/22}
+ */
+/* .glightbox-open {
+	height: 100% !important;
+} */
+/*!
+ * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
+ */
+/* Push */
+@keyframes hvr-push {
+	50% {
+		transform: scale(0.96);
+	}
+	100% {
+		transform: scale(1);
+	}
 }

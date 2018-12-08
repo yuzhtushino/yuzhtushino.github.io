@@ -3,12 +3,13 @@
 	"use strict";
 	/* Helpers */
 
-	Element.prototype.prependChild = function (child) {
-		return this.insertBefore(child, this.firstChild);
-	};
-
-	Element.prototype.insertAfter = function (newNode, referenceNode) {
-		return referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+	Element.prototype.prependChild = function (node) {
+		var firstChild = this.firstChild;
+		if (firstChild) {
+			return this.insertBefore(node, firstChild);
+		} else {
+			return this.appendChild(node);
+		}
 	};
 
 	var toArray = function toArray(obj) {
@@ -27,13 +28,13 @@
 
 		if (RGB_match.test(_color)) {
 			return _color.match(RGB_match)
-				.slice(1);
+			.slice(1);
 		} else if (hex_match.test(_color)) {
 			return _color.match(hex_match)
-				.slice(2)
-				.map(function (piece) {
-					return parseInt(piece, 16);
-				});
+			.slice(2)
+			.map(function (piece) {
+				return parseInt(piece, 16);
+			});
 		}
 
 		console.error("Unrecognized color format.");
@@ -103,7 +104,13 @@
 			includeStyle: "./libs/serguei-uwp/css/include-style",
 			navContainer: "nav-container",
 			home: "home",
-			hashNavKey: "page"
+			hashNavKey: "page",
+			hashBang: "#/",
+			onPageLoad: function () {
+				return;
+			},
+			errorTitle: "Something went wrong",
+			errorLinkText: "Go Home"
 		},
 
 		/* Main init function */
@@ -183,10 +190,10 @@
 
 			UWP.concealUWPLoading = function () {
 				var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					UWP.loading.classList.remove("is-active");
-				}, 1000);
+						clearTimeout(timer);
+						timer = null;
+						UWP.loading.classList.remove("is-active");
+					}, 1000);
 			};
 
 			UWP.removeUWPLoading = function () {
@@ -229,8 +236,17 @@
 			};
 			/* Prepares space for document's title, puts it in place */
 
-			UWP.pageTitle = document.createElement("span");
-			UWP.header.prependChild(UWP.pageTitle);
+			var _uwp_page_heading = document.getElementsByClassName("uwp-page-heading")[0] || "";
+
+			if (!_uwp_page_heading) {
+				var pageHeading = document.createElement("h1");
+				pageHeading.setAttribute("class", "uwp-page-heading");
+				pageHeading.innerHTML = UWP.pageTitle;
+				UWP.pageTitle = pageHeading;
+				UWP.header.appendChild(UWP.pageTitle);
+			} else {
+				UWP.pageTitle = _uwp_page_heading;
+			}
 		},
 
 		/* Gets document's navigation, puts it in place */
@@ -287,7 +303,7 @@
 					event.preventDefault();
 					/* if (root.location.hash !== "".concat("#", UWP.config.hashNavKey, "=", navTarget)) { */
 
-					if (root.location.hash !== "".concat("#/", navTarget)) {
+					if (root.location.hash !== "".concat(UWP.config.hashBang, navTarget)) {
 						UWP.menuList.classList.remove("active");
 						UWP.navigate(navTarget);
 					}
@@ -321,15 +337,15 @@
 
 					var elList = navsSource ? navsSource.getElementsByTagName("nav-list") || "" : "";
 					toArray(elList)
-						.forEach(function (navSource) {
-							var navMain = document.createElement("ul");
-							UWP.nav.appendChild(navMain);
-							var elEl = navsSource ? navSource.getElementsByTagName("nav-item") || "" : "";
-							toArray(elEl)
-								.forEach(function (el) {
-									navMain.appendChild(parseNavElement(el));
-								});
+					.forEach(function (navSource) {
+						var navMain = document.createElement("ul");
+						UWP.nav.appendChild(navMain);
+						var elEl = navsSource ? navSource.getElementsByTagName("nav-item") || "" : "";
+						toArray(elEl)
+						.forEach(function (el) {
+							navMain.appendChild(parseNavElement(el));
 						});
+					});
 					/* If navigation was constructed, adds it to the DOM tree and displays menu button */
 
 					if (toArray(elList)
@@ -351,13 +367,13 @@
 			var nav = document.getElementsByClassName("uwp-nav")[0] || "";
 			var navA = nav ? nav.getElementsByTagName("a") || "" : "";
 			toArray(navA)
-				.forEach(function (link) {
-					if (link.getAttribute("data-target") === UWP.config.currentPage) {
-						link.parentElement.classList.add("active");
-					} else {
-						link.parentElement.classList.remove("active");
-					}
-				});
+			.forEach(function (link) {
+				if (link.getAttribute("data-target") === UWP.config.currentPage) {
+					link.parentElement.classList.add("active");
+				} else {
+					link.parentElement.classList.remove("active");
+				}
+			});
 		},
 
 		/* Creates custom styles based on config */
@@ -378,10 +394,11 @@
 					}
 
 					var mainColorDarkened = mainColor_RGB.map(function (color) {
-						var newColor = color - 20;
-						if (newColor < 0) newColor = 0;
-						return newColor;
-					});
+							var newColor = color - 20;
+							if (newColor < 0)
+								newColor = 0;
+							return newColor;
+						});
 
 					if (!UWP.config.mainColorDarkened) {
 						UWP.config.mainColorDarkened = "rgb(".concat(mainColorDarkened, ")");
@@ -390,12 +407,12 @@
 				/* var Darkened_RGB = parseColor(UWP.config.Darkened); */
 
 				UWP.customStyle.innerHTML += "\n\t[data-layout-type=\"tabs\"] .uwp-header {\n\tbackground: ".concat(UWP.config.mainColor, ";\n\t}\n\n\t[data-layout-type=\"overlay\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground-color: ")
-					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked-minimized\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
-					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
-					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\t");
+				.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground-color: ")
+				.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked-minimized\"] .uwp-header {\n\tbackground: ")
+				.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
+				.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked\"] .uwp-header {\n\tbackground: ")
+				.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
+				.concat(UWP.config.mainColorDarkened, ";\n\t}\n\t");
 			}
 
 			if (UWP.config.activeColor) {
@@ -412,10 +429,10 @@
 				}
 
 				UWP.customStyle.innerHTML += "\n\t[data-layout-type=\"tabs\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tcolor: ".concat(UWP.config.activeColor, ";\n\tborder-bottom-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t");
+				.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
+				.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
+				.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
+				.concat(UWP.config.activeColor, ";\n\t}\n\t");
 			}
 
 			if (UWP.customStyle.innerHTML.length) {
@@ -474,15 +491,15 @@
 
 			if (addHistory !== false) {
 				/* history.pushState("", "", "".concat(root.location.href.split("#")[0], "#", UWP.config.hashNavKey, "=", target)); */
-				history.pushState("", "", "".concat(root.location.href.split(/#\//)[0], "#/", target));
+				history.pushState("", "", "".concat(root.location.href.split(/#\//)[0], UWP.config.hashBang, target));
 			}
 			/* Clears the page content */
 
 			UWP.main.innerHTML = "";
 			/* Displays error message */
 
-			function displayError(title) {
-				UWP.main.innerHTML = "\n\t<div class=\"uwp-error\">\n\t<p>".concat(title, "</p>\n\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t</div>\n\t");
+			function displayError(title, linkText) {
+				UWP.main.innerHTML = "\n\t<div class=\"uwp-error\">\n\t<p>".concat(title, "</p>\n\t<p><a href=\"javascript:void(0);\" class=\"error-link\">" + linkText + "</a></p>\n\t</div>\n\t");
 				var mainA = UWP.main.getElementsByClassName("error-link")[0] || "";
 				mainA.addEventListener("click", function (event) {
 					event.stopPropagation();
@@ -505,8 +522,8 @@
 			UWP_navigate_request.onreadystatechange = function () {
 				if (UWP_navigate_request.status === 404 || UWP_navigate_request.status === 0) {
 					console.log("Error XMLHttpRequest-ing file", UWP_navigate_request.status);
-					console.error("Something went wrong");
-					displayError("Something went wrong");
+					console.error(UWP.config.errorTitle);
+					displayError(UWP.config.errorTitle, UWP.config.errorLinkText);
 				} else if (UWP_navigate_request.readyState === 4 && UWP_navigate_request.status === 200 && UWP_navigate_request.responseText) {
 					/* var parser = new DOMParser();
 					var parsed = parser.parseFromString(UWP_navigate_request.responseText, "text/xml"); */
@@ -514,8 +531,8 @@
 					var page = parsed.getElementsByTagName("page-container")[0] || "";
 
 					if (!page) {
-						console.error("Something went wrong");
-						displayError("Something went wrong");
+						console.error(UWP.config.errorTitle);
+						displayError(UWP.config.errorTitle, UWP.config.errorLinkText);
 					}
 
 					UWP.revealUWPLoading();
@@ -575,6 +592,10 @@
 						/* UWP.head.appendChild(link); */
 
 						UWP.body.appendChild(link);
+					}
+
+					if (UWP.config.onPageLoad && "function" === typeof UWP.config.onPageLoad) {
+						UWP.config.onPageLoad();
 					}
 
 					UWP.updateNavigation();

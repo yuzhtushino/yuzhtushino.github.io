@@ -1,16 +1,17 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, renderAC, runHome,
+scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
 (function (root, document) {
 	"use strict";
 
-	var runHome = function () {
+	var getElementsByClassName = "getElementsByClassName";
+
+	root.runHome = function () {
 
 		var classList = "classList";
-		var getElementsByClassName = "getElementsByClassName";
 		var location = "location";
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
@@ -562,10 +563,10 @@ updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
 				var load;
-				load = new loadJsCss(["../../cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-							"../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
 			} else {
 				initScript();
 			}
@@ -609,8 +610,11 @@ updateMacyThrottled*/
 
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
+		var isActiveClass = "is-active";
+
 		var onMacyRender = function () {
-			updateMacyThrottled();
+			macyGrid[classList].add(isActiveClass);
+			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -648,9 +652,26 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
+			manageMacy(macyGridClass, {
+				trueOrder: false,
+				waitForImages: false,
+				margin: 20,
+				columns: 4,
+				breakAt: {
+					1280: 4,
+					1024: 3,
+					960: 2,
+					640: 2,
+					480: 1,
+					360: 1
+				}
+			});
 			onMacyRender();
 			onMacyResize();
 		};
+
+		/* var macyItems = [
+		]; */
 
 		var isRenderedMacyItemClass = "is-rendered-macy-item";
 
@@ -659,7 +680,25 @@ updateMacyThrottled*/
 				macyGrid.innerHTML = "";
 				manageAC(macyGrid, callback);
 			} else {
-				var macyItems = document[getElementsByClassName]("ac-container") || "";
+				/*!
+				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+				 */
+				/* var html = [];
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+					html.push(macyItems[i]);
+					count++;
+					if (count === macyItems[_length]) {
+						macyGrid.innerHTML = html.join("");
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				}
+				i = l = null; */
+				macyItems = document[getElementsByClassName]("ac-container") || "";
 				var count = 0;
 				var i,
 				l;
@@ -677,20 +716,6 @@ updateMacyThrottled*/
 		};
 
 		if (macyGrid) {
-			manageMacy(macyGridClass, {
-				trueOrder: false,
-				waitForImages: false,
-				margin: 20,
-				columns: 4,
-				breakAt: {
-					1280: 4,
-					1024: 3,
-					960: 2,
-					640: 2,
-					480: 1,
-					360: 1
-				}
-			});
 
 			addMacyItems(macyGrid, onMacyManage);
 		}
@@ -699,6 +724,9 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	runHome();
+
+	/* if (document[getElementsByClassName]("macy-grid--home")[0]) {
+		runHome();
+	} */
 
 })("undefined" !== typeof window ? window : this, document);

@@ -1,9 +1,0 @@
-{
-	"version": "1.0",
-	"api_version": 1,
-	"layout": {
-		"logo": "https://mytushino.github.io//yandex-tableau-50x50.png",
-		"color": "#00CFC4",
-		"show_title": false
-	}
-}

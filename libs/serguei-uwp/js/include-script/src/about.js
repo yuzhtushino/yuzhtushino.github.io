@@ -1,19 +1,94 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, scriptIsLoaded,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, renderAC, runAbout,
+scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
 (function (root, document) {
 	"use strict";
 
-	var runAbout = function () {
+	var getElementsByClassName = "getElementsByClassName";
+
+	root.runAbout = function () {
 
 		var classList = "classList";
-		var getElementsByClassName = "getElementsByClassName";
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+
+		var macyItems = [
+		];
+
+		/*!
+		 * to change default style
+		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config}
+		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config#adaptivecardconfig}
+		 * @see {@link https://github.com/Microsoft/AdaptiveCards/pull/905}
+		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
+		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
+		 */
+		var renderACOptions = {
+			"fontFamily": "Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif",
+			"containerStyles": {
+				"default": {
+					"foregroundColors": {
+						"default": {
+							"default": "#212121",
+							"subtle": "#757575"
+						},
+						"dark": {
+							"default": "#000000",
+							"subtle": "#424242"
+						},
+						"light": {
+							"default": "#757575",
+							"subtle": "#bdbdbd"
+						},
+						"accent": {
+							"default": "#0097a7",
+							"subtle": "#26c6da"
+						},
+						"good": {
+							"default": "#388e3c",
+							"subtle": "#66bb6a"
+						},
+						"warning": {
+							"default": "#e64a19",
+							"subtle": "#ff7043"
+						},
+						"attention": {
+							"default": "#d81b60",
+							"subtle": "#f06292"
+						}
+					},
+					"backgroundColor": "#ffffff"
+				}
+			}
+		};
+
+		var onExecuteAC = function (action) {
+			if (action.url) {
+				root[location].href = action.url;
+			}
+		};
+
+		var manageAC = function (macyGrid, callback) {
+			if (root.renderAC) {
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+					renderAC(macyGrid, macyItems[i], renderACOptions, onExecuteAC, null);
+					count++;
+					if (count === macyItems[_length]) {
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				}
+				i = l = null;
+			}
+		};
 
 		var glightboxClass = "glightbox";
 
@@ -35,10 +110,10 @@ updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
 				var load;
-				load = new loadJsCss(["../../cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-							"../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
 			} else {
 				initScript();
 			}
@@ -79,11 +154,14 @@ updateMacyThrottled*/
 		var isBindedMacyItemClass = "is-binded-macy-item";
 
 		var macyGridClass = "macy-grid";
-
+		
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
+		var isActiveClass = "is-active";
+
 		var onMacyRender = function () {
-			updateMacyThrottled();
+			macyGrid[classList].add(isActiveClass);
+			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -121,30 +199,6 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
-			onMacyRender();
-			onMacyResize();
-		};
-
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
-		
-		var addMacyItems = function (macyGrid, callback) {
-				var macyItems = document[getElementsByClassName]("col") || "";
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(isRenderedMacyItemClass);
-					count++;
-					if (count === macyItems[_length]) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-				i = l = null;
-		};
-
-		if (macyGrid) {
 			manageMacy(macyGridClass, {
 				trueOrder: false,
 				waitForImages: false,
@@ -159,6 +213,56 @@ updateMacyThrottled*/
 					360: 1
 				}
 			});
+			onMacyRender();
+			onMacyResize();
+		};
+
+		/* var macyItems = [
+		]; */
+
+		var isRenderedMacyItemClass = "is-rendered-macy-item";
+
+		var addMacyItems = function (macyGrid, callback) {
+			if (root.AdaptiveCards) {
+				macyGrid.innerHTML = "";
+				manageAC(macyGrid, callback);
+			} else {
+				/*!
+				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+				 */
+				/* var html = [];
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+					html.push(macyItems[i]);
+					count++;
+					if (count === macyItems[_length]) {
+						macyGrid.innerHTML = html.join("");
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				}
+				i = l = null; */
+				macyItems = document[getElementsByClassName]("col") || "";
+				var count = 0;
+				var i,
+				l;
+				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+					macyItems[i][classList].add(isRenderedMacyItemClass);
+					count++;
+					if (count === macyItems[_length]) {
+						if (callback && "function" === typeof callback) {
+							callback();
+						}
+					}
+				}
+				i = l = null;
+			}
+		};
+
+		if (macyGrid) {
 
 			addMacyItems(macyGrid, onMacyManage);
 		}
@@ -167,6 +271,9 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-	runAbout();
+
+	/* if (document[getElementsByClassName]("macy-grid--about")[0]) {
+		runAbout();
+	} */
 
 })("undefined" !== typeof window ? window : this, document);

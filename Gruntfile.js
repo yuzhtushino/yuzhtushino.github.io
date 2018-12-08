@@ -5,8 +5,8 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		jshint: {
 			all: [
-				"**/libs/**/src/bundle.js",
-				"**/libs/**/js/include-script/src/*.js"
+				"**/libs/**/src/bundle.js"//,
+				//"**/libs/**/js/include-script/src/*.js"
 			]
 		}
 	});

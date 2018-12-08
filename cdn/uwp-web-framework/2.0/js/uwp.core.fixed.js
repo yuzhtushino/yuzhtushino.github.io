@@ -3,15 +3,14 @@
 	"use strict";
 	/* Helpers */
 
-	Element.prototype.prependChild = function(child) {
-		return this.insertBefore(child, this.firstChild);
-	};
+	Element.prototype.prependChild = function(node) {
+		var firstChild = this.firstChild;
 
-	Element.prototype.insertAfter = function(newNode, referenceNode) {
-		return referenceNode.parentNode.insertBefore(
-			newNode,
-			referenceNode.nextSibling
-		);
+		if (firstChild) {
+			return this.insertBefore(node, firstChild);
+		} else {
+			return this.appendChild(node);
+		}
 	};
 
 	var toArray = function toArray(obj) {
@@ -115,7 +114,13 @@
 			includeStyle: "./libs/serguei-uwp/css/include-style",
 			navContainer: "nav-container",
 			home: "home",
-			hashNavKey: "page"
+			hashNavKey: "page",
+			hashBang: "#/",
+			onPageLoad: function onPageLoad() {
+				return;
+			},
+			errorTitle: "Something went wrong",
+			errorLinkText: "Go Home"
 		},
 
 		/* Main init function */
@@ -246,8 +251,18 @@
 			};
 			/* Prepares space for document's title, puts it in place */
 
-			UWP.pageTitle = document.createElement("span");
-			UWP.header.prependChild(UWP.pageTitle);
+			var _uwp_page_heading =
+				document.getElementsByClassName("uwp-page-heading")[0] || "";
+
+			if (!_uwp_page_heading) {
+				var pageHeading = document.createElement("h1");
+				pageHeading.setAttribute("class", "uwp-page-heading");
+				pageHeading.innerHTML = UWP.pageTitle;
+				UWP.pageTitle = pageHeading;
+				UWP.header.appendChild(UWP.pageTitle);
+			} else {
+				UWP.pageTitle = _uwp_page_heading;
+			}
 		},
 
 		/* Gets document's navigation, puts it in place */
@@ -309,7 +324,10 @@
 					event.preventDefault();
 					/* if (root.location.hash !== "".concat("#", UWP.config.hashNavKey, "=", navTarget)) { */
 
-					if (root.location.hash !== "".concat("#/", navTarget)) {
+					if (
+						root.location.hash !==
+						"".concat(UWP.config.hashBang, navTarget)
+					) {
 						UWP.menuList.classList.remove("active");
 						UWP.navigate(navTarget);
 					}
@@ -558,7 +576,11 @@
 				history.pushState(
 					"",
 					"",
-					"".concat(root.location.href.split(/#\//)[0], "#/", target)
+					"".concat(
+						root.location.href.split(/#\//)[0],
+						UWP.config.hashBang,
+						target
+					)
 				);
 			}
 			/* Clears the page content */
@@ -566,10 +588,12 @@
 			UWP.main.innerHTML = "";
 			/* Displays error message */
 
-			function displayError(title) {
+			function displayError(title, linkText) {
 				UWP.main.innerHTML = '\n\t<div class="uwp-error">\n\t<p>'.concat(
 					title,
-					'</p>\n\t<p><a href="javascript:void(0);" class="error-link">Go Home</a></p>\n\t</div>\n\t'
+					'</p>\n\t<p><a href="javascript:void(0);" class="error-link">' +
+						linkText +
+						"</a></p>\n\t</div>\n\t"
 				);
 				var mainA =
 					UWP.main.getElementsByClassName("error-link")[0] || "";
@@ -603,8 +627,11 @@
 						"Error XMLHttpRequest-ing file",
 						UWP_navigate_request.status
 					);
-					console.error("Something went wrong");
-					displayError("Something went wrong");
+					console.error(UWP.config.errorTitle);
+					displayError(
+						UWP.config.errorTitle,
+						UWP.config.errorLinkText
+					);
 				} else if (
 					UWP_navigate_request.readyState === 4 &&
 					UWP_navigate_request.status === 200 &&
@@ -619,8 +646,11 @@
 						parsed.getElementsByTagName("page-container")[0] || "";
 
 					if (!page) {
-						console.error("Something went wrong");
-						displayError("Something went wrong");
+						console.error(UWP.config.errorTitle);
+						displayError(
+							UWP.config.errorTitle,
+							UWP.config.errorLinkText
+						);
 					}
 
 					UWP.revealUWPLoading();
@@ -691,6 +721,13 @@
 						/* UWP.head.appendChild(link); */
 
 						UWP.body.appendChild(link);
+					}
+
+					if (
+						UWP.config.onPageLoad &&
+						"function" === typeof UWP.config.onPageLoad
+					) {
+						UWP.config.onPageLoad();
 					}
 
 					UWP.updateNavigation();

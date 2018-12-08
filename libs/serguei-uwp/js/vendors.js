@@ -5,7 +5,12 @@ function _typeof(obj) {
 		};
 	} else {
 		_typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+			return obj &&
+				typeof Symbol === "function" &&
+				obj.constructor === Symbol &&
+				obj !== Symbol.prototype
+				? "symbol"
+				: typeof obj;
 		};
 	}
 	return _typeof(obj);
@@ -22,38 +27,41 @@ function _typeof(obj) {
  * Lil' event emitter
  * MIT License
  */
-(function (global, factory) {
+(function(global, factory) {
 	// universal module definition
 
 	/* jshint strict: false */
 
 	/* globals define, module, window */
-	if (typeof define == 'function' && define.amd) {
+	if (typeof define == "function" && define.amd) {
 		// AMD - RequireJS
-		define('ev-emitter/ev-emitter', factory);
-	} else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) == 'object' && module.exports) {
+		define("ev-emitter/ev-emitter", factory);
+	} else if (
+		(typeof module === "undefined" ? "undefined" : _typeof(module)) ==
+			"object" &&
+		module.exports
+	) {
 		// CommonJS - Browserify, Webpack
 		module.exports = factory();
 	} else {
 		// Browser globals
 		global.EvEmitter = factory();
 	}
-})(typeof window != 'undefined' ? window : this, function () {
+})(typeof window != "undefined" ? window : this, function() {
 	"use strict";
 
 	function EvEmitter() {}
 
 	var proto = EvEmitter.prototype;
 
-	proto.on = function (eventName, listener) {
+	proto.on = function(eventName, listener) {
 		if (!eventName || !listener) {
 			return;
 		} // set events hash
 
+		var events = (this._events = this._events || {}); // set listeners array
 
-		var events = this._events = this._events || {}; // set listeners array
-
-		var listeners = events[eventName] = events[eventName] || []; // only add once
+		var listeners = (events[eventName] = events[eventName] || []); // only add once
 
 		if (listeners.indexOf(listener) == -1) {
 			listeners.push(listener);
@@ -62,24 +70,24 @@ function _typeof(obj) {
 		return this;
 	};
 
-	proto.once = function (eventName, listener) {
+	proto.once = function(eventName, listener) {
 		if (!eventName || !listener) {
 			return;
 		} // add event
 
-
 		this.on(eventName, listener); // set once flag
 		// set onceEvents hash
 
-		var onceEvents = this._onceEvents = this._onceEvents || {}; // set onceListeners object
+		var onceEvents = (this._onceEvents = this._onceEvents || {}); // set onceListeners object
 
-		var onceListeners = onceEvents[eventName] = onceEvents[eventName] || {}; // set flag
+		var onceListeners = (onceEvents[eventName] =
+			onceEvents[eventName] || {}); // set flag
 
 		onceListeners[listener] = true;
 		return this;
 	};
 
-	proto.off = function (eventName, listener) {
+	proto.off = function(eventName, listener) {
 		var listeners = this._events && this._events[eventName];
 
 		if (!listeners || !listeners.length) {
@@ -95,13 +103,12 @@ function _typeof(obj) {
 		return this;
 	};
 
-	proto.emitEvent = function (eventName, args) {
+	proto.emitEvent = function(eventName, args) {
 		var listeners = this._events && this._events[eventName];
 
 		if (!listeners || !listeners.length) {
 			return;
 		} // copy over to avoid interference if .off() in listener
-
 
 		listeners = listeners.slice(0);
 		args = args || []; // once stuff
@@ -120,14 +127,13 @@ function _typeof(obj) {
 				delete onceListeners[listener];
 			} // trigger listener
 
-
 			listener.apply(this, args);
 		}
 
 		return this;
 	};
 
-	proto.allOff = function () {
+	proto.allOff = function() {
 		delete this._events;
 		delete this._onceEvents;
 	};
@@ -140,25 +146,29 @@ function _typeof(obj) {
  * MIT License
  */
 
-
-(function (window, factory) {
-	'use strict'; // universal module definition
+(function(window, factory) {
+	"use strict"; // universal module definition
 
 	/*global define: false, module: false, require: false */
 
-	if (typeof define == 'function' && define.amd) {
+	if (typeof define == "function" && define.amd) {
 		// AMD
-		define(['ev-emitter/ev-emitter'], function (EvEmitter) {
+		define(["ev-emitter/ev-emitter"], function(EvEmitter) {
 			return factory(window, EvEmitter);
 		});
-	} else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) == 'object' && module.exports) {
+	} else if (
+		(typeof module === "undefined" ? "undefined" : _typeof(module)) ==
+			"object" &&
+		module.exports
+	) {
 		// CommonJS
-		module.exports = factory(window, require('ev-emitter'));
+		module.exports = factory(window, require("ev-emitter"));
 	} else {
 		// browser global
 		window.imagesLoaded = factory(window, window.EvEmitter);
 	}
-})(typeof window !== 'undefined' ? window : this, // --------------------------  factory -------------------------- //
+})(
+	typeof window !== "undefined" ? window : this, // --------------------------  factory -------------------------- //
 	function factory(window, EvEmitter) {
 		"use strict";
 
@@ -184,13 +194,13 @@ function _typeof(obj) {
 				return obj;
 			}
 
-			var isArrayLike = _typeof(obj) == 'object' && typeof obj.length == 'number';
+			var isArrayLike =
+				_typeof(obj) == "object" && typeof obj.length == "number";
 
 			if (isArrayLike) {
 				// convert nodeList to array
 				return arraySlice.call(obj);
 			} // array of single index
-
 
 			return [obj];
 		} // -------------------------- imagesLoaded -------------------------- //
@@ -201,37 +211,36 @@ function _typeof(obj) {
 		 * @param {Function} onAlways - callback function
 		 */
 
-
 		function ImagesLoaded(elem, options, onAlways) {
 			// coerce ImagesLoaded() without new, to be new ImagesLoaded()
 			if (!(this instanceof ImagesLoaded)) {
 				return new ImagesLoaded(elem, options, onAlways);
 			} // use elem as selector string
 
-
 			var queryElem = elem;
 
-			if (typeof elem == 'string') {
+			if (typeof elem == "string") {
 				queryElem = document.querySelectorAll(elem);
 			} // bail if bad element
 
-
 			if (!queryElem) {
-				console.error('Bad element for imagesLoaded ' + (queryElem || elem));
+				console.error(
+					"Bad element for imagesLoaded " + (queryElem || elem)
+				);
 				return;
 			}
 
 			this.elements = makeArray(queryElem);
 			this.options = extend({}, this.options); // shift arguments if no options set
 
-			if (typeof options == 'function') {
+			if (typeof options == "function") {
 				onAlways = options;
 			} else {
 				extend(this.options, options);
 			}
 
 			if (onAlways) {
-				this.on('always', onAlways);
+				this.on("always", onAlways);
 			}
 
 			this.getImages();
@@ -241,14 +250,13 @@ function _typeof(obj) {
 				this.jqDeferred = new $.Deferred();
 			} // HACK check async to allow time to bind listeners
 
-
 			setTimeout(this.check.bind(this));
 		}
 
 		ImagesLoaded.prototype = Object.create(EvEmitter.prototype);
 		ImagesLoaded.prototype.options = {};
 
-		ImagesLoaded.prototype.getImages = function () {
+		ImagesLoaded.prototype.getImages = function() {
 			this.images = []; // filter & find items if we have an item selector
 
 			this.elements.forEach(this.addElementImages, this);
@@ -257,19 +265,16 @@ function _typeof(obj) {
 		 * @param {Node} element
 		 */
 
-
-		ImagesLoaded.prototype.addElementImages = function (elem) {
+		ImagesLoaded.prototype.addElementImages = function(elem) {
 			// filter siblings
-			if (elem.nodeName == 'IMG') {
+			if (elem.nodeName == "IMG") {
 				this.addImage(elem);
 			} // get background image on element
-
 
 			if (this.options.background === true) {
 				this.addElementBackgroundImages(elem);
 			} // find children
 			// no non-element nodes, #143
-
 
 			var nodeType = elem.nodeType;
 
@@ -277,15 +282,14 @@ function _typeof(obj) {
 				return;
 			}
 
-			var childImgs = elem.querySelectorAll('img'); // concat childElems to filterFound array
+			var childImgs = elem.querySelectorAll("img"); // concat childElems to filterFound array
 
 			for (var i = 0; i < childImgs.length; i++) {
 				var img = childImgs[i];
 				this.addImage(img);
 			} // get child background images
 
-
-			if (typeof this.options.background == 'string') {
+			if (typeof this.options.background == "string") {
 				var children = elem.querySelectorAll(this.options.background);
 
 				for (i = 0; i < children.length; i++) {
@@ -301,14 +305,13 @@ function _typeof(obj) {
 			11: true
 		};
 
-		ImagesLoaded.prototype.addElementBackgroundImages = function (elem) {
+		ImagesLoaded.prototype.addElementBackgroundImages = function(elem) {
 			var style = getComputedStyle(elem);
 
 			if (!style) {
 				// Firefox returns null if in a hidden iframe https://bugzil.la/548397
 				return;
 			} // get url inside url("...")
-
 
 			var reURL = /url\((['"])?(.*?)\1\)/gi;
 			var matches = reURL.exec(style.backgroundImage);
@@ -327,18 +330,17 @@ function _typeof(obj) {
 		 * @param {Image} img
 		 */
 
-
-		ImagesLoaded.prototype.addImage = function (img) {
+		ImagesLoaded.prototype.addImage = function(img) {
 			var loadingImage = new LoadingImage(img);
 			this.images.push(loadingImage);
 		};
 
-		ImagesLoaded.prototype.addBackground = function (url, elem) {
+		ImagesLoaded.prototype.addBackground = function(url, elem) {
 			var background = new Background(url, elem);
 			this.images.push(background);
 		};
 
-		ImagesLoaded.prototype.check = function () {
+		ImagesLoaded.prototype.check = function() {
 			var _this = this;
 
 			this.progressedCount = 0;
@@ -351,49 +353,47 @@ function _typeof(obj) {
 
 			function onProgress(image, elem, message) {
 				// HACK - Chrome triggers event before object properties have changed. #83
-				setTimeout(function () {
+				setTimeout(function() {
 					_this.progress(image, elem, message);
 				});
 			}
 
-			this.images.forEach(function (loadingImage) {
-				loadingImage.once('progress', onProgress);
+			this.images.forEach(function(loadingImage) {
+				loadingImage.once("progress", onProgress);
 				loadingImage.check();
 			});
 		};
 
-		ImagesLoaded.prototype.progress = function (image, elem, message) {
+		ImagesLoaded.prototype.progress = function(image, elem, message) {
 			this.progressedCount++;
 			this.hasAnyBroken = this.hasAnyBroken || !image.isLoaded; // progress event
 
-			this.emitEvent('progress', [this, image, elem]);
+			this.emitEvent("progress", [this, image, elem]);
 
 			if (this.jqDeferred && this.jqDeferred.notify) {
 				this.jqDeferred.notify(this, image);
 			} // check if completed
-
 
 			if (this.progressedCount == this.images.length) {
 				this.complete();
 			}
 
 			if (this.options.debug && console) {
-				console.log('progress: ' + message, image, elem);
+				console.log("progress: " + message, image, elem);
 			}
 		};
 
-		ImagesLoaded.prototype.complete = function () {
-			var eventName = this.hasAnyBroken ? 'fail' : 'done';
+		ImagesLoaded.prototype.complete = function() {
+			var eventName = this.hasAnyBroken ? "fail" : "done";
 			this.isComplete = true;
 			this.emitEvent(eventName, [this]);
-			this.emitEvent('always', [this]);
+			this.emitEvent("always", [this]);
 
 			if (this.jqDeferred) {
-				var jqMethod = this.hasAnyBroken ? 'reject' : 'resolve';
+				var jqMethod = this.hasAnyBroken ? "reject" : "resolve";
 				this.jqDeferred[jqMethod](this);
 			}
 		}; // --------------------------  -------------------------- //
-
 
 		function LoadingImage(img) {
 			this.img = img;
@@ -401,65 +401,62 @@ function _typeof(obj) {
 
 		LoadingImage.prototype = Object.create(EvEmitter.prototype);
 
-		LoadingImage.prototype.check = function () {
+		LoadingImage.prototype.check = function() {
 			// If complete is true and browser supports natural sizes,
 			// try to check for image status manually.
 			var isComplete = this.getIsImageComplete();
 
 			if (isComplete) {
 				// report based on naturalWidth
-				this.confirm(this.img.naturalWidth !== 0, 'naturalWidth');
+				this.confirm(this.img.naturalWidth !== 0, "naturalWidth");
 				return;
 			} // If none of the checks above matched, simulate loading on detached element.
 
-
 			this.proxyImage = new Image();
-			this.proxyImage.addEventListener('load', this);
-			this.proxyImage.addEventListener('error', this); // bind to image as well for Firefox. #191
+			this.proxyImage.addEventListener("load", this);
+			this.proxyImage.addEventListener("error", this); // bind to image as well for Firefox. #191
 
-			this.img.addEventListener('load', this);
-			this.img.addEventListener('error', this);
+			this.img.addEventListener("load", this);
+			this.img.addEventListener("error", this);
 			this.proxyImage.src = this.img.src;
 		};
 
-		LoadingImage.prototype.getIsImageComplete = function () {
+		LoadingImage.prototype.getIsImageComplete = function() {
 			// check for non-zero, non-undefined naturalWidth
 			// fixes Safari+InfiniteScroll+Masonry bug infinite-scroll#671
 			return this.img.complete && this.img.naturalWidth;
 		};
 
-		LoadingImage.prototype.confirm = function (isLoaded, message) {
+		LoadingImage.prototype.confirm = function(isLoaded, message) {
 			this.isLoaded = isLoaded;
-			this.emitEvent('progress', [this, this.img, message]);
+			this.emitEvent("progress", [this, this.img, message]);
 		}; // ----- events ----- //
 		// trigger specified handler for event type
 
-
-		LoadingImage.prototype.handleEvent = function (event) {
-			var method = 'on' + event.type;
+		LoadingImage.prototype.handleEvent = function(event) {
+			var method = "on" + event.type;
 
 			if (this[method]) {
 				this[method](event);
 			}
 		};
 
-		LoadingImage.prototype.onload = function () {
-			this.confirm(true, 'onload');
+		LoadingImage.prototype.onload = function() {
+			this.confirm(true, "onload");
 			this.unbindEvents();
 		};
 
-		LoadingImage.prototype.onerror = function () {
-			this.confirm(false, 'onerror');
+		LoadingImage.prototype.onerror = function() {
+			this.confirm(false, "onerror");
 			this.unbindEvents();
 		};
 
-		LoadingImage.prototype.unbindEvents = function () {
-			this.proxyImage.removeEventListener('load', this);
-			this.proxyImage.removeEventListener('error', this);
-			this.img.removeEventListener('load', this);
-			this.img.removeEventListener('error', this);
+		LoadingImage.prototype.unbindEvents = function() {
+			this.proxyImage.removeEventListener("load", this);
+			this.proxyImage.removeEventListener("error", this);
+			this.img.removeEventListener("load", this);
+			this.img.removeEventListener("error", this);
 		}; // -------------------------- Background -------------------------- //
-
 
 		function Background(url, element) {
 			this.url = url;
@@ -467,71 +464,70 @@ function _typeof(obj) {
 			this.img = new Image();
 		} // inherit LoadingImage prototype
 
-
 		Background.prototype = Object.create(LoadingImage.prototype);
 
-		Background.prototype.check = function () {
-			this.img.addEventListener('load', this);
-			this.img.addEventListener('error', this);
+		Background.prototype.check = function() {
+			this.img.addEventListener("load", this);
+			this.img.addEventListener("error", this);
 			this.img.src = this.url; // check if image is already complete
 
 			var isComplete = this.getIsImageComplete();
 
 			if (isComplete) {
-				this.confirm(this.img.naturalWidth !== 0, 'naturalWidth');
+				this.confirm(this.img.naturalWidth !== 0, "naturalWidth");
 				this.unbindEvents();
 			}
 		};
 
-		Background.prototype.unbindEvents = function () {
-			this.img.removeEventListener('load', this);
-			this.img.removeEventListener('error', this);
+		Background.prototype.unbindEvents = function() {
+			this.img.removeEventListener("load", this);
+			this.img.removeEventListener("error", this);
 		};
 
-		Background.prototype.confirm = function (isLoaded, message) {
+		Background.prototype.confirm = function(isLoaded, message) {
 			this.isLoaded = isLoaded;
-			this.emitEvent('progress', [this, this.element, message]);
+			this.emitEvent("progress", [this, this.element, message]);
 		}; // -------------------------- jQuery -------------------------- //
 
-
-		ImagesLoaded.makeJQueryPlugin = function (jQuery) {
+		ImagesLoaded.makeJQueryPlugin = function(jQuery) {
 			jQuery = jQuery || window.jQuery;
 
 			if (!jQuery) {
 				return;
 			} // set local variable
 
-
 			$ = jQuery; // $().imagesLoaded()
 
-			$.fn.imagesLoaded = function (options, callback) {
+			$.fn.imagesLoaded = function(options, callback) {
 				var instance = new ImagesLoaded(this, options, callback);
 				return instance.jqDeferred.promise($(this));
 			};
 		}; // try making plugin
 
-
 		ImagesLoaded.makeJQueryPlugin(); // --------------------------  -------------------------- //
 
 		return ImagesLoaded;
-	});
+	}
+);
 
-var _extends = Object.assign || function (target) {
-	for (var i = 1; i < arguments.length; i++) {
-		var source = arguments[i];
+var _extends =
+	Object.assign ||
+	function(target) {
+		for (var i = 1; i < arguments.length; i++) {
+			var source = arguments[i];
 
-		for (var key in source) {
-			if (Object.prototype.hasOwnProperty.call(source, key)) {
-				target[key] = source[key];
+			for (var key in source) {
+				if (Object.prototype.hasOwnProperty.call(source, key)) {
+					target[key] = source[key];
+				}
 			}
 		}
-	}
 
-	return target;
-};
+		return target;
+	};
 
-var LazyLoad = function () {
-	'use strict';
+var LazyLoad = (function() {
+	"use strict";
 
 	var defaultSettings = {
 		elements_selector: "img",
@@ -595,18 +591,17 @@ var LazyLoad = function () {
 	};
 
 	var purgeProcessedElements = function purgeProcessedElements(elements) {
-		return elements.filter(function (element) {
+		return elements.filter(function(element) {
 			return !getWasProcessedData(element);
 		});
 	};
 
 	var purgeOneElement = function purgeOneElement(elements, elementToPurge) {
-		return elements.filter(function (element) {
+		return elements.filter(function(element) {
 			return element !== elementToPurge;
 		});
 	};
 	/* Creates instance and notifies it through the window element */
-
 
 	var createInstance = function createInstance(classObj, options) {
 		var event;
@@ -631,8 +626,7 @@ var LazyLoad = function () {
 		window.dispatchEvent(event);
 	};
 	/* Auto initialization of one or more instances of lazyload, depending on the
-	    options passed in (plain object or an array) */
-
+      options passed in (plain object or an array) */
 
 	function autoInitialize(classObj, options) {
 		if (!options) {
@@ -644,7 +638,7 @@ var LazyLoad = function () {
 			createInstance(classObj, options);
 		} else {
 			// Array of objects
-			for (var i = 0, optionsItem; optionsItem = options[i]; i += 1) {
+			for (var i = 0, optionsItem; (optionsItem = options[i]); i += 1) {
 				createInstance(classObj, optionsItem);
 			}
 		}
@@ -659,21 +653,31 @@ var LazyLoad = function () {
 		var canvas = document.createElement("canvas");
 
 		if (canvas.getContext && canvas.getContext("2d")) {
-			return canvas.toDataURL(webpString)
-				.indexOf("data:" + webpString) === 0;
+			return (
+				canvas.toDataURL(webpString).indexOf("data:" + webpString) === 0
+			);
 		}
 
 		return false;
 	};
 
 	var runningOnBrowser = typeof window !== "undefined";
-	var isBot = runningOnBrowser && !("onscroll" in window) || /(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent);
-	var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
-	var supportsClassList = runningOnBrowser && "classList" in document.createElement("p");
+	var isBot =
+		(runningOnBrowser && !("onscroll" in window)) ||
+		/(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent);
+	var supportsIntersectionObserver =
+		runningOnBrowser && "IntersectionObserver" in window;
+	var supportsClassList =
+		runningOnBrowser && "classList" in document.createElement("p");
 	var supportsWebp = runningOnBrowser && detectWebp();
 
-	var setSourcesInChildren = function setSourcesInChildren(parentTag, attrName, dataAttrName, toWebpFlag) {
-		for (var i = 0, childTag; childTag = parentTag.children[i]; i += 1) {
+	var setSourcesInChildren = function setSourcesInChildren(
+		parentTag,
+		attrName,
+		dataAttrName,
+		toWebpFlag
+	) {
+		for (var i = 0, childTag; (childTag = parentTag.children[i]); i += 1) {
 			if (childTag.tagName === "SOURCE") {
 				var attrValue = getData(childTag, dataAttrName);
 				setAttributeIfValue(childTag, attrName, attrValue, toWebpFlag);
@@ -681,7 +685,12 @@ var LazyLoad = function () {
 		}
 	};
 
-	var setAttributeIfValue = function setAttributeIfValue(element, attrName, value, toWebpFlag) {
+	var setAttributeIfValue = function setAttributeIfValue(
+		element,
+		attrName,
+		value,
+		toWebpFlag
+	) {
 		if (!value) {
 			return;
 		}
@@ -726,7 +735,7 @@ var LazyLoad = function () {
 
 		if (srcDataValue) {
 			var setValue = replaceExtToWebp(srcDataValue, toWebpFlag);
-			element.style.backgroundImage = "url(\"" + setValue + "\")";
+			element.style.backgroundImage = 'url("' + setValue + '")';
 		}
 
 		if (bgDataValue) {
@@ -774,7 +783,8 @@ var LazyLoad = function () {
 			return;
 		}
 
-		element.className = element.className.replace(new RegExp("(^|\\s+)" + className + "(\\s+|$)"), " ")
+		element.className = element.className
+			.replace(new RegExp("(^|\\s+)" + className + "(\\s+|$)"), " ")
 			.replace(/^\s+/, "")
 			.replace(/\s+$/, "");
 	};
@@ -789,21 +799,37 @@ var LazyLoad = function () {
 	var mediaLoadEventName = "loadeddata";
 	var errorEventName = "error";
 
-	var addEventListener = function addEventListener(element, eventName, handler) {
+	var addEventListener = function addEventListener(
+		element,
+		eventName,
+		handler
+	) {
 		element.addEventListener(eventName, handler);
 	};
 
-	var removeEventListener = function removeEventListener(element, eventName, handler) {
+	var removeEventListener = function removeEventListener(
+		element,
+		eventName,
+		handler
+	) {
 		element.removeEventListener(eventName, handler);
 	};
 
-	var addEventListeners = function addEventListeners(element, loadHandler, errorHandler) {
+	var addEventListeners = function addEventListeners(
+		element,
+		loadHandler,
+		errorHandler
+	) {
 		addEventListener(element, genericLoadEventName, loadHandler);
 		addEventListener(element, mediaLoadEventName, loadHandler);
 		addEventListener(element, errorEventName, errorHandler);
 	};
 
-	var removeEventListeners = function removeEventListeners(element, loadHandler, errorHandler) {
+	var removeEventListeners = function removeEventListeners(
+		element,
+		loadHandler,
+		errorHandler
+	) {
 		removeEventListener(element, genericLoadEventName, loadHandler);
 		removeEventListener(element, mediaLoadEventName, loadHandler);
 		removeEventListener(element, errorEventName, errorHandler);
@@ -812,7 +838,9 @@ var LazyLoad = function () {
 	var eventHandler = function eventHandler(event, success, instance) {
 		var settings = instance._settings;
 		var className = success ? settings.class_loaded : settings.class_error;
-		var callback = success ? settings.callback_load : settings.callback_error;
+		var callback = success
+			? settings.callback_load
+			: settings.callback_error;
 		var element = event.target;
 		removeClass(element, settings.class_loading);
 		addClass(element, className);
@@ -821,7 +849,10 @@ var LazyLoad = function () {
 		instance._updateLoadingCount(-1);
 	};
 
-	var addOneShotEventListeners = function addOneShotEventListeners(element, instance) {
+	var addOneShotEventListeners = function addOneShotEventListeners(
+		element,
+		instance
+	) {
 		var loadHandler = function loadHandler(event) {
 			eventHandler(event, true, instance);
 			removeEventListeners(element, loadHandler, errorHandler);
@@ -837,7 +868,11 @@ var LazyLoad = function () {
 
 	var managedTags = ["IMG", "IFRAME", "VIDEO"];
 
-	var loadAndUnobserve = function loadAndUnobserve(element, observer, instance) {
+	var loadAndUnobserve = function loadAndUnobserve(
+		element,
+		observer,
+		instance
+	) {
 		revealElement(element, instance);
 		observer.unobserve(element);
 	};
@@ -861,7 +896,7 @@ var LazyLoad = function () {
 			return; // do nothing if timeout already set
 		}
 
-		timeoutId = setTimeout(function () {
+		timeoutId = setTimeout(function() {
 			loadAndUnobserve(element, observer, instance);
 			cancelDelayLoad(element);
 		}, loadDelay);
@@ -887,8 +922,7 @@ var LazyLoad = function () {
 		callbackIfSet(settings.callback_set, element);
 	}
 	/* entry.isIntersecting needs fallback because is null on some versions of MS Edge, and
-	   entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
-
+     entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
 
 	var isIntersecting = function isIntersecting(entry) {
 		return entry.isIntersecting || entry.intersectionRatio > 0;
@@ -924,7 +958,6 @@ var LazyLoad = function () {
 				return;
 			} // WITH LOAD DELAY
 
-
 			if (isIntersecting(entry)) {
 				delayLoad(element, observer, this);
 			} else {
@@ -939,7 +972,10 @@ var LazyLoad = function () {
 				return;
 			}
 
-			this._observer = new IntersectionObserver(this._onIntersection.bind(this), getObserverSettings(this._settings));
+			this._observer = new IntersectionObserver(
+				this._onIntersection.bind(this),
+				getObserverSettings(this._settings)
+			);
 		},
 		_updateLoadingCount: function _updateLoadingCount(plusMinus) {
 			this._loadingCount += plusMinus;
@@ -952,8 +988,11 @@ var LazyLoad = function () {
 			var _this = this;
 
 			var settings = this._settings;
-			var nodeSet = elements || settings.container.querySelectorAll(settings.elements_selector);
-			this._elements = purgeProcessedElements(Array.prototype.slice.call(nodeSet) // NOTE: nodeset to array for IE compatibility
+			var nodeSet =
+				elements ||
+				settings.container.querySelectorAll(settings.elements_selector);
+			this._elements = purgeProcessedElements(
+				Array.prototype.slice.call(nodeSet) // NOTE: nodeset to array for IE compatibility
 			);
 
 			if (isBot || !this._observer) {
@@ -961,7 +1000,7 @@ var LazyLoad = function () {
 				return;
 			}
 
-			this._elements.forEach(function (element) {
+			this._elements.forEach(function(element) {
 				_this._observer.observe(element);
 			});
 		},
@@ -969,7 +1008,7 @@ var LazyLoad = function () {
 			var _this2 = this;
 
 			if (this._observer) {
-				this._elements.forEach(function (element) {
+				this._elements.forEach(function(element) {
 					_this2._observer.unobserve(element);
 				});
 
@@ -986,7 +1025,7 @@ var LazyLoad = function () {
 			var _this3 = this;
 
 			var elements = this._elements;
-			elements.forEach(function (element) {
+			elements.forEach(function(element) {
 				_this3.load(element);
 			});
 		}
@@ -998,7 +1037,7 @@ var LazyLoad = function () {
 	}
 
 	return LazyLoad;
-}();
+})();
 
 /*!
  * @app ReadMoreJS
@@ -1012,8 +1051,8 @@ var LazyLoad = function () {
  * changed: var target = doc.querySelectorAll(options.target)
  * to: var target = elementsSelector(options.target)
  */
-(function (win, doc, undef) {
-	'use strict';
+(function(win, doc, undef) {
+	"use strict";
 
 	var RM = {};
 	RM.helpers = {
@@ -1021,9 +1060,16 @@ var LazyLoad = function () {
 			for (var i = 1, l = arguments.length; i < l; i++) {
 				for (var key in arguments[i]) {
 					if (arguments[i].hasOwnProperty(key)) {
-						if (arguments[i][key] && arguments[i][key].constructor && arguments[i][key].constructor === Object) {
+						if (
+							arguments[i][key] &&
+							arguments[i][key].constructor &&
+							arguments[i][key].constructor === Object
+						) {
 							arguments[0][key] = arguments[0][key] || {};
-							this.extendObj(arguments[0][key], arguments[i][key]);
+							this.extendObj(
+								arguments[0][key],
+								arguments[i][key]
+							);
 						} else {
 							arguments[0][key] = arguments[i][key];
 						}
@@ -1035,37 +1081,45 @@ var LazyLoad = function () {
 		}
 	};
 
-	RM.countWords = function (str) {
-		return str.split(/\s+/)
-			.length;
+	RM.countWords = function(str) {
+		return str.split(/\s+/).length;
 	};
 
-	RM.generateTrimmed = function (str, wordsNum) {
-		return str.split(/\s+/)
-			.slice(0, wordsNum)
-			.join(' ') + '...';
+	RM.generateTrimmed = function(str, wordsNum) {
+		return (
+			str
+				.split(/\s+/)
+				.slice(0, wordsNum)
+				.join(" ") + "..."
+		);
 	};
 
-	RM.init = function (options) {
+	RM.init = function(options) {
 		var defaults = {
-			target: '',
+			target: "",
 			numOfWords: 50,
 			toggle: true,
-			moreLink: 'read more...',
-			lessLink: 'read less'
+			moreLink: "read more...",
+			lessLink: "read less"
 		};
 		options = RM.helpers.extendObj({}, defaults, options);
 		var elementsSelector;
 
-		elementsSelector = function elementsSelector(selector, context, undefined) {
+		elementsSelector = function elementsSelector(
+			selector,
+			context,
+			undefined
+		) {
 			var matches = {
 				"#": "getElementById",
 				".": "getElementsByClassName",
 				"@": "getElementsByName",
 				"=": "getElementsByTagName",
 				"*": "querySelectorAll"
-			} [selector[0]];
-			var el = (context === undefined ? document : context)[matches](selector.slice(1));
+			}[selector[0]];
+			var el = (context === undefined ? document : context)[matches](
+				selector.slice(1)
+			);
 			return el.length < 2 ? el[0] : el;
 		};
 
@@ -1086,7 +1140,10 @@ var LazyLoad = function () {
 
 		for (i = 0; i < targetLen; i++) {
 			targetContent = target[i].innerHTML;
-			trimmedTargetContent = RM.generateTrimmed(targetContent, options.numOfWords);
+			trimmedTargetContent = RM.generateTrimmed(
+				targetContent,
+				options.numOfWords
+			);
 			targetContentWords = RM.countWords(targetContent);
 			initArr.push(targetContent);
 			trimmedArr.push(trimmedTargetContent);
@@ -1095,44 +1152,54 @@ var LazyLoad = function () {
 				target[i].innerHTML = trimmedArr[i];
 
 				if (options.inline) {
-					moreContainer = doc.createElement('span');
+					moreContainer = doc.createElement("span");
 				} else {
 					if (options.customBlockElement) {
-						moreContainer = doc.createElement(options.customBlockElement);
+						moreContainer = doc.createElement(
+							options.customBlockElement
+						);
 					} else {
-						moreContainer = doc.createElement('div');
+						moreContainer = doc.createElement("div");
 					}
 				}
 
-				moreContainer.innerHTML = '<a href="javascript:void(0);" id="rm-more_' + i + '" class="rm-link" style="cursor:pointer;">' + options.moreLink + '</a>';
+				moreContainer.innerHTML =
+					'<a href="javascript:void(0);" id="rm-more_' +
+					i +
+					'" class="rm-link" style="cursor:pointer;">' +
+					options.moreLink +
+					"</a>";
 
 				if (options.inline) {
 					target[i].appendChild(moreContainer);
 				} else {
-					target[i].parentNode.insertBefore(moreContainer, target[i].nextSibling);
+					target[i].parentNode.insertBefore(
+						moreContainer,
+						target[i].nextSibling
+					);
 				}
 			}
 		}
 
-		rmLink = doc.getElementsByClassName('rm-link') || "";
+		rmLink = doc.getElementsByClassName("rm-link") || "";
 
 		var func = function func() {
-			moreLinkID = this.getAttribute('id');
-			index = moreLinkID.split('_')[1];
+			moreLinkID = this.getAttribute("id");
+			index = moreLinkID.split("_")[1];
 
-			if (this.getAttribute('data-clicked') !== 'true') {
+			if (this.getAttribute("data-clicked") !== "true") {
 				target[index].innerHTML = initArr[index];
 
 				if (options.toggle !== false) {
 					this.innerHTML = options.lessLink;
-					this.setAttribute('data-clicked', true);
+					this.setAttribute("data-clicked", true);
 				} else {
-					this.innerHTML = '';
+					this.innerHTML = "";
 				}
 			} else {
 				target[index].innerHTML = trimmedArr[index];
 				this.innerHTML = options.moreLink;
-				this.setAttribute('data-clicked', false);
+				this.setAttribute("data-clicked", false);
 			}
 		};
 
@@ -1145,16 +1212,18 @@ var LazyLoad = function () {
 })("undefined" !== typeof window ? window : this, document);
 
 /*global ActiveXObject, console */
-(function (root, document) {
+(function(root, document) {
 	"use strict";
 	/* Helpers */
 
-	Element.prototype.prependChild = function (child) {
-		return this.insertBefore(child, this.firstChild);
-	};
+	Element.prototype.prependChild = function(node) {
+		var firstChild = this.firstChild;
 
-	Element.prototype.insertAfter = function (newNode, referenceNode) {
-		return referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+		if (firstChild) {
+			return this.insertBefore(node, firstChild);
+		} else {
+			return this.appendChild(node);
+		}
 	};
 
 	var toArray = function toArray(obj) {
@@ -1172,12 +1241,12 @@ var LazyLoad = function () {
 		var _color = color.toLowerCase();
 
 		if (RGB_match.test(_color)) {
-			return _color.match(RGB_match)
-				.slice(1);
+			return _color.match(RGB_match).slice(1);
 		} else if (hex_match.test(_color)) {
-			return _color.match(hex_match)
+			return _color
+				.match(hex_match)
 				.slice(2)
-				.map(function (piece) {
+				.map(function(piece) {
 					return parseInt(piece, 16);
 				});
 		}
@@ -1187,23 +1256,29 @@ var LazyLoad = function () {
 	};
 
 	var calculateBrightness = function calculateBrightness(color) {
-		return color.reduce(function (p, c) {
-			return p + parseInt(c, 10);
-		}, 0) / 3;
+		return (
+			color.reduce(function(p, c) {
+				return p + parseInt(c, 10);
+			}, 0) / 3
+		);
 	};
 	/*!
 	 * @see {@link http://www.javascriptkit.com/javatutors/loadjavascriptcss2.shtml}
 	 */
 
-
 	var removeJsCssFile = function removeJsCssFile(filename, filetype) {
-		var targetelement = filetype == "js" ? "script" : filetype == "css" ? "link" : "none";
-		var targetattr = filetype == "js" ? "src" : filetype == "css" ? "href" : "none";
+		var targetelement =
+			filetype == "js" ? "script" : filetype == "css" ? "link" : "none";
+		var targetattr =
+			filetype == "js" ? "src" : filetype == "css" ? "href" : "none";
 		var allsuspects = document.getElementsByTagName(targetelement) || "";
 
 		for (var i = allsuspects.length; i >= 0; i--) {
-			if (allsuspects[i] && allsuspects[i].getAttribute(targetattr) != null && allsuspects[i].getAttribute(targetattr)
-				.indexOf(filename) != -1) {
+			if (
+				allsuspects[i] &&
+				allsuspects[i].getAttribute(targetattr) != null &&
+				allsuspects[i].getAttribute(targetattr).indexOf(filename) != -1
+			) {
 				allsuspects[i].parentNode.removeChild(allsuspects[i]);
 				/* remove element by calling parentNode.removeChild() */
 			}
@@ -1211,30 +1286,31 @@ var LazyLoad = function () {
 	};
 
 	var _extends = function _extends() {
-		var _extends = Object.assign || function (target) {
-			for (var i = 1; i < arguments.length; i++) {
-				var source = arguments[i];
+		var _extends =
+			Object.assign ||
+			function(target) {
+				for (var i = 1; i < arguments.length; i++) {
+					var source = arguments[i];
 
-				for (var key in source) {
-					if (Object.prototype.hasOwnProperty.call(source, key)) {
-						target[key] = source[key];
+					for (var key in source) {
+						if (Object.prototype.hasOwnProperty.call(source, key)) {
+							target[key] = source[key];
+						}
 					}
 				}
-			}
 
-			return target;
-		};
+				return target;
+			};
 
 		return _extends.apply(this, arguments);
 	};
 
 	var parseDomFromString = function parseDomFromString(responseText) {
-		var tempDiv = document.createElement('div');
+		var tempDiv = document.createElement("div");
 		tempDiv.innerHTML = responseText;
 		return tempDiv;
 	};
 	/* Define UWP namespace */
-
 
 	var UWP = {
 		version: "2.0.0",
@@ -1251,7 +1327,13 @@ var LazyLoad = function () {
 			includeStyle: "./libs/serguei-uwp/css/include-style",
 			navContainer: "nav-container",
 			home: "home",
-			hashNavKey: "page"
+			hashNavKey: "page",
+			hashBang: "#/",
+			onPageLoad: function onPageLoad() {
+				return;
+			},
+			errorTitle: "Something went wrong",
+			errorLinkText: "Go Home"
 		},
 
 		/* Main init function */
@@ -1270,7 +1352,8 @@ var LazyLoad = function () {
 			document.body.appendChild(UWP.pageTitle);
 			UWP.container = null;
 
-			var _uwp_container = document.getElementsByClassName("uwp-container")[0] || "";
+			var _uwp_container =
+				document.getElementsByClassName("uwp-container")[0] || "";
 
 			if (!_uwp_container) {
 				var container = document.createElement("div");
@@ -1284,7 +1367,8 @@ var LazyLoad = function () {
 
 			UWP.header = null;
 
-			var _UWP_header = document.getElementsByClassName("uwp-header")[0] || "";
+			var _UWP_header =
+				document.getElementsByClassName("uwp-header")[0] || "";
 
 			if (!_UWP_header) {
 				var header = document.createElement("div");
@@ -1298,13 +1382,13 @@ var LazyLoad = function () {
 
 			UWP.main = null;
 
-			var _uwp_main = document.getElementsByClassName("uwp-main")[0] || "";
+			var _uwp_main =
+				document.getElementsByClassName("uwp-main")[0] || "";
 
 			if (!_uwp_main) {
 				var main = document.createElement("div");
 				main.setAttribute("class", "uwp-main");
 				main.setAttribute("role", "main");
-				main.innerHTML = '<div class="uwp-error"><p>Loading&#8230;</p></div>\n';
 				UWP.main = main;
 				UWP.container.appendChild(UWP.main);
 			} else {
@@ -1313,36 +1397,37 @@ var LazyLoad = function () {
 
 			UWP.loading = null;
 
-			var _uwp_loading = document.getElementsByClassName("uwp-loading")[0] || "";
+			var _uwp_loading =
+				document.getElementsByClassName("uwp-loading")[0] || "";
 
 			if (!_uwp_loading) {
 				var loading = document.createElement("div");
 				loading.setAttribute("class", "uwp-loading");
 				loading.setAttribute("role", "main");
-				loading.innerHTML = '<div class="uwp-loading__part"><div class="uwp-loading__rotator"></div></div><div class="uwp-loading__part uwp-loading__part--bottom"><div class="uwp-loading__rotator"></div></div>\n';
+				loading.innerHTML =
+					'<div class="uwp-loading__part"><div class="uwp-loading__rotator"></div></div><div class="uwp-loading__part uwp-loading__part--bottom"><div class="uwp-loading__rotator"></div></div>\n';
 				UWP.loading = loading;
 				document.body.appendChild(UWP.loading);
 			} else {
 				UWP.loading = _uwp_loading;
 			}
 
-			UWP.revealUWPLoading = function () {
+			UWP.revealUWPLoading = function() {
 				UWP.loading.classList.add("is-active");
 			};
 
-			UWP.concealUWPLoading = function () {
-				var timer = setTimeout(function () {
+			UWP.concealUWPLoading = function() {
+				var timer = setTimeout(function() {
 					clearTimeout(timer);
 					timer = null;
 					UWP.loading.classList.remove("is-active");
 				}, 1000);
 			};
 
-			UWP.removeUWPLoading = function () {
+			UWP.removeUWPLoading = function() {
 				UWP.loading.classList.remove("is-active");
 			};
 			/* Gets user-set config */
-
 
 			UWP.getConfig(params);
 			/* Set page title */
@@ -1354,7 +1439,7 @@ var LazyLoad = function () {
 			UWP.body.setAttribute("data-layout-type", UWP.header.type);
 			/* Handles clicking internal links */
 
-			UWP.body.addEventListener("click", function (event) {
+			UWP.body.addEventListener("click", function(event) {
 				if (event.target.getAttribute("data-target") !== null) {
 					event.stopPropagation();
 					event.preventDefault();
@@ -1373,15 +1458,24 @@ var LazyLoad = function () {
 
 			UWP.navigate(root.location.hash.split(/#\//)[1], false);
 
-			root.onhashchange = function () {
+			root.onhashchange = function() {
 				/* UWP.navigate(root.location.hash.split("=")[1], false); */
 				UWP.navigate(root.location.hash.split(/#\//)[1], false);
 			};
 			/* Prepares space for document's title, puts it in place */
 
+			var _uwp_page_heading =
+				document.getElementsByClassName("uwp-page-heading")[0] || "";
 
-			UWP.pageTitle = document.createElement("span");
-			UWP.header.prependChild(UWP.pageTitle);
+			if (!_uwp_page_heading) {
+				var pageHeading = document.createElement("h1");
+				pageHeading.setAttribute("class", "uwp-page-heading");
+				pageHeading.innerHTML = UWP.pageTitle;
+				UWP.pageTitle = pageHeading;
+				UWP.header.appendChild(UWP.pageTitle);
+			} else {
+				UWP.pageTitle = _uwp_page_heading;
+			}
 		},
 
 		/* Gets document's navigation, puts it in place */
@@ -1399,11 +1493,17 @@ var LazyLoad = function () {
 			}
 
 			function parseNavElement(el) {
-				var elLabel = el ? el.getElementsByTagName("nav-label")[0] || "" : "";
+				var elLabel = el
+					? el.getElementsByTagName("nav-label")[0] || ""
+					: "";
 				var navLabel = elLabel.textContent || "";
-				var elTarget = el ? el.getElementsByTagName("nav-target")[0] || "" : "";
+				var elTarget = el
+					? el.getElementsByTagName("nav-target")[0] || ""
+					: "";
 				var navTarget = elTarget.textContent || "";
-				var elIcon = el ? el.getElementsByTagName("nav-icon")[0] || "" : "";
+				var elIcon = el
+					? el.getElementsByTagName("nav-icon")[0] || ""
+					: "";
 				var navIconSource = elIcon;
 				var navElement = document.createElement("li");
 				var navLink = document.createElement("a");
@@ -1423,9 +1523,9 @@ var LazyLoad = function () {
 						var navIconImage = document.createElement("img");
 						navIconImage.src = navIconSource.textContent;
 						navIcon.appendChild(navIconImage);
-					}
-					/* ...otherwise, it must be Segoe MDL2 symbol */
-					else {
+					} else {
+						/* ...otherwise, it must be Segoe MDL2 symbol */
+
 						/* navIcon.innerHTML = navIconSource.textContent; */
 						navIcon.innerHTML = navIconSource.innerHTML;
 					}
@@ -1433,12 +1533,15 @@ var LazyLoad = function () {
 					navLink.prependChild(navIcon);
 				}
 
-				navLink.addEventListener("click", function (event) {
+				navLink.addEventListener("click", function(event) {
 					event.stopPropagation();
 					event.preventDefault();
 					/* if (root.location.hash !== "".concat("#", UWP.config.hashNavKey, "=", navTarget)) { */
 
-					if (root.location.hash !== "".concat("#/", navTarget)) {
+					if (
+						root.location.hash !==
+						"".concat(UWP.config.hashBang, navTarget)
+					) {
 						UWP.menuList.classList.remove("active");
 						UWP.navigate(navTarget);
 					}
@@ -1449,19 +1552,34 @@ var LazyLoad = function () {
 			}
 
 			var URL = "".concat(UWP.config.includes, "/", target, ".html");
-			var UWP_navigation_request = root.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+			var UWP_navigation_request = root.XMLHttpRequest
+				? new XMLHttpRequest()
+				: new ActiveXObject("Microsoft.XMLHTTP");
 			UWP_navigation_request.overrideMimeType("text/html;charset=utf-8");
 			UWP_navigation_request.open("GET", URL, true);
 			UWP_navigation_request.withCredentials = false;
 
-			UWP_navigation_request.onreadystatechange = function () {
-				if (UWP_navigation_request.status === 404 || UWP_navigation_request.status === 0) {
-					console.log("Error XMLHttpRequest-ing file", UWP_navigation_request.status);
-				} else if (UWP_navigation_request.readyState === 4 && UWP_navigation_request.status === 200 && UWP_navigation_request.responseText) {
+			UWP_navigation_request.onreadystatechange = function() {
+				if (
+					UWP_navigation_request.status === 404 ||
+					UWP_navigation_request.status === 0
+				) {
+					console.log(
+						"Error XMLHttpRequest-ing file",
+						UWP_navigation_request.status
+					);
+				} else if (
+					UWP_navigation_request.readyState === 4 &&
+					UWP_navigation_request.status === 200 &&
+					UWP_navigation_request.responseText
+				) {
 					/* var parser = new DOMParser();
-					var parsed = parser.parseFromString(UWP_navigation_request.responseText, "text/xml"); */
-					var parsed = parseDomFromString(UWP_navigation_request.responseText);
-					var elMainMenu = parsed.getElementsByTagName("nav-container")[0] || "";
+               var parsed = parser.parseFromString(UWP_navigation_request.responseText, "text/xml"); */
+					var parsed = parseDomFromString(
+						UWP_navigation_request.responseText
+					);
+					var elMainMenu =
+						parsed.getElementsByTagName("nav-container")[0] || "";
 					var navsSource = elMainMenu || "";
 					/* UWP.nav = document.createElement("nav"); */
 
@@ -1470,21 +1588,22 @@ var LazyLoad = function () {
 					UWP.nav = nav;
 					/* Adds all the navigations to the DOM tree */
 
-					var elList = navsSource ? navsSource.getElementsByTagName("nav-list") || "" : "";
-					toArray(elList)
-						.forEach(function (navSource) {
-							var navMain = document.createElement("ul");
-							UWP.nav.appendChild(navMain);
-							var elEl = navsSource ? navSource.getElementsByTagName("nav-item") || "" : "";
-							toArray(elEl)
-								.forEach(function (el) {
-									navMain.appendChild(parseNavElement(el));
-								});
+					var elList = navsSource
+						? navsSource.getElementsByTagName("nav-list") || ""
+						: "";
+					toArray(elList).forEach(function(navSource) {
+						var navMain = document.createElement("ul");
+						UWP.nav.appendChild(navMain);
+						var elEl = navsSource
+							? navSource.getElementsByTagName("nav-item") || ""
+							: "";
+						toArray(elEl).forEach(function(el) {
+							navMain.appendChild(parseNavElement(el));
 						});
+					});
 					/* If navigation was constructed, adds it to the DOM tree and displays menu button */
 
-					if (toArray(elList)
-						.length) {
+					if (toArray(elList).length) {
 						UWP.header.appendChild(UWP.nav);
 						UWP.addMenuButton();
 					}
@@ -1501,14 +1620,15 @@ var LazyLoad = function () {
 
 			var nav = document.getElementsByClassName("uwp-nav")[0] || "";
 			var navA = nav ? nav.getElementsByTagName("a") || "" : "";
-			toArray(navA)
-				.forEach(function (link) {
-					if (link.getAttribute("data-target") === UWP.config.currentPage) {
-						link.parentElement.classList.add("active");
-					} else {
-						link.parentElement.classList.remove("active");
-					}
-				});
+			toArray(navA).forEach(function(link) {
+				if (
+					link.getAttribute("data-target") === UWP.config.currentPage
+				) {
+					link.parentElement.classList.add("active");
+				} else {
+					link.parentElement.classList.remove("active");
+				}
+			});
 		},
 
 		/* Creates custom styles based on config */
@@ -1520,7 +1640,9 @@ var LazyLoad = function () {
 				var mainColor_RGB = parseColor(UWP.config.mainColor);
 
 				if (mainColor_RGB) {
-					var mainColor_brightness = calculateBrightness(mainColor_RGB);
+					var mainColor_brightness = calculateBrightness(
+						mainColor_RGB
+					);
 
 					if (mainColor_brightness >= 128) {
 						UWP.body.classList.add("uwp-theme--light");
@@ -1528,25 +1650,46 @@ var LazyLoad = function () {
 						UWP.body.classList.add("uwp-theme--dark");
 					}
 
-					var mainColorDarkened = mainColor_RGB.map(function (color) {
+					var mainColorDarkened = mainColor_RGB.map(function(color) {
 						var newColor = color - 20;
 						if (newColor < 0) newColor = 0;
 						return newColor;
 					});
 
 					if (!UWP.config.mainColorDarkened) {
-						UWP.config.mainColorDarkened = "rgb(".concat(mainColorDarkened, ")");
+						UWP.config.mainColorDarkened = "rgb(".concat(
+							mainColorDarkened,
+							")"
+						);
 					}
 				}
 				/* var Darkened_RGB = parseColor(UWP.config.Darkened); */
 
-
-				UWP.customStyle.innerHTML += "\n\t[data-layout-type=\"tabs\"] .uwp-header {\n\tbackground: ".concat(UWP.config.mainColor, ";\n\t}\n\n\t[data-layout-type=\"overlay\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground-color: ")
-					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked-minimized\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
-					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\n\t[data-layout-type=\"docked\"] .uwp-header {\n\tbackground: ")
-					.concat(UWP.config.mainColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: ")
+				UWP.customStyle.innerHTML += '\n\t[data-layout-type="tabs"] .uwp-header {\n\tbackground: '
+					.concat(
+						UWP.config.mainColor,
+						';\n\t}\n\n\t[data-layout-type="overlay"] .uwp-header {\n\tbackground: '
+					)
+					.concat(
+						UWP.config.mainColor,
+						';\n\t}\n\t[data-layout-type="overlay"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground-color: '
+					)
+					.concat(
+						UWP.config.mainColorDarkened,
+						';\n\t}\n\n\t[data-layout-type="docked-minimized"] .uwp-header {\n\tbackground: '
+					)
+					.concat(
+						UWP.config.mainColor,
+						';\n\t}\n\t[data-layout-type="docked-minimized"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: '
+					)
+					.concat(
+						UWP.config.mainColorDarkened,
+						';\n\t}\n\n\t[data-layout-type="docked"] .uwp-header {\n\tbackground: '
+					)
+					.concat(
+						UWP.config.mainColor,
+						';\n\t}\n\t[data-layout-type="docked"] .uwp-header .uwp-nav:nth-of-type(1) {\n\tbackground: '
+					)
 					.concat(UWP.config.mainColorDarkened, ";\n\t}\n\t");
 			}
 
@@ -1554,7 +1697,9 @@ var LazyLoad = function () {
 				var activeColor_RGB = parseColor(UWP.config.activeColor);
 
 				if (activeColor_RGB) {
-					var activeColor_brightness = calculateBrightness(activeColor_RGB);
+					var activeColor_brightness = calculateBrightness(
+						activeColor_RGB
+					);
 
 					if (activeColor_brightness >= 128) {
 						UWP.body.classList.add("uwp-theme--active-light");
@@ -1563,10 +1708,23 @@ var LazyLoad = function () {
 					}
 				}
 
-				UWP.customStyle.innerHTML += "\n\t[data-layout-type=\"tabs\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tcolor: ".concat(UWP.config.activeColor, ";\n\tborder-bottom-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"overlay\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked-minimized\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
-					.concat(UWP.config.activeColor, ";\n\t}\n\t[data-layout-type=\"docked\"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: ")
+				UWP.customStyle.innerHTML += '\n\t[data-layout-type="tabs"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tcolor: '
+					.concat(
+						UWP.config.activeColor,
+						";\n\tborder-bottom-color: "
+					)
+					.concat(
+						UWP.config.activeColor,
+						';\n\t}\n\t[data-layout-type="overlay"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: '
+					)
+					.concat(
+						UWP.config.activeColor,
+						';\n\t}\n\t[data-layout-type="docked-minimized"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: '
+					)
+					.concat(
+						UWP.config.activeColor,
+						';\n\t}\n\t[data-layout-type="docked"] .uwp-header .uwp-nav:nth-of-type(1) ul li.active {\n\tbackground-color: '
+					)
 					.concat(UWP.config.activeColor, ";\n\t}\n\t");
 			}
 
@@ -1581,13 +1739,15 @@ var LazyLoad = function () {
 			console.log("UWP.addMenuButton()");
 			UWP.menuButton = null;
 
-			var _uwp_menu_button = document.getElementsByClassName("uwp-menu-button")[0] || "";
+			var _uwp_menu_button =
+				document.getElementsByClassName("uwp-menu-button")[0] || "";
 
 			if (!_uwp_menu_button) {
 				var menuButton = document.createElement("button");
 				menuButton.setAttribute("class", "uwp-menu-button");
 				menuButton.setAttribute("aria-label", "Menu");
-				menuButton.innerHTML = '<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="scale(1.75 1.75) translate(0 0)" d="M1024 320h-1024v-64h1024v64zm0 512h-1024v-64h1024v64zm0-256.5h-1024v-63.5h1024v63.5z"/></svg>';
+				menuButton.innerHTML =
+					'<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="scale(1.75 1.75) translate(0 0)" d="M1024 320h-1024v-64h1024v64zm0 512h-1024v-64h1024v64zm0-256.5h-1024v-63.5h1024v63.5z"/></svg>';
 				UWP.menuButton = menuButton;
 				UWP.header.prependChild(UWP.menuButton);
 			} else {
@@ -1596,19 +1756,19 @@ var LazyLoad = function () {
 			/* UWP.menuButton.innerHTML = "&#xE700;"; */
 
 			/* var GlobalNavButton = document.createElement("img");
-			GlobalNavButton.src = "./static/img/svg/GlobalNavButton.svg";
-			UWP.menuButton.appendChild(GlobalNavButton); */
+         GlobalNavButton.src = "./static/img/svg/GlobalNavButton.svg";
+         UWP.menuButton.appendChild(GlobalNavButton); */
 
 			/* var headerNav = UWP.header.getElementsByTagName("nav")[0] || ""; */
 
-
-			UWP.menuList = UWP.header.getElementsByClassName("uwp-nav")[0] || "";
+			UWP.menuList =
+				UWP.header.getElementsByClassName("uwp-nav")[0] || "";
 
 			if (UWP.menuList) {
-				UWP.menuButton.addEventListener("click", function () {
+				UWP.menuButton.addEventListener("click", function() {
 					UWP.menuList.classList.toggle("active");
 				});
-				UWP.main.addEventListener("click", function () {
+				UWP.main.addEventListener("click", function() {
 					UWP.menuList.classList.remove("active");
 				});
 			}
@@ -1627,18 +1787,31 @@ var LazyLoad = function () {
 
 			if (addHistory !== false) {
 				/* history.pushState("", "", "".concat(root.location.href.split("#")[0], "#", UWP.config.hashNavKey, "=", target)); */
-				history.pushState("", "", "".concat(root.location.href.split(/#\//)[0], "#/", target));
+				history.pushState(
+					"",
+					"",
+					"".concat(
+						root.location.href.split(/#\//)[0],
+						UWP.config.hashBang,
+						target
+					)
+				);
 			}
 			/* Clears the page content */
-
 
 			UWP.main.innerHTML = "";
 			/* Displays error message */
 
-			function displayError(title) {
-				UWP.main.innerHTML = "\n\t<div class=\"uwp-error\">\n\t<p>".concat(title, "</p>\n\t<p><a href=\"javascript:void(0);\" class=\"error-link\">Go Home</a></p>\n\t</div>\n\t");
-				var mainA = UWP.main.getElementsByClassName("error-link")[0] || "";
-				mainA.addEventListener("click", function (event) {
+			function displayError(title, linkText) {
+				UWP.main.innerHTML = '\n\t<div class="uwp-error">\n\t<p>'.concat(
+					title,
+					'</p>\n\t<p><a href="javascript:void(0);" class="error-link">' +
+						linkText +
+						"</a></p>\n\t</div>\n\t"
+				);
+				var mainA =
+					UWP.main.getElementsByClassName("error-link")[0] || "";
+				mainA.addEventListener("click", function(event) {
 					event.stopPropagation();
 					event.preventDefault();
 					UWP.navigate(UWP.config.home);
@@ -1647,38 +1820,68 @@ var LazyLoad = function () {
 				UWP.removeUWPLoading();
 			}
 
-			var URL = "".concat(UWP.config.includes, "/")
+			var URL = ""
+				.concat(UWP.config.includes, "/")
 				.concat(target, ".html");
 			/* Requests page data */
 
-			var UWP_navigate_request = root.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+			var UWP_navigate_request = root.XMLHttpRequest
+				? new XMLHttpRequest()
+				: new ActiveXObject("Microsoft.XMLHTTP");
 			UWP_navigate_request.overrideMimeType("text/html;charset=utf-8");
 			UWP_navigate_request.open("GET", URL, true);
 			UWP_navigate_request.withCredentials = false;
 
-			UWP_navigate_request.onreadystatechange = function () {
-				if (UWP_navigate_request.status === 404 || UWP_navigate_request.status === 0) {
-					console.log("Error XMLHttpRequest-ing file", UWP_navigate_request.status);
-					console.error("Something went wrong");
-					displayError("Something went wrong");
-				} else if (UWP_navigate_request.readyState === 4 && UWP_navigate_request.status === 200 && UWP_navigate_request.responseText) {
+			UWP_navigate_request.onreadystatechange = function() {
+				if (
+					UWP_navigate_request.status === 404 ||
+					UWP_navigate_request.status === 0
+				) {
+					console.log(
+						"Error XMLHttpRequest-ing file",
+						UWP_navigate_request.status
+					);
+					console.error(UWP.config.errorTitle);
+					displayError(
+						UWP.config.errorTitle,
+						UWP.config.errorLinkText
+					);
+				} else if (
+					UWP_navigate_request.readyState === 4 &&
+					UWP_navigate_request.status === 200 &&
+					UWP_navigate_request.responseText
+				) {
 					/* var parser = new DOMParser();
-					var parsed = parser.parseFromString(UWP_navigate_request.responseText, "text/xml"); */
-					var parsed = parseDomFromString(UWP_navigate_request.responseText);
-					var page = parsed.getElementsByTagName("page-container")[0] || "";
+               var parsed = parser.parseFromString(UWP_navigate_request.responseText, "text/xml"); */
+					var parsed = parseDomFromString(
+						UWP_navigate_request.responseText
+					);
+					var page =
+						parsed.getElementsByTagName("page-container")[0] || "";
 
 					if (!page) {
-						console.error("Something went wrong");
-						displayError("Something went wrong");
+						console.error(UWP.config.errorTitle);
+						displayError(
+							UWP.config.errorTitle,
+							UWP.config.errorLinkText
+						);
 					}
 
 					UWP.revealUWPLoading();
-					var elTitle = page ? page.getElementsByTagName("page-title")[0] || "" : "";
+					var elTitle = page
+						? page.getElementsByTagName("page-title")[0] || ""
+						: "";
 					var pageTitle = elTitle.textContent || "";
-					var elBody = page ? page.getElementsByTagName("page-content")[0] || "" : "";
+					var elBody = page
+						? page.getElementsByTagName("page-content")[0] || ""
+						: "";
 					var pageBody = elBody.innerHTML || "";
-					var pageIncludeScript = page ? page.getElementsByTagName("include-script")[0] || "" : "";
-					var pageIncludeStyle = page ? page.getElementsByTagName("include-style")[0] || "" : "";
+					var pageIncludeScript = page
+						? page.getElementsByTagName("include-script")[0] || ""
+						: "";
+					var pageIncludeStyle = page
+						? page.getElementsByTagName("include-style")[0] || ""
+						: "";
 					/* Puts the new content in place */
 
 					UWP.main.innerHTML = "";
@@ -1688,7 +1891,7 @@ var LazyLoad = function () {
 					 * @see {@link https://stackoverflow.com/questions/30453078/uncaught-typeerror-cannot-set-property-offsetwidth-of-htmlelement-which-has/53089566#53089566}
 					 */
 
-					(function () {
+					(function() {
 						return UWP.main.offsetWidth;
 					})();
 
@@ -1696,14 +1899,16 @@ var LazyLoad = function () {
 					/* Puts the new page title in place */
 
 					UWP.pageTitle.innerHTML = pageTitle;
-					document.title = "".concat(pageTitle, " - ")
+					document.title = ""
+						.concat(pageTitle, " - ")
 						.concat(UWP.config.pageTitle);
 					/* Runs defined script */
 
 					if (pageIncludeScript) {
 						var scriptName = pageIncludeScript.textContent;
 
-						var _src = "".concat(UWP.config.includeScript, "/")
+						var _src = ""
+							.concat(UWP.config.includeScript, "/")
 							.concat(scriptName);
 
 						removeJsCssFile(_src, "js");
@@ -1714,11 +1919,11 @@ var LazyLoad = function () {
 					}
 					/* Loads defined style */
 
-
 					if (pageIncludeStyle) {
 						var styleName = pageIncludeStyle.textContent;
 
-						var _href = "".concat(UWP.config.includeStyle, "/")
+						var _href = ""
+							.concat(UWP.config.includeStyle, "/")
 							.concat(styleName);
 
 						removeJsCssFile(_href, "css");
@@ -1730,6 +1935,13 @@ var LazyLoad = function () {
 						/* UWP.head.appendChild(link); */
 
 						UWP.body.appendChild(link);
+					}
+
+					if (
+						UWP.config.onPageLoad &&
+						"function" === typeof UWP.config.onPageLoad
+					) {
+						UWP.config.onPageLoad();
 					}
 
 					UWP.updateNavigation();
@@ -1750,7 +1962,12 @@ function _typeof(obj) {
 		};
 	} else {
 		_typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+			return obj &&
+				typeof Symbol === "function" &&
+				obj.constructor === Symbol &&
+				obj !== Symbol.prototype
+				? "symbol"
+				: typeof obj;
 		};
 	}
 	return _typeof(obj);
@@ -1776,10 +1993,10 @@ MIT License 2014
 LegoMushroom @legomushroom http://legomushroom.com
 MIT License 2014
  */
-(function () {
+(function() {
 	var Main;
 
-	Main = function () {
+	Main = (function() {
 		function Main(o) {
 			this.o = o != null ? o : {};
 
@@ -1791,10 +2008,44 @@ MIT License 2014
 			this.redefineProto();
 		}
 
-		Main.prototype.vars = function () {
+		Main.prototype.vars = function() {
 			window.isAnyResizeEventInited = true;
-			this.allowedProtos = [HTMLDivElement, HTMLFormElement, HTMLLinkElement, HTMLBodyElement, HTMLParagraphElement, HTMLFieldSetElement, HTMLLegendElement, HTMLLabelElement, HTMLButtonElement, HTMLUListElement, HTMLOListElement, HTMLLIElement, HTMLHeadingElement, HTMLQuoteElement, HTMLPreElement, HTMLBRElement, HTMLFontElement, HTMLHRElement, HTMLModElement, HTMLParamElement, HTMLMapElement, HTMLTableElement, HTMLTableCaptionElement, HTMLImageElement, HTMLTableCellElement, HTMLSelectElement, HTMLInputElement, HTMLTextAreaElement, HTMLAnchorElement, HTMLObjectElement, HTMLTableColElement, HTMLTableSectionElement, HTMLTableRowElement];
-			return this.timerElements = {
+			this.allowedProtos = [
+				HTMLDivElement,
+				HTMLFormElement,
+				HTMLLinkElement,
+				HTMLBodyElement,
+				HTMLParagraphElement,
+				HTMLFieldSetElement,
+				HTMLLegendElement,
+				HTMLLabelElement,
+				HTMLButtonElement,
+				HTMLUListElement,
+				HTMLOListElement,
+				HTMLLIElement,
+				HTMLHeadingElement,
+				HTMLQuoteElement,
+				HTMLPreElement,
+				HTMLBRElement,
+				HTMLFontElement,
+				HTMLHRElement,
+				HTMLModElement,
+				HTMLParamElement,
+				HTMLMapElement,
+				HTMLTableElement,
+				HTMLTableCaptionElement,
+				HTMLImageElement,
+				HTMLTableCellElement,
+				HTMLSelectElement,
+				HTMLInputElement,
+				HTMLTextAreaElement,
+				HTMLAnchorElement,
+				HTMLObjectElement,
+				HTMLTableColElement,
+				HTMLTableSectionElement,
+				HTMLTableRowElement
+			];
+			return (this.timerElements = {
 				img: 1,
 				textarea: 1,
 				input: 1,
@@ -1817,13 +2068,13 @@ MIT License 2014
 				font: 1,
 				col: 1,
 				iframe: 1
-			};
+			});
 		};
 
-		Main.prototype.redefineProto = function () {
+		Main.prototype.redefineProto = function() {
 			var i, it, proto, t;
 			it = this;
-			return t = function () {
+			return (t = function() {
 				var _i, _len, _ref, _results;
 
 				_ref = this.allowedProtos;
@@ -1831,15 +2082,19 @@ MIT License 2014
 
 				var fn = function fn(proto) {
 					var listener, remover;
-					listener = proto.prototype.addEventListener || proto.prototype.attachEvent;
+					listener =
+						proto.prototype.addEventListener ||
+						proto.prototype.attachEvent;
 					var wrappedListener;
 
-					(function (listener) {
+					(function(listener) {
 						wrappedListener = function wrappedListener() {
 							var option;
 
 							if (this !== window || this !== document) {
-								option = arguments[0] === 'onresize' && !this.isAnyResizeEventInited;
+								option =
+									arguments[0] === "onresize" &&
+									!this.isAnyResizeEventInited;
 
 								if (option) {
 									it.handleResize({
@@ -1853,14 +2108,16 @@ MIT License 2014
 						};
 
 						if (proto.prototype.addEventListener) {
-							return proto.prototype.addEventListener = wrappedListener;
+							return (proto.prototype.addEventListener = wrappedListener);
 						} else if (proto.prototype.attachEvent) {
-							return proto.prototype.attachEvent = wrappedListener;
+							return (proto.prototype.attachEvent = wrappedListener);
 						}
 					})(listener);
 
-					remover = proto.prototype.removeEventListener || proto.prototype.detachEvent;
-					return function (remover) {
+					remover =
+						proto.prototype.removeEventListener ||
+						proto.prototype.detachEvent;
+					return (function(remover) {
 						var wrappedRemover;
 
 						wrappedRemover = function wrappedRemover() {
@@ -1874,11 +2131,11 @@ MIT License 2014
 						};
 
 						if (proto.prototype.removeEventListener) {
-							return proto.prototype.removeEventListener = wrappedRemover;
+							return (proto.prototype.removeEventListener = wrappedRemover);
 						} else if (proto.prototype.detachEvent) {
-							return proto.prototype.detachEvent = wrappedListener;
+							return (proto.prototype.detachEvent = wrappedListener);
 						}
-					}(remover);
+					})(remover);
 				};
 
 				for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
@@ -1889,45 +2146,49 @@ MIT License 2014
 					}
 					/* _results.push(fn.bind(null, proto)()); */
 
-
 					_results.push(fn(proto));
 				}
 
 				return _results;
-			}.call(this);
+			}.call(this));
 		};
 
-		Main.prototype.handleResize = function (args) {
+		Main.prototype.handleResize = function(args) {
 			var computedStyle, el, iframe, isEmpty, isStatic, _ref;
 
 			el = args.that;
 
 			if (!this.timerElements[el.tagName.toLowerCase()]) {
-				iframe = document.createElement('iframe');
+				iframe = document.createElement("iframe");
 				el.appendChild(iframe);
-				iframe.style.width = '100%';
-				iframe.style.height = '100%';
-				iframe.style.position = 'absolute';
+				iframe.style.width = "100%";
+				iframe.style.height = "100%";
+				iframe.style.position = "absolute";
 				iframe.style.zIndex = -999;
 				iframe.style.opacity = 0;
 				iframe.style.top = 0;
 				iframe.style.left = 0;
 				iframe.setAttribute("title", "any-resize-event");
 				iframe.setAttribute("aria-hidden", true);
-				computedStyle = window.getComputedStyle ? getComputedStyle(el) : el.currentStyle;
-				isStatic = computedStyle.position === 'static' && el.style.position === '';
-				isEmpty = computedStyle.position === '' && el.style.position === '';
+				computedStyle = window.getComputedStyle
+					? getComputedStyle(el)
+					: el.currentStyle;
+				isStatic =
+					computedStyle.position === "static" &&
+					el.style.position === "";
+				isEmpty =
+					computedStyle.position === "" && el.style.position === "";
 
 				if (isStatic || isEmpty) {
-					el.style.position = 'relative';
+					el.style.position = "relative";
 				}
 
 				if ((_ref = iframe.contentWindow) != null) {
-					_ref.onresize = function (_this) {
-						return function (e) {
+					_ref.onresize = (function(_this) {
+						return function(e) {
 							return _this.dispatchEvent(el);
 						};
-					}(this);
+					})(this);
 				}
 
 				el.iframe = iframe;
@@ -1935,45 +2196,48 @@ MIT License 2014
 				this.initTimer(el);
 			}
 
-			return el.isAnyResizeEventInited = true;
+			return (el.isAnyResizeEventInited = true);
 		};
 
-		Main.prototype.initTimer = function (el) {
+		Main.prototype.initTimer = function(el) {
 			var height, width;
 			width = 0;
 			height = 0;
-			return this.interval = setInterval(function (_this) {
-				return function () {
-					var newHeight, newWidth;
-					newWidth = el.offsetWidth;
-					newHeight = el.offsetHeight;
+			return (this.interval = setInterval(
+				(function(_this) {
+					return function() {
+						var newHeight, newWidth;
+						newWidth = el.offsetWidth;
+						newHeight = el.offsetHeight;
 
-					if (newWidth !== width || newHeight !== height) {
-						_this.dispatchEvent(el);
+						if (newWidth !== width || newHeight !== height) {
+							_this.dispatchEvent(el);
 
-						width = newWidth;
-						return height = newHeight;
-					}
-				};
-			}(this), this.o.interval || 62.5);
+							width = newWidth;
+							return (height = newHeight);
+						}
+					};
+				})(this),
+				this.o.interval || 62.5
+			));
 		};
 
-		Main.prototype.dispatchEvent = function (el) {
+		Main.prototype.dispatchEvent = function(el) {
 			var e;
 
 			if (document.createEvent) {
-				e = document.createEvent('HTMLEvents');
-				e.initEvent('onresize', false, false);
+				e = document.createEvent("HTMLEvents");
+				e.initEvent("onresize", false, false);
 				return el.dispatchEvent(e);
 			} else if (document.createEventObject) {
 				e = document.createEventObject();
-				return el.fireEvent('onresize', e);
+				return el.fireEvent("onresize", e);
 			} else {
 				return false;
 			}
 		};
 
-		Main.prototype.destroy = function () {
+		Main.prototype.destroy = function() {
 			var i, it, proto, _i, _len, _ref, _results;
 
 			clearInterval(this.interval);
@@ -1985,18 +2249,23 @@ MIT License 2014
 
 			var fn = function fn(proto) {
 				var listener;
-				listener = proto.prototype.addEventListener || proto.prototype.attachEvent;
+				listener =
+					proto.prototype.addEventListener ||
+					proto.prototype.attachEvent;
 
 				if (proto.prototype.addEventListener) {
-					proto.prototype.addEventListener = Element.prototype.addEventListener;
+					proto.prototype.addEventListener =
+						Element.prototype.addEventListener;
 				} else if (proto.prototype.attachEvent) {
 					proto.prototype.attachEvent = Element.prototype.attachEvent;
 				}
 
 				if (proto.prototype.removeEventListener) {
-					return proto.prototype.removeEventListener = Element.prototype.removeEventListener;
+					return (proto.prototype.removeEventListener =
+						Element.prototype.removeEventListener);
 				} else if (proto.prototype.detachEvent) {
-					return proto.prototype.detachEvent = Element.prototype.detachEvent;
+					return (proto.prototype.detachEvent =
+						Element.prototype.detachEvent);
 				}
 			};
 
@@ -2014,13 +2283,17 @@ MIT License 2014
 		};
 
 		return Main;
-	}();
+	})();
 
 	if (typeof define === "function" && define.amd) {
-		define("any-resize-event", [], function () {
+		define("any-resize-event", [], function() {
 			return new Main();
 		});
-	} else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
+	} else if (
+		(typeof module === "undefined" ? "undefined" : _typeof(module)) ===
+			"object" &&
+		_typeof(module.exports) === "object"
+	) {
 		module.exports = new Main();
 	} else {
 		if (typeof window !== "undefined" && window !== null) {
@@ -2031,8 +2304,7 @@ MIT License 2014
 			window.anyResizeEvent = new Main();
 		}
 	}
-})
-.call(this);
+}.call(this));
 
 function _typeof(obj) {
 	if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -2041,7 +2313,12 @@ function _typeof(obj) {
 		};
 	} else {
 		_typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+			return obj &&
+				typeof Symbol === "function" &&
+				obj.constructor === Symbol &&
+				obj !== Symbol.prototype
+				? "symbol"
+				: typeof obj;
 		};
 	}
 	return _typeof(obj);
@@ -2052,24 +2329,27 @@ function _typeof(obj) {
  * @see {@link https://github.com/bigbitecreative/macy.js}
  * passes jshint
  */
-(function (global, factory) {
-	if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined') {
+(function(global, factory) {
+	if (
+		(typeof exports === "undefined" ? "undefined" : _typeof(exports)) ===
+			"object" &&
+		typeof module !== "undefined"
+	) {
 		module.exports = factory();
-	} else if (typeof define === 'function' && define.amd) {
+	} else if (typeof define === "function" && define.amd) {
 		define(factory);
 	} else {
 		global.Macy = factory();
 	}
-})("undefined" !== typeof window ? window : this, function () {
-	'use strict';
+})("undefined" !== typeof window ? window : this, function() {
+	"use strict";
 
 	var $e = function $e(parameter, context) {
 		if (!(this instanceof $e)) {
 			return new $e(parameter, context);
 		}
 
-		parameter = parameter.replace(/^\s*/, '')
-			.replace(/\s*$/, '');
+		parameter = parameter.replace(/^\s*/, "").replace(/\s*$/, "");
 
 		if (context) {
 			return this.byCss(parameter, context);
@@ -2077,10 +2357,9 @@ function _typeof(obj) {
 
 		for (var key in this.selectors) {
 			if (this.selectors.hasOwnProperty(key)) {
-				context = key.split('/');
+				context = key.split("/");
 
-				if (new RegExp(context[1], context[2])
-					.test(parameter)) {
+				if (new RegExp(context[1], context[2]).test(parameter)) {
 					return this.selectors[key](parameter);
 				}
 			}
@@ -2089,28 +2368,27 @@ function _typeof(obj) {
 		return this.byCss(parameter);
 	};
 
-	$e.prototype.byCss = function (parameter, context) {
-		return (context || document)
-			.querySelectorAll(parameter);
+	$e.prototype.byCss = function(parameter, context) {
+		return (context || document).querySelectorAll(parameter);
 	};
 
 	$e.prototype.selectors = {};
 
-	$e.prototype.selectors[/^\.[\w\-]+$/] = function (param) {
+	$e.prototype.selectors[/^\.[\w\-]+$/] = function(param) {
 		return document.getElementsByClassName(param.substring(1));
 	};
 
-	$e.prototype.selectors[/^\w+$/] = function (param) {
+	$e.prototype.selectors[/^\w+$/] = function(param) {
 		return document.getElementsByTagName(param);
 	};
 
-	$e.prototype.selectors[/^\#[\w\-]+$/] = function (param) {
+	$e.prototype.selectors[/^\#[\w\-]+$/] = function(param) {
 		return document.getElementById(param.substring(1));
 	};
 
 	function wait(func, delta) {
 		var to = void 0;
-		return function () {
+		return function() {
 			if (to) {
 				clearTimeout(to);
 			}
@@ -2141,13 +2419,16 @@ function _typeof(obj) {
 	}
 
 	var Queue = function Queue() {
-		var events = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+		var events =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
 		this.running = false;
 		this.events = [];
 		this.add(events);
 	};
 
-	Queue.prototype.run = function () {
+	Queue.prototype.run = function() {
 		if (!this.running && this.events.length > 0) {
 			var fn = this.events.shift();
 			this.running = true;
@@ -2157,17 +2438,20 @@ function _typeof(obj) {
 		}
 	};
 
-	Queue.prototype.add = function () {
+	Queue.prototype.add = function() {
 		var _this = this;
 
-		var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+		var event =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
 
 		if (!event) {
 			return false;
 		}
 
 		if (Array.isArray(event)) {
-			return foreach(event, function (evt) {
+			return foreach(event, function(evt) {
 				return _this.add(evt);
 			});
 		}
@@ -2176,26 +2460,38 @@ function _typeof(obj) {
 		this.run();
 	};
 
-	Queue.prototype.clear = function () {
+	Queue.prototype.clear = function() {
 		this.events = [];
 	};
 
 	var Event = function Event(instance) {
-		var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+		var data =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: {};
 		this.instance = instance;
 		this.data = data;
 		return this;
 	};
 
 	var EventManager = function EventManager() {
-		var instance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+		var instance =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
 		this.events = {};
 		this.instance = instance;
 	};
 
-	EventManager.prototype.on = function () {
-		var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-		var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	EventManager.prototype.on = function() {
+		var key =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
+		var func =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: false;
 
 		if (!key || !func) {
 			return false;
@@ -2208,54 +2504,68 @@ function _typeof(obj) {
 		return this.events[key].push(func);
 	};
 
-	EventManager.prototype.emit = function () {
-		var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-		var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	EventManager.prototype.emit = function() {
+		var key =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
+		var data =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: {};
 
 		if (!key || !Array.isArray(this.events[key])) {
 			return false;
 		}
 
 		var evt = new Event(this.instance, data);
-		foreach(this.events[key], function (fn) {
+		foreach(this.events[key], function(fn) {
 			return fn(evt);
 		});
 	};
 
 	var imageHasLoaded = function imageHasLoaded(img) {
-		return !('naturalHeight' in img && img.naturalHeight + img.naturalWidth === 0) || img.width + img.height !== 0;
+		return (
+			!(
+				"naturalHeight" in img &&
+				img.naturalHeight + img.naturalWidth === 0
+			) || img.width + img.height !== 0
+		);
 	};
 
 	var promise = function promise(ctx, image) {
-		var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-		return new Promise(function (resolve, reject) {
-				if (image.complete) {
-					if (!imageHasLoaded(image)) {
-						return reject(image);
-					}
+		var emitOnLoad =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
+		return new Promise(function(resolve, reject) {
+			if (image.complete) {
+				if (!imageHasLoaded(image)) {
+					return reject(image);
+				}
 
+				return resolve(image);
+			}
+
+			image.addEventListener("load", function() {
+				if (imageHasLoaded(image)) {
 					return resolve(image);
 				}
 
-				image.addEventListener('load', function () {
-					if (imageHasLoaded(image)) {
-						return resolve(image);
-					}
-
-					return reject(image);
-				});
-				image.addEventListener('error', function () {
-					return reject(image);
-				});
-			})
-			.then(function (img) {
+				return reject(image);
+			});
+			image.addEventListener("error", function() {
+				return reject(image);
+			});
+		})
+			.then(function(img) {
 				if (emitOnLoad) {
 					ctx.emit(ctx.constants.EVENT_IMAGE_LOAD, {
 						img: img
 					});
 				}
 			})
-			.catch(function (img) {
+			.catch(function(img) {
 				return ctx.emit(ctx.constants.EVENT_IMAGE_ERROR, {
 					img: img
 				});
@@ -2263,29 +2573,39 @@ function _typeof(obj) {
 	};
 
 	var getImagePromises = function getImagePromises(ctx, images) {
-		var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-		return map(images, function (image) {
+		var emitOnLoad =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
+		return map(images, function(image) {
 			return promise(ctx, image, emitOnLoad);
 		});
 	};
 
 	var imageLoaderPromise = function imageLoaderPromise(ctx, images) {
-		var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-		return Promise.all(getImagePromises(ctx, images, emitOnLoad))
-			.then(function () {
+		var emitOnLoad =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
+		return Promise.all(getImagePromises(ctx, images, emitOnLoad)).then(
+			function() {
 				ctx.emit(ctx.constants.EVENT_IMAGE_COMPLETE);
-			});
+			}
+		);
 	};
 
 	function imagesLoadedNew(ctx, imgs) {
-		var during = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+		var during =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
 		imageLoaderPromise(ctx, imgs, during);
 	}
 
 	var createResizeEvent = function createResizeEvent(ctx) {
-		return wait(function () {
+		return wait(function() {
 			ctx.emit(ctx.constants.EVENT_RESIZE);
-			ctx.queue.add(function () {
+			ctx.queue.add(function() {
 				return ctx.recalculate(true, true);
 			});
 		}, 100);
@@ -2295,7 +2615,9 @@ function _typeof(obj) {
 		ctx.container = $e(ctx.options.container);
 
 		if (ctx.container instanceof $e || !ctx.container) {
-			return ctx.options.debug ? console.error('Error: Container not found') : false;
+			return ctx.options.debug
+				? console.error("Error: Container not found")
+				: false;
 		}
 
 		delete ctx.options.container;
@@ -2304,7 +2626,7 @@ function _typeof(obj) {
 			ctx.container = ctx.container[0];
 		}
 
-		ctx.container.style.position = 'relative';
+		ctx.container.style.position = "relative";
 	};
 
 	var setupState = function setupState(ctx) {
@@ -2315,12 +2637,12 @@ function _typeof(obj) {
 	};
 
 	var setupEventListeners = function setupEventListeners(ctx) {
-		var imgs = $e('img', ctx.container);
-		window.addEventListener('resize', ctx.resizer);
-		ctx.on(ctx.constants.EVENT_IMAGE_LOAD, function () {
+		var imgs = $e("img", ctx.container);
+		window.addEventListener("resize", ctx.resizer);
+		ctx.on(ctx.constants.EVENT_IMAGE_LOAD, function() {
 			return ctx.recalculate(false, false);
 		});
-		ctx.on(ctx.constants.EVENT_IMAGE_COMPLETE, function () {
+		ctx.on(ctx.constants.EVENT_IMAGE_COMPLETE, function() {
 			return ctx.recalculate(true, true);
 		});
 
@@ -2338,10 +2660,16 @@ function _typeof(obj) {
 	};
 
 	var isObject = function isObject(obj) {
-		return obj === Object(obj) && Object.prototype.toString.call(obj) !== '[object Array]';
+		return (
+			obj === Object(obj) &&
+			Object.prototype.toString.call(obj) !== "[object Array]"
+		);
 	};
 
-	var replaceOptionsResponsively = function replaceOptionsResponsively(tempOpts, responsiveOptions) {
+	var replaceOptionsResponsively = function replaceOptionsResponsively(
+		tempOpts,
+		responsiveOptions
+	) {
 		if (!isObject(tempOpts)) {
 			responsiveOptions.columns = tempOpts;
 		}
@@ -2350,18 +2678,32 @@ function _typeof(obj) {
 			responsiveOptions.columns = tempOpts.columns;
 		}
 
-		if (isObject(tempOpts) && tempOpts.margin && !isObject(tempOpts.margin)) {
+		if (
+			isObject(tempOpts) &&
+			tempOpts.margin &&
+			!isObject(tempOpts.margin)
+		) {
 			responsiveOptions.margin = {
 				x: tempOpts.margin,
 				y: tempOpts.margin
 			};
 		}
 
-		if (isObject(tempOpts) && tempOpts.margin && isObject(tempOpts.margin) && tempOpts.margin.x) {
+		if (
+			isObject(tempOpts) &&
+			tempOpts.margin &&
+			isObject(tempOpts.margin) &&
+			tempOpts.margin.x
+		) {
 			responsiveOptions.margin.x = tempOpts.margin.x;
 		}
 
-		if (isObject(tempOpts) && tempOpts.margin && isObject(tempOpts.margin) && tempOpts.margin.y) {
+		if (
+			isObject(tempOpts) &&
+			tempOpts.margin &&
+			isObject(tempOpts.margin) &&
+			tempOpts.margin.y
+		) {
 			responsiveOptions.margin.y = tempOpts.margin.y;
 		}
 	};
@@ -2442,22 +2784,22 @@ function _typeof(obj) {
 	}
 
 	function getCurrentColumns(options) {
-		var noOfColumns = getResponsiveOptions(options)
-			.columns;
+		var noOfColumns = getResponsiveOptions(options).columns;
 		return noOfColumns;
 	}
 
 	function getCurrentMargin(options) {
-		var margin = getResponsiveOptions(options)
-			.margin;
+		var margin = getResponsiveOptions(options).margin;
 		return margin;
 	}
 
 	function getWidths(options) {
-		var marginsIncluded = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+		var marginsIncluded =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: true;
 		var noOfColumns = getCurrentColumns(options);
-		var margins = getCurrentMargin(options)
-			.x;
+		var margins = getCurrentMargin(options).x;
 		var width = 100 / noOfColumns;
 
 		if (!marginsIncluded) {
@@ -2465,11 +2807,11 @@ function _typeof(obj) {
 		}
 
 		if (noOfColumns === 1) {
-			return '100%';
+			return "100%";
 		}
 
-		margins = (noOfColumns - 1) * margins / noOfColumns;
-		return 'calc(' + width + '% - ' + margins + 'px)';
+		margins = ((noOfColumns - 1) * margins) / noOfColumns;
+		return "calc(" + width + "% - " + margins + "px)";
 	}
 
 	function getLeftPosition(ctx, col) {
@@ -2484,11 +2826,12 @@ function _typeof(obj) {
 			return 0;
 		}
 
-		baseMargin = getCurrentMargin(ctx.options)
-			.x;
-		margin = (baseMargin - (noOfColumns - 1) * baseMargin / noOfColumns) * (col - 1);
+		baseMargin = getCurrentMargin(ctx.options).x;
+		margin =
+			(baseMargin - ((noOfColumns - 1) * baseMargin) / noOfColumns) *
+			(col - 1);
 		totalLeft += getWidths(ctx.options, false) * (col - 1);
-		str = 'calc(' + totalLeft + '% + ' + margin + 'px)';
+		str = "calc(" + totalLeft + "% + " + margin + "px)";
 		return str;
 	}
 
@@ -2496,19 +2839,23 @@ function _typeof(obj) {
 		var largest = 0;
 		var container = ctx.container,
 			rows = ctx.rows;
-		foreach(rows, function (row) {
+		foreach(rows, function(row) {
 			largest = row > largest ? row : largest;
 		});
-		container.style.height = largest + 'px';
+		container.style.height = largest + "px";
 	}
 
 	var prop = function prop(element, property) {
-		return window.getComputedStyle(element, null)
+		return window
+			.getComputedStyle(element, null)
 			.getPropertyValue(property);
 	};
 
 	var setUpRows = function setUpRows(ctx, cols) {
-		var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+		var refresh =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
 
 		if (!ctx.lastcol) {
 			ctx.lastcol = 0;
@@ -2549,24 +2896,29 @@ function _typeof(obj) {
 	};
 
 	function shuffle(ctx, $eles) {
-		var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-		var markasComplete = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+		var refresh =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
+		var markasComplete =
+			arguments.length > 3 && arguments[3] !== undefined
+				? arguments[3]
+				: true;
 		var cols = getCurrentColumns(ctx.options);
-		var margin = getCurrentMargin(ctx.options)
-			.y;
+		var margin = getCurrentMargin(ctx.options).y;
 		setUpRows(ctx, cols, refresh);
-		foreach($eles, function (ele) {
+		foreach($eles, function(ele) {
 			var smallest = 0;
 			var eleHeight = parseInt(ele.offsetHeight, 10);
 			if (isNaN(eleHeight)) return;
-			ctx.rows.forEach(function (v, k) {
+			ctx.rows.forEach(function(v, k) {
 				if (v < ctx.rows[smallest]) {
 					smallest = k;
 				}
 			});
-			ele.style.position = 'absolute';
-			ele.style.top = ctx.rows[smallest] + 'px';
-			ele.style.left = '' + ctx.cols[smallest];
+			ele.style.position = "absolute";
+			ele.style.top = ctx.rows[smallest] + "px";
+			ele.style.left = "" + ctx.cols[smallest];
 			ctx.rows[smallest] += !isNaN(eleHeight) ? eleHeight + margin : 0;
 
 			if (markasComplete) {
@@ -2582,23 +2934,28 @@ function _typeof(obj) {
 	}
 
 	function sort(ctx, $eles) {
-		var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-		var markasComplete = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+		var refresh =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: false;
+		var markasComplete =
+			arguments.length > 3 && arguments[3] !== undefined
+				? arguments[3]
+				: true;
 		var cols = getCurrentColumns(ctx.options);
-		var margin = getCurrentMargin(ctx.options)
-			.y;
+		var margin = getCurrentMargin(ctx.options).y;
 		setUpRows(ctx, cols, refresh);
-		foreach($eles, function (ele) {
+		foreach($eles, function(ele) {
 			if (ctx.lastcol === cols) {
 				ctx.lastcol = 0;
 			}
 
-			var eleHeight = prop(ele, 'height');
+			var eleHeight = prop(ele, "height");
 			eleHeight = parseInt(ele.offsetHeight, 10);
 			if (isNaN(eleHeight)) return;
-			ele.style.position = 'absolute';
-			ele.style.top = ctx.rows[ctx.lastcol] + 'px';
-			ele.style.left = '' + ctx.cols[ctx.lastcol];
+			ele.style.position = "absolute";
+			ele.style.top = ctx.rows[ctx.lastcol] + "px";
+			ele.style.left = "" + ctx.cols[ctx.lastcol];
 			ctx.rows[ctx.lastcol] += !isNaN(eleHeight) ? eleHeight + margin : 0;
 			ctx.lastcol += 1;
 
@@ -2615,11 +2972,19 @@ function _typeof(obj) {
 	}
 
 	var calculate = function calculate(ctx) {
-		var refresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-		var loaded = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-		var children = refresh ? ctx.container.children : $e(':scope > *:not([data-macy-complete="1"])', ctx.container);
+		var refresh =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: false;
+		var loaded =
+			arguments.length > 2 && arguments[2] !== undefined
+				? arguments[2]
+				: true;
+		var children = refresh
+			? ctx.container.children
+			: $e(':scope > *:not([data-macy-complete="1"])', ctx.container);
 		var eleWidth = getWidths(ctx.options);
-		foreach(children, function (child) {
+		foreach(children, function(child) {
 			if (refresh) {
 				child.dataset.macyComplete = 0;
 			}
@@ -2638,39 +3003,55 @@ function _typeof(obj) {
 
 	var init$1 = function init() {
 		try {
-			document.createElement('a')
-				.querySelector(':scope *');
+			document.createElement("a").querySelector(":scope *");
 		} catch (error) {
-			(function () {
+			(function() {
 				var scope = /:scope\b/gi;
-				var querySelectorWithScope = polyfill(Element.prototype.querySelector);
+				var querySelectorWithScope = polyfill(
+					Element.prototype.querySelector
+				);
 
-				Element.prototype.querySelector = function querySelector(selectors) {
+				Element.prototype.querySelector = function querySelector(
+					selectors
+				) {
 					return querySelectorWithScope.apply(this, arguments);
 				};
 
-				var querySelectorAllWithScope = polyfill(Element.prototype.querySelectorAll);
+				var querySelectorAllWithScope = polyfill(
+					Element.prototype.querySelectorAll
+				);
 
-				Element.prototype.querySelectorAll = function querySelectorAll(selectors) {
+				Element.prototype.querySelectorAll = function querySelectorAll(
+					selectors
+				) {
 					return querySelectorAllWithScope.apply(this, arguments);
 				};
 
 				function polyfill(originalQuerySelector) {
-					return function (selectors) {
+					return function(selectors) {
 						var hasScope = selectors && scope.test(selectors);
 
 						if (hasScope) {
-							var id = this.getAttribute('id');
+							var id = this.getAttribute("id");
 
 							if (!id) {
-								this.id = 'q' + Math.floor(Math.random() * 9000000) + 1000000;
+								this.id =
+									"q" +
+									Math.floor(Math.random() * 9000000) +
+									1000000;
 							}
 
-							arguments[0] = selectors.replace(scope, '#' + this.id);
-							var elementOrNodeList = originalQuerySelector.apply(this, arguments);
+							arguments[0] = selectors.replace(
+								scope,
+								"#" + this.id
+							);
+							var elementOrNodeList = originalQuerySelector.apply(
+								this,
+								arguments
+							);
 
 							if (id === null) {
-								this.removeAttribute('id');
+								this.removeAttribute("id");
 							} else if (!id) {
 								this.id = id;
 							}
@@ -2685,19 +3066,21 @@ function _typeof(obj) {
 		}
 	};
 
-	var _extends = Object.assign || function (target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];
+	var _extends =
+		Object.assign ||
+		function(target) {
+			for (var i = 1; i < arguments.length; i++) {
+				var source = arguments[i];
 
-			for (var key in source) {
-				if (Object.prototype.hasOwnProperty.call(source, key)) {
-					target[key] = source[key];
+				for (var key in source) {
+					if (Object.prototype.hasOwnProperty.call(source, key)) {
+						target[key] = source[key];
+					}
 				}
 			}
-		}
 
-		return target;
-	};
+			return target;
+		};
 
 	var defaults = {
 		columns: 4,
@@ -2712,7 +3095,10 @@ function _typeof(obj) {
 	init$1();
 
 	var Macy = function Macy() {
-		var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaults;
+		var opts =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: defaults;
 
 		if (!(this instanceof Macy)) {
 			return new Macy(opts);
@@ -2725,20 +3111,28 @@ function _typeof(obj) {
 		setup(this);
 	};
 
-	Macy.init = function (options) {
-		console.warn('Depreciated: Macy.init will be removed in v3.0.0 opt to use Macy directly like so Macy({ /*options here*/ }) ');
+	Macy.init = function(options) {
+		console.warn(
+			"Depreciated: Macy.init will be removed in v3.0.0 opt to use Macy directly like so Macy({ /*options here*/ }) "
+		);
 		return new Macy(options);
 	};
 
-	Macy.prototype.recalculateOnImageLoad = function () {
-		var waitUntilFinish = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-		var imgs = $e('img', this.container);
+	Macy.prototype.recalculateOnImageLoad = function() {
+		var waitUntilFinish =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
+		var imgs = $e("img", this.container);
 		return imagesLoadedNew(this, imgs, !waitUntilFinish);
 	};
 
-	Macy.prototype.runOnImageLoad = function (func) {
-		var everyLoad = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-		var imgs = $e('img', this.container);
+	Macy.prototype.runOnImageLoad = function(func) {
+		var everyLoad =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: false;
+		var imgs = $e("img", this.container);
 		this.on(this.constants.EVENT_IMAGE_COMPLETE, func);
 
 		if (everyLoad) {
@@ -2748,52 +3142,58 @@ function _typeof(obj) {
 		return imagesLoadedNew(this, imgs, everyLoad);
 	};
 
-	Macy.prototype.recalculate = function () {
+	Macy.prototype.recalculate = function() {
 		var _this = this;
 
-		var refresh = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-		var loaded = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+		var refresh =
+			arguments.length > 0 && arguments[0] !== undefined
+				? arguments[0]
+				: false;
+		var loaded =
+			arguments.length > 1 && arguments[1] !== undefined
+				? arguments[1]
+				: true;
 
 		if (loaded) {
 			this.queue.clear();
 		}
 
-		return this.queue.add(function () {
+		return this.queue.add(function() {
 			return calculate(_this, refresh, loaded);
 		});
 	};
 
-	Macy.prototype.remove = function () {
-		window.removeEventListener('resize', this.resizer);
-		foreach(this.container.children, function (child) {
-			child.removeAttribute('data-macy-complete');
-			child.removeAttribute('style');
+	Macy.prototype.remove = function() {
+		window.removeEventListener("resize", this.resizer);
+		foreach(this.container.children, function(child) {
+			child.removeAttribute("data-macy-complete");
+			child.removeAttribute("style");
 		});
-		this.container.removeAttribute('style');
+		this.container.removeAttribute("style");
 	};
 
-	Macy.prototype.reInit = function () {
+	Macy.prototype.reInit = function() {
 		this.recalculate(true, true);
 		this.emit(this.constants.EVENT_INITIALIZED);
-		window.addEventListener('resize', this.resizer);
-		this.container.style.position = 'relative';
+		window.addEventListener("resize", this.resizer);
+		this.container.style.position = "relative";
 	};
 
-	Macy.prototype.on = function (key, func) {
+	Macy.prototype.on = function(key, func) {
 		this.events.on(key, func);
 	};
 
-	Macy.prototype.emit = function (key, data) {
+	Macy.prototype.emit = function(key, data) {
 		this.events.emit(key, data);
 	};
 
 	Macy.constants = {
-		EVENT_INITIALIZED: 'macy.initialized',
-		EVENT_RECALCULATED: 'macy.recalculated',
-		EVENT_IMAGE_LOAD: 'macy.image.load',
-		EVENT_IMAGE_ERROR: 'macy.image.error',
-		EVENT_IMAGE_COMPLETE: 'macy.images.complete',
-		EVENT_RESIZE: 'macy.resize'
+		EVENT_INITIALIZED: "macy.initialized",
+		EVENT_RECALCULATED: "macy.recalculated",
+		EVENT_IMAGE_LOAD: "macy.image.load",
+		EVENT_IMAGE_ERROR: "macy.image.error",
+		EVENT_IMAGE_COMPLETE: "macy.images.complete",
+		EVENT_RESIZE: "macy.resize"
 	};
 	Macy.prototype.constants = Macy.constants;
 	return Macy;

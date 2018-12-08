@@ -6,6 +6,7 @@
  * @see {@link https://hackernoon.com/how-to-automate-all-the-things-with-gulp-b21a3fc96885}
  */
 var gulp = require("gulp"),
+plumber = require("gulp-plumber")
 sass = require("gulp-sass"),
 autoprefixer = require("gulp-autoprefixer"),
 autoprefixerOptions = {
@@ -200,6 +201,14 @@ vendorsCssOptions = {
 vendorsJsOptions = {
 	path: "vendors.js",
 	newLine: "\n"
+},
+pagesCssOptions = {
+	path: "../pages.css",
+	newLine: "\n"
+},
+pagesJsOptions = {
+	path: "../pages.js",
+	newLine: "\n"
 };
 
 gulp.task("browser-sync", [
@@ -229,6 +238,7 @@ gulp.task("browser-sync", [
 
 gulp.task("compile-material-css", function () {
 	gulp.src(material.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -236,6 +246,7 @@ gulp.task("compile-material-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(material.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -250,6 +261,7 @@ gulp.task("compile-material-css", function () {
 
 gulp.task("compile-roboto-css", function () {
 	gulp.src(roboto.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -257,6 +269,7 @@ gulp.task("compile-roboto-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(roboto.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -271,6 +284,7 @@ gulp.task("compile-roboto-css", function () {
 
 gulp.task("compile-roboto-mono-css", function () {
 	gulp.src(robotomono.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -278,6 +292,7 @@ gulp.task("compile-roboto-mono-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(robotomono.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -292,6 +307,7 @@ gulp.task("compile-roboto-mono-css", function () {
 
 gulp.task("compile-libbundle-css", function () {
 	gulp.src(libbundle.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -299,6 +315,7 @@ gulp.task("compile-libbundle-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(libbundle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -313,10 +330,12 @@ gulp.task("compile-libbundle-css", function () {
 
 gulp.task("compile-libbundle-js", function () {
 	gulp.src(libbundle.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(libbundle.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -331,6 +350,7 @@ gulp.task("compile-libbundle-js", function () {
 
 gulp.task("compile-include-style-css", function () {
 	gulp.src(includeStyle.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -338,6 +358,8 @@ gulp.task("compile-include-style-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(concat(pagesCssOptions))
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(includeStyle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -352,10 +374,13 @@ gulp.task("compile-include-style-css", function () {
 
 gulp.task("compile-include-script-js", function () {
 	gulp.src(includeScript.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(concat(pagesJsOptions))
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(includeScript.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -370,6 +395,7 @@ gulp.task("compile-include-script-js", function () {
 
 gulp.task("compile-vendors-css", function () {
 	gulp.src(vendors.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -378,6 +404,7 @@ gulp.task("compile-vendors-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(concat(vendorsCssOptions))
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(vendors.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -392,11 +419,13 @@ gulp.task("compile-vendors-css", function () {
 
 gulp.task("compile-vendors-js", function () {
 	gulp.src(vendors.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(concat(vendorsJsOptions))
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(vendors.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -411,6 +440,7 @@ gulp.task("compile-vendors-js", function () {
 
 gulp.task("compile-typeboost-uwp-css", function () {
 	gulp.src(typeboost.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -418,6 +448,7 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(typeboost.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -432,6 +463,7 @@ gulp.task("compile-typeboost-uwp-css", function () {
 
 gulp.task("compile-muicss-css", function () {
 	gulp.src(muicss.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -439,6 +471,7 @@ gulp.task("compile-muicss-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(muicss.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -453,6 +486,7 @@ gulp.task("compile-muicss-css", function () {
 
 gulp.task("compile-uwp-web-framework-css", function () {
 	gulp.src(uwp.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -460,6 +494,7 @@ gulp.task("compile-uwp-web-framework-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(uwp.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -474,10 +509,12 @@ gulp.task("compile-uwp-web-framework-css", function () {
 
 gulp.task("compile-uwp-web-framework-js", function () {
 	gulp.src(uwp.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(uwp.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -492,6 +529,7 @@ gulp.task("compile-uwp-web-framework-js", function () {
 
 gulp.task("compile-highlightjs-css", function () {
 	gulp.src(highlightjs.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -499,6 +537,7 @@ gulp.task("compile-highlightjs-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(highlightjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -513,10 +552,12 @@ gulp.task("compile-highlightjs-css", function () {
 
 gulp.task("compile-highlightjs-js", function () {
 	gulp.src(highlightjs.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(highlightjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -531,6 +572,7 @@ gulp.task("compile-highlightjs-js", function () {
 
 gulp.task("compile-lightgalleryjs-css", function () {
 	gulp.src(lightgalleryjs.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -538,6 +580,7 @@ gulp.task("compile-lightgalleryjs-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(lightgalleryjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -552,10 +595,12 @@ gulp.task("compile-lightgalleryjs-css", function () {
 
 gulp.task("compile-lightgalleryjs-js", function () {
 	gulp.src(lightgalleryjs.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(lightgalleryjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -570,6 +615,7 @@ gulp.task("compile-lightgalleryjs-js", function () {
 
 gulp.task("compile-glightbox-css", function () {
 	gulp.src(glightbox.scss)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
 			errLogToConsole: true
@@ -577,6 +623,7 @@ gulp.task("compile-glightbox-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(glightbox.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
@@ -591,10 +638,12 @@ gulp.task("compile-glightbox-css", function () {
 
 gulp.task("compile-glightbox-js", function () {
 	gulp.src(glightbox.src)
+	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
 	.pipe(gulp.dest(glightbox.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";

@@ -1,6 +1,6 @@
 /*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, require, throttle,
-$readMoreJS*/
+isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
+runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 /*!
  * modified loadExt
@@ -619,7 +619,7 @@ $readMoreJS*/
 				}
 
 				root.handleMacy = new Macy(settings);
-				macyContainer[classList].add(isActiveClass);
+				/* macyContainer[classList].add(isActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
@@ -745,10 +745,10 @@ $readMoreJS*/
 
 		if (rmLink) {
 			/* var timer = setTimeout(function () {
-      		clearTimeout(timer);
-      		timer = null;
-      		initScript();
-      	}, 100); */
+      clearTimeout(timer);
+      timer = null;
+      initScript();
+      }, 100); */
 			initScript();
 		}
 	};
@@ -856,9 +856,56 @@ $readMoreJS*/
 	var querySelector = "querySelector";
 	var querySelectorAll = "querySelectorAll";
 	var _addEventListener = "addEventListener";
+	var _length = "length";
 	docElem[classList].add("no-js");
 
 	var run = function run() {
+		var hashBang = "#/";
+
+		var onPageLoad = function onPageLoad() {
+			var hashName = root.location.hash
+				? root.location.hash.split(hashBang)[1]
+				: "";
+			var routes = [
+				{
+					hash: "",
+					fn: runHome
+				},
+				{
+					hash: "home",
+					fn: runHome
+				},
+				{
+					hash: "works",
+					fn: runWorks
+				},
+				{
+					hash: "pictures",
+					fn: runPictures
+				},
+				{
+					hash: "gallery",
+					fn: runGallery
+				},
+				{
+					hash: "about",
+					fn: runAbout
+				}
+			];
+			var i, l;
+
+			for (i = 0, l = routes[_length]; i < l; i += 1) {
+				if (hashName === routes[i].hash) {
+					if ("function" === typeof routes[i].fn) {
+						/* routes[i].fn.call(root); */
+						routes[i].fn();
+					}
+				}
+			}
+
+			i = l = null;
+		};
+
 		if (root.UWP) {
 			root.UWP.init({
 				pageTitle: "UWP web framework",
@@ -871,7 +918,11 @@ $readMoreJS*/
 				includeStyle: "./libs/serguei-uwp/css/include-style",
 				navContainer: "nav-container",
 				home: "home",
-				hashNavKey: "page"
+				hashNavKey: "page",
+				hashBang: hashBang,
+				onPageLoad: onPageLoad,
+				errorTitle: "Что-то пошло не так",
+				errorLinkText: "На Главную"
 			});
 		}
 
@@ -911,10 +962,10 @@ $readMoreJS*/
 		switchLayoutType();
 	};
 	/* var scripts = [
-  			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-  			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-  			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-  			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+  "../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+  "../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+  "../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+  "../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
   ]; */
 
 	var scripts = [
@@ -987,15 +1038,18 @@ $readMoreJS*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 	/* var scripts = [
-  			"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-  			"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-  			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-  			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-  			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-  			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+  "../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+  "../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+  "../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+  "../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+  "../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+  "../../cdn/macy.js/2.3.1/js/macy.fixed.js"
   ]; */
 
-	scripts.push("./libs/serguei-uwp/js/vendors.min.js");
+	scripts.push(
+		"./libs/serguei-uwp/js/vendors.min.js",
+		"./libs/serguei-uwp/js/pages.min.js"
+	);
 	/*!
 	 * load scripts after webfonts loaded using doesFontExist
 	 */
@@ -1054,7 +1108,8 @@ $readMoreJS*/
 			load = new loadJsCss(
 				[
 					/* forcedHTTP + "://fonts.googleapis.com/css?family=Roboto+Mono%7CRoboto:300,400,500,700&subset=cyrillic,latin-ext", */
-					"./libs/serguei-uwp/css/vendors.min.css"
+					"./libs/serguei-uwp/css/vendors.min.css",
+					"./libs/serguei-uwp/css/pages.min.css"
 				],
 				onFontsLoadedCallback
 			);

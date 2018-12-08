@@ -5,7 +5,7 @@ updateMacyThrottled*/
 /*!
  * page logic
  */
-(function (root, document) {
+(function(root, document) {
 	"use strict";
 
 	var runAbout = function runAbout() {
@@ -37,9 +37,19 @@ updateMacyThrottled*/
 				}
 			};
 
-			if (!scriptIsLoaded("../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (
+				!scriptIsLoaded(
+					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+				)
+			) {
 				var load;
-				load = new loadJsCss(["../../cdn/glightbox/1.0.8/css/glightbox.fixed.min.css", "../../cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+				load = new loadJsCss(
+					[
+						"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+						"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+					],
+					initScript
+				);
 			} else {
 				initScript();
 			}
@@ -63,7 +73,6 @@ updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-
 		var onImagesLoaded = function onImagesLoaded(macyGrid) {
 			if (root.imagesLoaded) {
 				var imgLoad;
@@ -74,7 +83,11 @@ updateMacyThrottled*/
 						updateMacyThrottled();
 					}
 
-					console.log("imagesLoaded: found " + instance.images[_length] + " images");
+					console.log(
+						"imagesLoaded: found " +
+							instance.images[_length] +
+							" images"
+					);
 				};
 
 				imgLoad.on("always", onAlways);
@@ -104,18 +117,32 @@ updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid ? macyGrid.children || macyGrid[querySelectorAll]("." + macyGridClass + " > *") || "" : "";
+				var container = macyGrid
+					? macyGrid.children ||
+					  macyGrid[querySelectorAll](
+							"." + macyGridClass + " > *"
+					  ) ||
+					  ""
+					: "";
 
 				if (container) {
 					var i, l;
 
 					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (!container[i][classList].contains(isBindedMacyItemClass)) {
+						if (
+							!container[i][classList].contains(
+								isBindedMacyItemClass
+							)
+						) {
 							container[i][classList].add(isBindedMacyItemClass);
 
-							container[i][_addEventListener]("onresize", updateMacyThrottled, {
-								passive: true
-							});
+							container[i][_addEventListener](
+								"onresize",
+								updateMacyThrottled,
+								{
+									passive: true
+								}
+							);
 						}
 					}
 
