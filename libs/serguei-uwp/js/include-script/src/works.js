@@ -1,5 +1,5 @@
 /*global console, imagesLoaded, LazyLoad, manageExternalLinkAll, manageMacy,
-runWorks, updateMacyThrottled*/
+updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -209,9 +209,4 @@ runWorks, updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-
-	/* if (document[getElementsByClassName]("macy-grid--works")[0]) {
-		runWorks();
-	} */
-
 })("undefined" !== typeof window ? window : this, document);

@@ -1,6 +1,6 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, runAbout,
-scriptIsLoaded, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
+updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -154,7 +154,7 @@ scriptIsLoaded, updateMacyThrottled*/
 		var isBindedMacyItemClass = "is-binded-macy-item";
 
 		var macyGridClass = "macy-grid";
-		
+
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
 		var isActiveClass = "is-active";
@@ -271,9 +271,4 @@ scriptIsLoaded, updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-
-	/* if (document[getElementsByClassName]("macy-grid--about")[0]) {
-		runAbout();
-	} */
-
 })("undefined" !== typeof window ? window : this, document);

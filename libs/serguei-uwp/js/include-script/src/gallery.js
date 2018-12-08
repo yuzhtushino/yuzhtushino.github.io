@@ -1,6 +1,5 @@
 /*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss,
-manageExternalLinkAll, manageMacy, runGallery, scriptIsLoaded,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -31,7 +30,10 @@ updateMacyThrottled*/
 					}
 					if (macyGrid) {
 						root.handleLightGallery = lightGallery(macyGrid, {
-								autoplayControls: false
+								autoplay: false,
+								autoplayControls: false,
+								hash: false,
+								share: false
 							});
 					}
 				}
@@ -40,9 +42,7 @@ updateMacyThrottled*/
 				var load;
 				load = new loadJsCss(["./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
 							"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
-							"./cdn/lightgallery.js/1.1.1/js/lg-fullscreen.fixed.min.js",
-							"./cdn/lightgallery.js/1.1.1/js/lg-thumbnail.fixed.min.js",
-							"./cdn/lightgallery.js/1.1.1/js/lg-zoom.fixed.min.js"], initScript);
+							"./cdn/lightgallery.js/1.1.1/js/lightgallery.plugins.fixed.min.js"], initScript);
 			} else {
 				initScript();
 			}
@@ -322,9 +322,4 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-
-	/* if (document[getElementsByClassName]("macy-grid--gallery")[0]) {
-		runGallery();
-	} */
-
 })("undefined" !== typeof window ? window : this, document);

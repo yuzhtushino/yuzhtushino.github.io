@@ -1,6 +1,5 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, runPictures, scriptIsLoaded,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -268,9 +267,4 @@ updateMacyThrottled*/
 			manageExternalLinkAll();
 		}
 	};
-
-	/* if (document[getElementsByClassName]("macy-grid--pictures")[0]) {
-		runPictures();
-	} */
-
 })("undefined" !== typeof window ? window : this, document);

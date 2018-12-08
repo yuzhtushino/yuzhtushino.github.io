@@ -5,32 +5,42 @@
  * @see {@link https://gulpjs.com/plugins/blackList.json}
  * @see {@link https://hackernoon.com/how-to-automate-all-the-things-with-gulp-b21a3fc96885}
  */
-var gulp = require("gulp"),
-plumber = require("gulp-plumber")
-sass = require("gulp-sass"),
-autoprefixer = require("gulp-autoprefixer"),
+var gulp = require("gulp");
+var plumber = require("gulp-plumber");
+var sass = require("gulp-sass");
+var minifyCss = require("gulp-minify-css");
+var uglify = require("gulp-uglify");
+var sourcemaps = require('gulp-sourcemaps');
+var rename = require("gulp-rename");
+var concat = require("gulp-concat");
+/* var bundle = require("gulp-bundle-assets"); */
+
+var browserSync = require("browser-sync").create();
+var reload = browserSync.reload;
+
+/*!
+ * @see {@link https://github.com/postcss/autoprefixer#options}
+ */
+var autoprefixer = require("gulp-autoprefixer");
+var autoprefixerOptions;
 autoprefixerOptions = {
 	browsers: ["last 2 versions"]
-},
-minifyCss = require("gulp-minify-css"),
-uglify = require("gulp-uglify"),
-sourcemaps = require('gulp-sourcemaps'),
-rename = require("gulp-rename"),
-/* bundle = require("gulp-bundle-assets"), */
-browserSync = require("browser-sync").create(),
-reload = browserSync.reload,
-/* path = require("path"), */
+};
+
 /*!
  * @see {@link https://github.com/babel/babel/issues/7910}
  */
-babel = require("gulp-babel"),
+
+var babel = require("gulp-babel");
+var babelOptions;
 babelOptions = {
 	"sourceType": "script",
 	"presets": ["@babel/env"],
 	"plugins": ["@babel/plugin-transform-object-assign",
 		"@babel/plugin-transform-arrow-functions",
 		"@babel/plugin-transform-async-to-generator"]
-},
+};
+
 /*!
  * @see {@link https://github.com/beautify-web/js-beautify}
  * a JSON-formatted file indicated by the --config parameter
@@ -40,11 +50,10 @@ babelOptions = {
  * if the input/output files reside higher
  * than the config file itself
  */
-/* beautifyOptions = {
-"config": ".jsbeautifyrc"
-}, */
-/* beautify = require("gulp-jsbeautifier"),
+/* var beautify = require("gulp-jsbeautifier"); */
+var beautifyOptions;
 beautifyOptions = {
+	/* "config": ".jsbeautifyrc", */
 	"editorconfig": false,
 	"indent_size": 4,
 	"indent_char": "\t",
@@ -79,7 +88,8 @@ beautifyOptions = {
 		"comma_first": false,
 		"operator_position": "before-newline"
 	}
-}, */
+};
+
 /*!
  * @see {@link https://prettier.io/docs/en/options.html}
  * using external config may cause
@@ -87,128 +97,126 @@ beautifyOptions = {
  * if the input/output files reside higher
  * than the config file itself
  */
-/* prettierOptions = {
-"config": ".prettierrc"
-} */
-prettier = require("gulp-prettier"),
+var prettier = require("gulp-prettier");
+var prettierOptions;
 prettierOptions = {
-"tabWidth": 4,
-"useTabs": true,
-"endOfLine": "lf",
-"printWidth:": 0
-},
+	/* "config": ".prettierrc", */
+	"tabWidth": 4,
+	"useTabs": true,
+	"endOfLine": "lf",
+	"printWidth:": 0
+};
 
-concat = require("gulp-concat"),
-
-muicss = {
-	scss: "../../cdn/mui/0.9.39/scss/mui.scss",
-	css: "../../cdn/mui/0.9.39/css"
-},
-
-uwp = {
-	src: "../../cdn/uwp-web-framework/2.0/src/uwp.core.fixed.js",
-	js: "../../cdn/uwp-web-framework/2.0/js",
-	scss: "../../cdn/uwp-web-framework/2.0/scss/uwp.style.fixed.scss",
-	css: "../../cdn/uwp-web-framework/2.0/css"
-},
-
-/* material = {
-scss: "../../fonts/material-design-icons/3.0.1/scss/material-icons.scss",
-css: "../../fonts/material-design-icons/3.0.1/css"
-}, */
-
-material = {
-	scss: "../../fonts/MaterialDesign-Webfont/2.2.43/scss/materialdesignicons.scss",
-	css: "../../fonts/MaterialDesign-Webfont/2.2.43/css"
-},
-
-roboto = {
-	scss: "../../fonts/roboto-fontfacekit/2.137/scss/roboto.scss",
-	css: "../../fonts/roboto-fontfacekit/2.137/css"
-},
-
-robotomono = {
-	scss: "../../fonts/roboto-mono-fontfacekit/2.0.986/scss/roboto-mono.scss",
-	css: "../../fonts/roboto-mono-fontfacekit/2.0.986/css"
-},
-
-highlightjs = {
-	src: "../../cdn/highlight.js/9.12.0/src/*.js",
-	js: "../../cdn/highlight.js/9.12.0/js",
-	scss: "../../cdn/highlight.js/9.12.0/scss/*.scss",
-	css: "../../cdn/highlight.js/9.12.0/css"
-},
-
-typeboost = {
-	scss: "../../cdn/typeboost-uwp.css/0.1.8/scss/typeboost-uwp.scss",
-	css: "../../cdn/typeboost-uwp.css/0.1.8/css"
-},
-
-glightbox = {
-	src: "../../cdn/glightbox/1.0.8/src/*.js",
-	js: "../../cdn/glightbox/1.0.8/js",
-	scss: "../../cdn/glightbox/1.0.8/scss/*.scss",
-	css: "../../cdn/glightbox/1.0.8/css"
-},
-
-lightgalleryjs = {
-	src: "../../cdn/lightgallery.js/1.1.1/src/*.js",
-	js: "../../cdn/lightgallery.js/1.1.1/js",
-	scss: "../../cdn/lightgallery.js/1.1.1/scss/*.scss",
-	css: "../../cdn/lightgallery.js/1.1.1/css"
-},
-
-includeStyle = {
-	scss: "./css/include-style/scss/*.scss",
-	css: "./css/include-style"
-},
-
-includeScript = {
-	src: "./js/include-script/src/*.js",
-	js: "./js/include-script"
-},
-
-libbundle = {
-	src: "./src/bundle.js",
-	js: "./js",
-	scss: "./scss/bundle.scss",
-	css: "./css"
-},
-
-vendors = {
-	src: [
-		// "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
-		"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-		"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-		"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-		"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-		"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-		"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
-	],
-	js: "./js",
-	scss: [
-		"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-		"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-		"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-		"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
-	],
-	css: "./css"
-},
-vendorsCssOptions = {
-	path: "vendors.css",
-	newLine: "\n"
-},
-vendorsJsOptions = {
-	path: "vendors.js",
-	newLine: "\n"
-},
-pagesCssOptions = {
-	path: "../pages.css",
-	newLine: "\n"
-},
-pagesJsOptions = {
-	path: "../pages.js",
-	newLine: "\n"
+var options = {
+	muicss: {
+		scss: "../../cdn/mui/0.9.39/scss/*.scss",
+		css: "../../cdn/mui/0.9.39/css"
+	},
+	uwp: {
+		src: "../../cdn/uwp-web-framework/2.0/src/*.js",
+		js: "../../cdn/uwp-web-framework/2.0/js",
+		scss: "../../cdn/uwp-web-framework/2.0/scss/*.scss",
+		css: "../../cdn/uwp-web-framework/2.0/css"
+	},
+	material: {
+		scss: "../../fonts/MaterialDesign-Webfont/2.2.43/scss/*.scss",
+		css: "../../fonts/MaterialDesign-Webfont/2.2.43/css"
+	},
+	roboto: {
+		scss: "../../fonts/roboto-fontfacekit/2.137/scss/*.scss",
+		css: "../../fonts/roboto-fontfacekit/2.137/css"
+	},
+	robotomono: {
+		scss: "../../fonts/roboto-mono-fontfacekit/2.0.986/scss/*.scss",
+		css: "../../fonts/roboto-mono-fontfacekit/2.0.986/css"
+	},
+	highlightjs: {
+		src: "../../cdn/highlight.js/9.12.0/src/*.js",
+		js: "../../cdn/highlight.js/9.12.0/js",
+		scss: "../../cdn/highlight.js/9.12.0/scss/*.scss",
+		css: "../../cdn/highlight.js/9.12.0/css"
+	},
+	typeboost: {
+		scss: "../../cdn/typeboost-uwp.css/0.1.8/scss/*.scss",
+		css: "../../cdn/typeboost-uwp.css/0.1.8/css"
+	},
+	glightbox: {
+		src: "../../cdn/glightbox/1.0.8/src/*.js",
+		js: "../../cdn/glightbox/1.0.8/js",
+		scss: "../../cdn/glightbox/1.0.8/scss/*.scss",
+		css: "../../cdn/glightbox/1.0.8/css"
+	},
+	lightgalleryjs: {
+		src: "../../cdn/lightgallery.js/1.1.1/src/*.js",
+		js: "../../cdn/lightgallery.js/1.1.1/js",
+		scss: "../../cdn/lightgallery.js/1.1.1/scss/*.scss",
+		css: "../../cdn/lightgallery.js/1.1.1/css",
+		plugins: {
+			src: "../../cdn/lightgallery.js/1.1.1/src/plugins/*.js",
+			js: "../../cdn/lightgallery.js/1.1.1/js",
+			concatOptions: {
+				js: {
+					path: "lightgallery.plugins.fixed.js",
+					newLine: "\n"
+				}
+			}
+		}
+	},
+	includeStyle: {
+		scss: "./css/include-style/scss/*.scss",
+		css: "./css/include-style",
+		concatOptions: {
+			css: {
+				path: "../pages.css",
+				newLine: "\n"
+			}
+		}
+	},
+	includeScript: {
+		src: "./js/include-script/src/*.js",
+		js: "./js/include-script",
+		concatOptions: {
+			js: {
+				path: "../pages.js",
+				newLine: "\n"
+			}
+		}
+	},
+	libbundle: {
+		src: "./src/*.js",
+		js: "./js",
+		scss: "./scss/*.scss",
+		css: "./css"
+	},
+	vendors: {
+		src: [
+			// "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
+			"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+			"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+		],
+		js: "./js",
+		scss: [
+			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+		],
+		css: "./css",
+		concatOptions: {
+			css: {
+				path: "vendors.css",
+				newLine: "\n"
+			},
+			js: {
+				path: "vendors.js",
+				newLine: "\n"
+			}
+		}
+	}
 };
 
 gulp.task("browser-sync", [
@@ -237,7 +245,7 @@ gulp.task("browser-sync", [
 });
 
 gulp.task("compile-material-css", function () {
-	gulp.src(material.scss)
+	gulp.src(options.material.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -247,20 +255,20 @@ gulp.task("compile-material-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(material.css))
+	.pipe(gulp.dest(options.material.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(material.css))
+	.pipe(gulp.dest(options.material.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-roboto-css", function () {
-	gulp.src(roboto.scss)
+	gulp.src(options.roboto.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -270,20 +278,20 @@ gulp.task("compile-roboto-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(roboto.css))
+	.pipe(gulp.dest(options.roboto.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(roboto.css))
+	.pipe(gulp.dest(options.roboto.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-roboto-mono-css", function () {
-	gulp.src(robotomono.scss)
+	gulp.src(options.robotomono.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -293,20 +301,20 @@ gulp.task("compile-roboto-mono-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(robotomono.css))
+	.pipe(gulp.dest(options.robotomono.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(robotomono.css))
+	.pipe(gulp.dest(options.robotomono.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-libbundle-css", function () {
-	gulp.src(libbundle.scss)
+	gulp.src(options.libbundle.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -316,40 +324,40 @@ gulp.task("compile-libbundle-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(libbundle.css))
+	.pipe(gulp.dest(options.libbundle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libbundle.css))
+	.pipe(gulp.dest(options.libbundle.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-libbundle-js", function () {
-	gulp.src(libbundle.src)
+	gulp.src(options.libbundle.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(libbundle.js))
+	.pipe(gulp.dest(options.libbundle.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(libbundle.js))
+	.pipe(gulp.dest(options.libbundle.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-include-style-css", function () {
-	gulp.src(includeStyle.scss)
+	gulp.src(options.includeStyle.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -358,43 +366,43 @@ gulp.task("compile-include-style-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(concat(pagesCssOptions))
+	.pipe(concat(options.includeStyle.concatOptions.css))
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(includeStyle.css))
+	.pipe(gulp.dest(options.includeStyle.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(includeStyle.css))
+	.pipe(gulp.dest(options.includeStyle.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-include-script-js", function () {
-	gulp.src(includeScript.src)
+	gulp.src(options.includeScript.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(concat(pagesJsOptions))
+	.pipe(concat(options.includeScript.concatOptions.js))
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(includeScript.js))
+	.pipe(gulp.dest(options.includeScript.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(includeScript.js))
+	.pipe(gulp.dest(options.includeScript.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-vendors-css", function () {
-	gulp.src(vendors.scss)
+	gulp.src(options.vendors.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -403,43 +411,43 @@ gulp.task("compile-vendors-css", function () {
 	.pipe(autoprefixer(autoprefixerOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(concat(vendorsCssOptions))
+	.pipe(concat(options.vendors.concatOptions.css))
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(vendors.css))
+	.pipe(gulp.dest(options.vendors.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(vendors.css))
+	.pipe(gulp.dest(options.vendors.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-vendors-js", function () {
-	gulp.src(vendors.src)
+	gulp.src(options.vendors.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(concat(vendorsJsOptions))
+	.pipe(concat(options.vendors.concatOptions.js))
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(vendors.js))
+	.pipe(gulp.dest(options.vendors.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(vendors.js))
+	.pipe(gulp.dest(options.vendors.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-typeboost-uwp-css", function () {
-	gulp.src(typeboost.scss)
+	gulp.src(options.typeboost.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -449,20 +457,20 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(typeboost.css))
+	.pipe(gulp.dest(options.typeboost.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(typeboost.css))
+	.pipe(gulp.dest(options.typeboost.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-muicss-css", function () {
-	gulp.src(muicss.scss)
+	gulp.src(options.muicss.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -472,20 +480,20 @@ gulp.task("compile-muicss-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(muicss.css))
+	.pipe(gulp.dest(options.muicss.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(muicss.css))
+	.pipe(gulp.dest(options.muicss.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-uwp-web-framework-css", function () {
-	gulp.src(uwp.scss)
+	gulp.src(options.uwp.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -495,40 +503,40 @@ gulp.task("compile-uwp-web-framework-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(uwp.css))
+	.pipe(gulp.dest(options.uwp.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(uwp.css))
+	.pipe(gulp.dest(options.uwp.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-uwp-web-framework-js", function () {
-	gulp.src(uwp.src)
+	gulp.src(options.uwp.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(uwp.js))
+	.pipe(gulp.dest(options.uwp.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(uwp.js))
+	.pipe(gulp.dest(options.uwp.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-highlightjs-css", function () {
-	gulp.src(highlightjs.scss)
+	gulp.src(options.highlightjs.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -538,40 +546,40 @@ gulp.task("compile-highlightjs-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(highlightjs.css))
+	.pipe(gulp.dest(options.highlightjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(highlightjs.css))
+	.pipe(gulp.dest(options.highlightjs.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-highlightjs-js", function () {
-	gulp.src(highlightjs.src)
+	gulp.src(options.highlightjs.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(highlightjs.js))
+	.pipe(gulp.dest(options.highlightjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(highlightjs.js))
+	.pipe(gulp.dest(options.highlightjs.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-lightgalleryjs-css", function () {
-	gulp.src(lightgalleryjs.scss)
+	gulp.src(options.lightgalleryjs.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -581,40 +589,61 @@ gulp.task("compile-lightgalleryjs-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(lightgalleryjs.css))
+	.pipe(gulp.dest(options.lightgalleryjs.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(lightgalleryjs.css))
+	.pipe(gulp.dest(options.lightgalleryjs.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-lightgalleryjs-js", function () {
-	gulp.src(lightgalleryjs.src)
+	gulp.src(options.lightgalleryjs.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(lightgalleryjs.js))
+	.pipe(gulp.dest(options.lightgalleryjs.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(lightgalleryjs.js))
+	.pipe(gulp.dest(options.lightgalleryjs.js))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-lightgalleryjs-plugins-js", function () {
+	gulp.src(options.lightgalleryjs.plugins.src)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(concat(options.lightgalleryjs.plugins.concatOptions.js))
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.lightgalleryjs.plugins.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(uglify())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.lightgalleryjs.plugins.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-glightbox-css", function () {
-	gulp.src(glightbox.scss)
+	gulp.src(options.glightbox.scss)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(sass({
@@ -624,43 +653,43 @@ gulp.task("compile-glightbox-css", function () {
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(glightbox.css))
+	.pipe(gulp.dest(options.glightbox.css))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(glightbox.css))
+	.pipe(gulp.dest(options.glightbox.css))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
 gulp.task("compile-glightbox-js", function () {
-	gulp.src(glightbox.src)
+	gulp.src(options.glightbox.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(glightbox.js))
+	.pipe(gulp.dest(options.glightbox.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(glightbox.js))
+	.pipe(gulp.dest(options.glightbox.js))
 	.pipe(reload({
 			stream: true
 		}));
 });
 
-gulp.task("bundle-assets", function () {
-	return gulp.src("./gulp-bundle-assets.config.js")
-	.pipe(bundle())
-	.pipe(bundle.results("./")) // arg is destination of bundle.result.json
-	.pipe(gulp.dest("./"));
-});
+/* gulp.task("bundle-assets", function () {
+return gulp.src("./gulp-bundle-assets.config.js")
+.pipe(bundle())
+.pipe(bundle.results("./"))
+.pipe(gulp.dest("./"));
+}); */
 
 gulp.task("default", ["browser-sync"]);
