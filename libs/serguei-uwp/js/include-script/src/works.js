@@ -106,50 +106,50 @@ runWorks, updateMacyThrottled*/
 		};
 
 		var macyItems = [{
-				"href": "https://build.phonegap.com/apps/1824701/share",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/build.phonegap.com-apps-1824701-share.jpg"
+				href: "https://build.phonegap.com/apps/1824701/share",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/build.phonegap.com-apps-1824701-share.jpg"
 			}, {
-				"href": "https://englishextra.github.io/403.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-403-html.jpg"
+				href: "https://englishextra.github.io/403.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-403-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/404.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-404-html.jpg"
+				href: "https://englishextra.github.io/404.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-404-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/pages/more/more_irregular_verbs.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-pages-more-more_irregular_verbs-html.jpg"
+				href: "https://englishextra.github.io/pages/more/more_irregular_verbs.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-pages-more-more_irregular_verbs-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/pages/more/more_newsletter_can_get_english_for_free.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-pages-more-more_newsletter_can_get_english_for_free-html.jpg"
+				href: "https://englishextra.github.io/pages/more/more_newsletter_can_get_english_for_free.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-pages-more-more_newsletter_can_get_english_for_free-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/serguei/about.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-serguei-about-html.jpg"
+				href: "https://englishextra.github.io/serguei/about.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-serguei-about-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/serguei/slides.html",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-serguei-slides-html.jpg"
+				href: "https://englishextra.github.io/serguei/slides.html",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-serguei-slides-html.jpg"
 			}, {
-				"href": "https://englishextra.github.io/",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io.jpg"
+				href: "https://englishextra.github.io/",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io.jpg"
 			}, {
-				"href": "https://englishextra.gitlab.io/",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.gitlab.io.jpg"
+				href: "https://englishextra.gitlab.io/",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.gitlab.io.jpg"
 			}, {
-				"href": "https://github.com/englishextra",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/github.com-englishextra.jpg"
+				href: "https://github.com/englishextra",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/github.com-englishextra.jpg"
 			}, {
-				"href": "https://mytushino.github.io/",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/mytushino.github.io.jpg"
+				href: "https://mytushino.github.io/",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/mytushino.github.io.jpg"
 			}, {
-				"href": "https://noushevr.github.io/",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
+				href: "https://noushevr.github.io/",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
 			}, {
-				"href": "https://www.behance.net/englishextra",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/www.behance.net-englishextra.jpg"
+				href: "https://www.behance.net/englishextra",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/www.behance.net-englishextra.jpg"
 			}, {
-				"href": "https://www.domestika.org/en/englishextra",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/www.domestika.org-en-englishextra.jpg"
+				href: "https://www.domestika.org/en/englishextra",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/www.domestika.org-en-englishextra.jpg"
 			}, {
-				"href": "https://www.npmjs.com/~englishextra",
-				"src": "./libs/serguei-uwp/img/works-screenshots/@1x/www.npmjs.com-englishextra.jpg"
+				href: "https://www.npmjs.com/~englishextra",
+				src: "./libs/serguei-uwp/img/works-screenshots/@1x/www.npmjs.com-englishextra.jpg"
 			}
 		];
 
