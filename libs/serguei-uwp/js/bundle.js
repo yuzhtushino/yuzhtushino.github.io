@@ -350,7 +350,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			};
 
 			var _isAbsolute =
-				0 === url.indexOf("// ") || !!~url.indexOf(":// ");
+				0 === url.indexOf("//") || !!~url.indexOf("://");
 
 			var _locationHref = root.location || "";
 
@@ -503,9 +503,9 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		};
 
 		var arrange = function arrange(e) {
-			var isBindedExternalLinkClass = "is-binded-external-link";
+			var externalLinkIsBindedClass = "external-link--is-binded";
 
-			if (!e[classList].contains(isBindedExternalLinkClass)) {
+			if (!e[classList].contains(externalLinkIsBindedClass)) {
 				var url = e[getAttribute]("href") || "";
 
 				if (
@@ -528,7 +528,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 						);
 					}
 
-					e[classList].add(isBindedExternalLinkClass);
+					e[classList].add(externalLinkIsBindedClass);
 				}
 			}
 		};
@@ -578,9 +578,9 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 	var updateMacyThrottled = throttle(updateMacy, 1000);
 
-	var initMacy = function initMacy(macyContainerClass, options) {
+	var initMacy = function initMacy(macyGridClass, options) {
 		var defaultSettings = {
-			/* container: ".macy-container", */
+			/* container: ".macy-grid", */
 			trueOrder: false,
 			waitForImages: false,
 			margin: 0,
@@ -595,7 +595,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			}
 		};
 		var settings = options || {};
-		settings.container = "." + macyContainerClass;
+		settings.container = "." + macyGridClass;
 		var opt;
 
 		for (opt in defaultSettings) {
@@ -609,7 +609,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 		opt = null;
 		var macyContainer =
-			document[getElementsByClassName](macyContainerClass)[0] || "";
+			document[getElementsByClassName](macyGridClass)[0] || "";
 
 		if (macyContainer) {
 			try {
@@ -626,13 +626,13 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		}
 	};
 
-	var manageMacy = function manageMacy(macyContainerClass, options) {
+	var manageMacy = function manageMacy(macyGridClass, options) {
 		var macyContainer =
-			document[getElementsByClassName](macyContainerClass)[0] || "";
+			document[getElementsByClassName](macyGridClass)[0] || "";
 
 		var handleMacyContainer = function handleMacyContainer() {
 			if (!macyContainer[classList].contains(isActiveClass)) {
-				initMacy(macyContainerClass, options);
+				initMacy(macyGridClass, options);
 			}
 		};
 

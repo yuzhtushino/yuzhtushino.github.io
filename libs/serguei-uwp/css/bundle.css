@@ -47,9 +47,6 @@ body {
 	 * Sticky Footer
 	 * The position relative on body is required to make it work.
 	 */
-	/* min-height: 100%;
-	position: relative;
-	padding-bottom: 3.500rem; */
 }
 
 /*!
@@ -134,7 +131,7 @@ textarea,
 button {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-shadow: 0.063rem 0.063rem 0.063rem rgba(0, 0, 0, 0.004);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
 template {
