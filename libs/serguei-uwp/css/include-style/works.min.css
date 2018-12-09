@@ -1,8 +1,0 @@
-/*! @import url(englishextra-ui-variables); *//*!
- * macy-grid
- *//*!
- * the scrollbar will show 
- * if it is a child container
- * that has no height 100%
- */.macy-grid.macy-grid--works{width:100%;background-color:transparent;margin:0}.macy-grid.macy-grid--works:after{content:"";display:table;clear:both}
-/*# sourceMappingURL=works.min.css.map */

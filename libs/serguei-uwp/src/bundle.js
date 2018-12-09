@@ -394,7 +394,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isActiveClass = "is-active";
+	var macyGridIsActiveClass = "macy-grid--is-active";
 	root.handleMacy = null;
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
@@ -445,7 +445,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 					root.handleMacy = null;
 				}
 				root.handleMacy = new Macy(settings);
-				/* macyContainer[classList].add(isActiveClass); */
+				/* macyContainer[classList].add(macyGridIsActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
@@ -454,7 +454,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	var manageMacy = function (macyGridClass, options) {
 		var macyContainer = document[getElementsByClassName](macyGridClass)[0] || "";
 		var handleMacyContainer = function () {
-			if (!macyContainer[classList].contains(isActiveClass)) {
+			if (!macyContainer[classList].contains(macyGridIsActiveClass)) {
 				initMacy(macyGridClass, options);
 			}
 		};
@@ -494,7 +494,8 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isBindedClass = "is-binded";
+	var rmLinkClass = "rm-link";
+	var rmLinkIsBindedClass = "rm-link--is-binded";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
 	var manageReadMore = function (callback, options) {
@@ -518,10 +519,10 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var rmLink = document[getElementsByClassName]("rm-link") || "";
+		var rmLink = document[getElementsByClassName](rmLinkClass) || "";
 		var arrange = function (e) {
-			if (!e[classList].contains(isBindedClass)) {
-				e[classList].add(isBindedClass);
+			if (!e[classList].contains(rmLinkIsBindedClass)) {
+				e[classList].add(rmLinkIsBindedClass);
 				e[_addEventListener]("click", cb);
 			}
 		};
@@ -612,7 +613,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
 			yandexMap.src = yandexMap[dataset].src;
-			yandexMap[classList].add("is-active");
+			yandexMap[classList].add("yandex-map-iframe--is-active");
 			if (_this[parentNode]) {
 				_this[parentNode][style].display = "none";
 			}

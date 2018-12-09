@@ -349,15 +349,14 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 				}
 			};
 
-			var _isAbsolute =
-				0 === url.indexOf("//") || !!~url.indexOf("://");
+			var _isAbsolute = 0 === url.indexOf("//") || !!~url.indexOf("://");
 
 			var _locationHref = root.location || "";
 
 			var _origin = function _origin() {
 				var o =
 					_locationHref.protocol +
-					"// " +
+					"//" +
 					_locationHref.hostname +
 					(_locationHref.port ? ":" + _locationHref.port : "");
 				return o || "";
@@ -368,7 +367,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 				c.href = url;
 				var v =
 					c.protocol +
-					"// " +
+					"//" +
 					c.hostname +
 					(c.port ? ":" + c.port : "");
 				return v !== _origin();
@@ -555,7 +554,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isActiveClass = "is-active";
+	var macyGridIsActiveClass = "macy-grid--is-active";
 	root.handleMacy = null;
 
 	var updateMacy = function updateMacy(delay) {
@@ -619,7 +618,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 				}
 
 				root.handleMacy = new Macy(settings);
-				/* macyContainer[classList].add(isActiveClass); */
+				/* macyContainer[classList].add(macyGridIsActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
@@ -631,7 +630,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			document[getElementsByClassName](macyGridClass)[0] || "";
 
 		var handleMacyContainer = function handleMacyContainer() {
-			if (!macyContainer[classList].contains(isActiveClass)) {
+			if (!macyContainer[classList].contains(macyGridIsActiveClass)) {
 				initMacy(macyGridClass, options);
 			}
 		};
@@ -689,7 +688,8 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isBindedClass = "is-binded";
+	var rmLinkClass = "rm-link";
+	var rmLinkIsBindedClass = "rm-link--is-binded";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
 
@@ -720,11 +720,11 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		}
 
 		opt = null;
-		var rmLink = document[getElementsByClassName]("rm-link") || "";
+		var rmLink = document[getElementsByClassName](rmLinkClass) || "";
 
 		var arrange = function arrange(e) {
-			if (!e[classList].contains(isBindedClass)) {
-				e[classList].add(isBindedClass);
+			if (!e[classList].contains(rmLinkIsBindedClass)) {
+				e[classList].add(rmLinkIsBindedClass);
 
 				e[_addEventListener]("click", cb);
 			}
@@ -830,7 +830,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 		if (yandexMap) {
 			yandexMap.src = yandexMap[dataset].src;
-			yandexMap[classList].add("is-active");
+			yandexMap[classList].add("yandex-map-iframe--is-active");
 
 			if (_this[parentNode]) {
 				_this[parentNode][style].display = "none";

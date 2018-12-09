@@ -177,13 +177,13 @@ updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyGridClass = "macy-grid";
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 
 			onImagesLoaded(macyGrid);
@@ -217,10 +217,12 @@ updateMacyThrottled*/
 					for (i = 0, l = container[_length]; i < l; i += 1) {
 						if (
 							!container[i][classList].contains(
-								isBindedMacyItemClass
+								anyResizeEventIsBindedClass
 							)
 						) {
-							container[i][classList].add(isBindedMacyItemClass);
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
 
 							container[i][_addEventListener](
 								"onresize",
@@ -260,7 +262,7 @@ updateMacyThrottled*/
 		/* var macyItems = [
     ]; */
 
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
+		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			if (root.AdaptiveCards) {
@@ -291,7 +293,7 @@ updateMacyThrottled*/
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(isRenderedMacyItemClass);
+					macyItems[i][classList].add(macyGridItemIsRenderedClass);
 					count++;
 
 					if (count === macyItems[_length]) {
@@ -417,13 +419,13 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyGridClass = "macy-grid";
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 
 			onImagesLoaded(macyGrid);
@@ -448,10 +450,12 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					for (i = 0, l = container[_length]; i < l; i += 1) {
 						if (
 							!container[i][classList].contains(
-								isBindedMacyItemClass
+								anyResizeEventIsBindedClass
 							)
 						) {
-							container[i][classList].add(isBindedMacyItemClass);
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
 
 							container[i][_addEventListener](
 								"onresize",
@@ -743,7 +747,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/mytushino-gallery/@1x/zhantil_khimkinskij_bul_17.jpg"
 			}
 		];
-		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -788,7 +792,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       l;
       for (i = 0, l = macyItems[_length]; i < l; i += 1) {
       	var macyItem = document.createElement("a");
-      	macyItem[classList].add(isRenderedMacyItemClass);
+      	macyItem[classList].add(macyGridItemIsRenderedClass);
       	macyItem[setAttribute]("href", macyItems[i].href);
       	macyItem[setAttribute]("aria-label", "Показать картинку");
       	var img = document.createElement("img");
@@ -1530,13 +1534,13 @@ updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyGridClass = "macy-grid";
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 
 			onImagesLoaded(macyGrid);
@@ -1570,10 +1574,12 @@ updateMacyThrottled*/
 					for (i = 0, l = container[_length]; i < l; i += 1) {
 						if (
 							!container[i][classList].contains(
-								isBindedMacyItemClass
+								anyResizeEventIsBindedClass
 							)
 						) {
-							container[i][classList].add(isBindedMacyItemClass);
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
 
 							container[i][_addEventListener](
 								"onresize",
@@ -1613,7 +1619,7 @@ updateMacyThrottled*/
 		/* var macyItems = [
     ]; */
 
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
+		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			if (root.AdaptiveCards) {
@@ -1645,7 +1651,7 @@ updateMacyThrottled*/
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(isRenderedMacyItemClass);
+					macyItems[i][classList].add(macyGridItemIsRenderedClass);
 					count++;
 
 					if (count === macyItems[_length]) {
@@ -1768,13 +1774,13 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyGridClass = "macy-grid";
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 
 			onImagesLoaded(macyGrid);
@@ -1799,10 +1805,12 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					for (i = 0, l = container[_length]; i < l; i += 1) {
 						if (
 							!container[i][classList].contains(
-								isBindedMacyItemClass
+								anyResizeEventIsBindedClass
 							)
 						) {
-							container[i][classList].add(isBindedMacyItemClass);
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
 
 							container[i][_addEventListener](
 								"onresize",
@@ -1986,7 +1994,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/serguei-pictures/@2x/36229259776_09b4755088_z.jpg"
 			}
 		];
-		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -2033,7 +2041,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       l;
       for (i = 0, l = macyItems[_length]; i < l; i += 1) {
       	var macyItem = document.createElement("a");
-      	macyItem[classList].add(isRenderedMacyItemClass);
+      	macyItem[classList].add(macyGridItemIsRenderedClass);
       	macyItem[setAttribute]("href", macyItems[i].href);
       	macyItem[setAttribute]("class", glightboxClass);
       	macyItem[setAttribute]("aria-label", "Показать картинку");
@@ -2121,13 +2129,13 @@ updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyGridClass = "macy-grid";
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 
 			onImagesLoaded(macyGrid);
@@ -2151,10 +2159,12 @@ updateMacyThrottled*/
 					for (i = 0, l = container[_length]; i < l; i += 1) {
 						if (
 							!container[i][classList].contains(
-								isBindedMacyItemClass
+								anyResizeEventIsBindedClass
 							)
 						) {
-							container[i][classList].add(isBindedMacyItemClass);
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
 
 							container[i][_addEventListener](
 								"onresize",
@@ -2271,7 +2281,7 @@ updateMacyThrottled*/
 					"./libs/serguei-uwp/img/works-screenshots/@1x/www.npmjs.com-englishextra.jpg"
 			}
 		];
-		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
 
 		var addMacyItems = function addMacyItems(macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -2316,7 +2326,7 @@ updateMacyThrottled*/
       l;
       for (i = 0, l = macyItems[_length]; i < l; i += 1) {
       	var macyItem = document.createElement("a");
-      	macyItem[classList].add(isRenderedMacyItemClass);
+      	macyItem[classList].add(macyGridItemIsRenderedClass);
       	macyItem[setAttribute]("href", macyItems[i].href);
       	macyItem[setAttribute]("aria-label", "Ссылка");
       	var img = document.createElement("img");

@@ -151,16 +151,16 @@ updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 
 		var macyGridClass = "macy-grid";
 
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function () {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
@@ -184,8 +184,8 @@ updateMacyThrottled*/
 					var i,
 					l;
 					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (!container[i][classList].contains(isBindedMacyItemClass)) {
-							container[i][classList].add(isBindedMacyItemClass);
+						if (!container[i][classList].contains(anyResizeEventIsBindedClass)) {
+							container[i][classList].add(anyResizeEventIsBindedClass);
 							container[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
@@ -220,7 +220,7 @@ updateMacyThrottled*/
 		/* var macyItems = [
 		]; */
 
-		var isRenderedMacyItemClass = "is-rendered-macy-item";
+		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
 
 		var addMacyItems = function (macyGrid, callback) {
 			if (root.AdaptiveCards) {
@@ -250,7 +250,7 @@ updateMacyThrottled*/
 				var i,
 				l;
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(isRenderedMacyItemClass);
+					macyItems[i][classList].add(macyGridItemIsRenderedClass);
 					count++;
 					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {
