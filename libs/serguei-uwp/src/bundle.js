@@ -262,16 +262,16 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 					return _full ? ":" + _location.port : _location.port;
 				}
 			};
-			var _isAbsolute = (0 === url.indexOf("// ") || !!~url.indexOf(":// "));
+			var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
 			var _locationHref = root.location || "";
 			var _origin = function () {
-				var o = _locationHref.protocol + "// " + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
+				var o = _locationHref.protocol + "//" + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
 				return o || "";
 			};
 			var _isCrossDomain = function () {
 				var c = document[createElement]("a");
 				c.href = url;
-				var v = c.protocol + "// " + c.hostname + (c.port ? ":" + c.port : "");
+				var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
 				return v !== _origin();
 			};
 			var _link = document[createElement]("a");
@@ -361,8 +361,8 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			debounceLogicHandleExternalLink();
 		};
 		var arrange = function (e) {
-			var isBindedExternalLinkClass = "is-binded-external-link";
-			if (!e[classList].contains(isBindedExternalLinkClass)) {
+			var externalLinkIsBindedClass = "external-link--is-binded";
+			if (!e[classList].contains(externalLinkIsBindedClass)) {
 				var url = e[getAttribute]("href") || "";
 				if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
 					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
@@ -372,7 +372,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 					} else {
 						e[_addEventListener]("click", handleExternalLink.bind(null, url));
 					}
-					e[classList].add(isBindedExternalLinkClass);
+					e[classList].add(externalLinkIsBindedClass);
 				}
 			}
 		};
@@ -394,7 +394,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isActiveClass = "is-active";
+	var macyGridIsActiveClass = "macy-grid--is-active";
 	root.handleMacy = null;
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
@@ -412,9 +412,9 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		}
 	};
 	var updateMacyThrottled = throttle(updateMacy, 1000);
-	var initMacy = function (macyContainerClass, options) {
+	var initMacy = function (macyGridClass, options) {
 		var defaultSettings = {
-			/* container: ".macy-container", */
+			/* container: ".macy-grid", */
 			trueOrder: false,
 			waitForImages: false,
 			margin: 0,
@@ -429,7 +429,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			}
 		};
 		var settings = options || {};
-		settings.container = "." + macyContainerClass;
+		settings.container = "." + macyGridClass;
 		var opt;
 		for (opt in defaultSettings) {
 			if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
@@ -437,7 +437,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var macyContainer = document[getElementsByClassName](macyContainerClass)[0] || "";
+		var macyContainer = document[getElementsByClassName](macyGridClass)[0] || "";
 		if (macyContainer) {
 			try {
 				if (root.handleMacy) {
@@ -445,17 +445,17 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 					root.handleMacy = null;
 				}
 				root.handleMacy = new Macy(settings);
-				/* macyContainer[classList].add(isActiveClass); */
+				/* macyContainer[classList].add(macyGridIsActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
 		}
 	};
-	var manageMacy = function (macyContainerClass, options) {
-		var macyContainer = document[getElementsByClassName](macyContainerClass)[0] || "";
+	var manageMacy = function (macyGridClass, options) {
+		var macyContainer = document[getElementsByClassName](macyGridClass)[0] || "";
 		var handleMacyContainer = function () {
-			if (!macyContainer[classList].contains(isActiveClass)) {
-				initMacy(macyContainerClass, options);
+			if (!macyContainer[classList].contains(macyGridIsActiveClass)) {
+				initMacy(macyGridClass, options);
 			}
 		};
 		if (root.Macy && macyContainer) {
@@ -494,7 +494,8 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var isBindedClass = "is-binded";
+	var rmLinkClass = "rm-link";
+	var rmLinkIsBindedClass = "rm-link--is-binded";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
 	var manageReadMore = function (callback, options) {
@@ -518,10 +519,10 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var rmLink = document[getElementsByClassName]("rm-link") || "";
+		var rmLink = document[getElementsByClassName](rmLinkClass) || "";
 		var arrange = function (e) {
-			if (!e[classList].contains(isBindedClass)) {
-				e[classList].add(isBindedClass);
+			if (!e[classList].contains(rmLinkIsBindedClass)) {
+				e[classList].add(rmLinkIsBindedClass);
 				e[_addEventListener]("click", cb);
 			}
 		};
@@ -612,7 +613,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
 			yandexMap.src = yandexMap[dataset].src;
-			yandexMap[classList].add("is-active");
+			yandexMap[classList].add("yandex-map-iframe--is-active");
 			if (_this[parentNode]) {
 				_this[parentNode][style].display = "none";
 			}

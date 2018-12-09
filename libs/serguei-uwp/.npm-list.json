@@ -62,6 +62,11 @@
       "from": "gulp-minify-css@1.2.2",
       "resolved": "https://registry.npmjs.org/gulp-minify-css/-/gulp-minify-css-1.2.2.tgz"
     },
+    "gulp-plumber": {
+      "version": "1.2.1",
+      "from": "gulp-plumber@latest",
+      "resolved": "https://registry.npmjs.org/gulp-plumber/-/gulp-plumber-1.2.1.tgz"
+    },
     "gulp-prettier": {
       "version": "2.0.0",
       "from": "gulp-prettier@latest",

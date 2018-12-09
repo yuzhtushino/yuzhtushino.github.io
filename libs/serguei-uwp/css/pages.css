@@ -49,7 +49,7 @@
 	z-index: -999;
 }
 
-.macy-grid.macy-grid--about .yandex-map-iframe.is-active {
+.macy-grid.macy-grid--about .yandex-map-iframe.yandex-map-iframe--is-active {
 	position: relative;
 	opacity: 1;
 	z-index: auto;
@@ -119,6 +119,8 @@
 	padding: 15px;
 	font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
 	border: none;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 	padding: 15px !important;
 }
 
@@ -145,7 +147,7 @@
 	z-index: -999;
 }
 
-.macy-grid.macy-grid--home .yandex-map-iframe.is-active {
+.macy-grid.macy-grid--home .yandex-map-iframe.yandex-map-iframe--is-active {
 	position: relative;
 	opacity: 1;
 	z-index: auto;

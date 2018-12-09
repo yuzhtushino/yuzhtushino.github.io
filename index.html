@@ -51,27 +51,48 @@
 			body {
 				height: 100%;
 			}
-			/*!
-			 * hide before scripts and styles loaded
-			 */
-			.macy-grid,
+			template {
+				display: none;
+			}
 			.uwp-header,
 			.uwp-main {
 				visibility: hidden;
 				opacity: 0;
 			}
-			.macy-grid.is-active {
-				visibility: visible;
-				opacity: 1;
-			}
-			template,
-			.macy-grid img,
-			.macy-grid iframe {
+			.uwp-page-heading {
 				display: none;
 			}
-			.macy-grid.is-active img,
-			.macy-grid.is-active iframe {
+			[data-layout-type="overlay"] .uwp-page-heading {
+				display: inline-block;
+			}
+			.uwp-menu-button {
+				display: none;
+			}
+			[data-layout-type="overlay"] .uwp-menu-button,
+			[data-layout-type="docked-minimized"] .uwp-menu-button {
 				display: block;
+			}
+			[data-layout-type="tabs"] .uwp-main {
+				margin-top: 66px;
+			}
+			[data-layout-type="overlay"] .uwp-main {
+				margin-top: 44px;
+			}
+			[data-layout-type="docked-minimized"] .uwp-main {
+				width: calc(100% - 44px);
+			}
+			[data-layout-type="docked"] .uwp-main {
+				margin-left: 250px;
+			}
+			.uwp-error {
+				text-align: center;
+				margin: 0;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				-webkit-transform: translate(-50%, -50%);
+						transform: translate(-50%, -50%);
 			}
 			/*!
 			 * @see {@link http://epic-spinners.epicmax.co}
@@ -98,7 +119,7 @@
 				transform: translate(-50%, -50%);
 				z-index: 1;
 			}
-			.uwp-loading.is-active {
+			.uwp-loading.uwp-loading--is-active {
 				visibility: visible;
 				opacity: 1;
 			}
@@ -179,40 +200,21 @@
 					border-width: calc(60px / 7);
 				}
 			}
-			.uwp-page-heading {
+			.macy-grid {
+				visibility: hidden;
+				opacity: 0;
+			}
+			.macy-grid img,
+			.macy-grid iframe {
 				display: none;
 			}
-			[data-layout-type="overlay"] .uwp-page-heading {
-				display: inline-block;
+			.macy-grid.macy-grid--is-active {
+				visibility: visible;
+				opacity: 1;
 			}
-			.uwp-menu-button {
-				display: none;
-			}
-			[data-layout-type="overlay"] .uwp-menu-button,
-			[data-layout-type="docked-minimized"] .uwp-menu-button {
+			.macy-grid.macy-grid--is-active img,
+			.macy-grid.macy-grid--is-active iframe {
 				display: block;
-			}
-			[data-layout-type="tabs"] .uwp-main {
-				margin-top: 66px;
-			}
-			[data-layout-type="overlay"] .uwp-main {
-				margin-top: 44px;
-			}
-			[data-layout-type="docked-minimized"] .uwp-main {
-				width: calc(100% - 44px);
-			}
-			[data-layout-type="docked"] .uwp-main {
-				margin-left: 250px;
-			}
-			.uwp-error {
-				text-align: center;
-				margin: 0;
-				position: fixed;
-				top: 50%;
-				left: 50%;
-				margin-right: -50%;
-				-webkit-transform: translate(-50%, -50%);
-						transform: translate(-50%, -50%);
 			}
 			.macy-grid.macy-grid--home > .ac-container {
 				display: -webkit-box;
@@ -249,19 +251,22 @@
 			<link rel="stylesheet" href="./libs/serguei-uwp/css/vendors.min.css" />
 			<link rel="stylesheet" href="./libs/serguei-uwp/css/bundle.min.css" />
 			<style>
-				.macy-grid,
 				.uwp-header,
 				.uwp-main {
+					visibility: visible;
+					opacity: 1;
+				}
+				.uwp-loading.is-active {
+					visibility: hidden;
+					opacity: 0;
+				}
+				.macy-grid {
 					visibility: visible;
 					opacity: 1;
 				}
 				.macy-grid img,
 				.macy-grid iframe {
 					display: block;
-				}
-				.uwp-loading.is-active {
-					visibility: hidden;
-					opacity: 0;
 				}
 			</style>
 		</noscript>
@@ -288,7 +293,7 @@
 				</noscript>
 			</div>
 		</div>
-		<div class="uwp-loading is-active">
+		<div class="uwp-loading uwp-loading--is-active">
 			<div class="uwp-loading__part">
 				<div class="uwp-loading__rotator"></div>
 			</div>

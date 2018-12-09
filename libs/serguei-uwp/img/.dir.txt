@@ -32,8 +32,8 @@ D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\pfr_juzhnoj
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\pokrovskij_ul_svobody_1510.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\policvjet_ul_fabriciusa_14.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\profmastjer_ul_svobody_42.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\rjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\rjestoran_tanuki_ul_svobody_48_korp_1.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1xjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1xjestoran_tanuki_ul_svobody_48_korp_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\salon_atmosfjera_krasoty_ul_svobody_42.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\salon_optiki_glazochki_ul_svobody_45_str_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@1x\stadion_saljut_lodochnaja_ul_15.jpg
@@ -74,8 +74,8 @@ D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\pfr_juzhnoj
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\pokrovskij_ul_svobody_1510.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\policvjet_ul_fabriciusa_14.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\profmastjer_ul_svobody_42.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\rjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\rjestoran_tanuki_ul_svobody_48_korp_1.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2xjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2xjestoran_tanuki_ul_svobody_48_korp_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\salon_atmosfjera_krasoty_ul_svobody_42.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\salon_optiki_glazochki_ul_svobody_45_str_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\@2x\stadion_saljut_lodochnaja_ul_15.jpg
@@ -121,8 +121,8 @@ D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\p
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\policvjet_ul_fabriciusa_14.ai
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\policvjet_ul_fabriciusa_14.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\profmastjer_ul_svobody_42.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\rjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\rjestoran_tanuki_ul_svobody_48_korp_1.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.srcjepjetitor_sjergjej_shimanskij_pr_dosflota_3.jpg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.srcjestoran_tanuki_ul_svobody_48_korp_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\salon_atmosfjera_krasoty_ul_svobody_42.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\salon_optiki_glazochki_ul_svobody_45_str_1.jpg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\mytushino-gallery\original\.src\stadion_saljut_lodochnaja_ul_15.jpg
@@ -423,7 +423,7 @@ D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\outline-send-24px.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\outline-share-24px.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\outline-thumb_up_alt-24px.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\Page.svg
-D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\Rename.svg
+D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svgename.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\Settings.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\share-outline.svg
 D:\server\serguei-uwp-dev\libs\serguei-uwp\img\svg\skype-business.svg

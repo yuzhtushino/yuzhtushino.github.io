@@ -78,16 +78,16 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		};
 
-		var isBindedMacyItemClass = "is-binded-macy-item";
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 
 		var macyGridClass = "macy-grid";
 
 		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
 
-		var isActiveClass = "is-active";
+		var macyGridIsActiveClass = "macy-grid--is-active";
 
 		var onMacyRender = function () {
-			macyGrid[classList].add(isActiveClass);
+			macyGrid[classList].add(macyGridIsActiveClass);
 			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
@@ -102,8 +102,8 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					var i,
 					l;
 					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (!container[i][classList].contains(isBindedMacyItemClass)) {
-							container[i][classList].add(isBindedMacyItemClass);
+						if (!container[i][classList].contains(anyResizeEventIsBindedClass)) {
+							container[i][classList].add(anyResizeEventIsBindedClass);
 							container[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
@@ -210,7 +210,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		];
 
-		/*var isRenderedMacyItemClass = "is-rendered-macy-item";*/
+		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
 
 		var addMacyItems = function (macyGrid, callback) {
 			var dataSrcImgKeyName = "src";
@@ -238,7 +238,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 				var macyItem = document.createElement("a");
-				macyItem[classList].add(isRenderedMacyItemClass);
+				macyItem[classList].add(macyGridItemIsRenderedClass);
 				macyItem[setAttribute]("href", macyItems[i].href);
 				macyItem[setAttribute]("class", glightboxClass);
 				macyItem[setAttribute]("aria-label", "Показать картинку");

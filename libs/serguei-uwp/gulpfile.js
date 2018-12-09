@@ -220,7 +220,7 @@ var options = {
 };
 
 gulp.task("browser-sync", [
-		// "bundle-assets"
+		/* "bundle-assets" */
 	], function () {
 	browserSync.init({
 		server: "../../"

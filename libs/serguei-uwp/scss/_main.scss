@@ -56,9 +56,6 @@ body {
 	 * Sticky Footer
 	 * The position relative on body is required to make it work.
 	 */
-	/* min-height: 100%;
-	position: relative;
-	padding-bottom: 3.500rem; */
 }
 
 /*!
@@ -134,7 +131,7 @@ textarea,
 button {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-shadow: 0.063rem 0.063rem 0.063rem rgba(0, 0, 0, 0.004);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
 template {
@@ -229,6 +226,8 @@ template {
 
 .col {
 	background-color: #FFFFFF;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 	padding: 15px 15px 0 15px;
 }
 
@@ -263,7 +262,7 @@ template {
 	color: $UWPAccentColor;
 	border: 1px solid $UWPAccentColor;
 	background-color: transparent;
-	border-radius: 2px;
+	border-radius: 3px;
 }
 
 .col button[disabled] {
@@ -399,7 +398,7 @@ template {
 	color: $UWPAccentColor;
 	border: 1px solid $UWPAccentColor;
 	background-color: transparent;
-	border-radius: 2px;
+	border-radius: 3px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
