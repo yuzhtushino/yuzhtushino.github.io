@@ -107,6 +107,8 @@ prettierOptions = {
 	"printWidth:": 0
 };
 
+var stripDebug = require("gulp-strip-debug");
+
 var options = {
 	muicss: {
 		scss: "../../cdn/mui/0.9.39/scss/*.scss",
@@ -223,6 +225,10 @@ var options = {
 				newLine: "\n"
 			}
 		}
+	},
+	sw: {
+		src: "../../sw/src/*.js",
+		js: "../../"
 	}
 };
 
@@ -355,6 +361,7 @@ gulp.task("compile-libbundle-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.libbundle.js))
@@ -400,6 +407,7 @@ gulp.task("compile-include-script-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.includeScript.js))
@@ -445,6 +453,7 @@ gulp.task("compile-vendors-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.vendors.js))
@@ -557,6 +566,7 @@ gulp.task("compile-uwp-web-framework-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.uwp.js))
@@ -600,6 +610,7 @@ gulp.task("compile-highlightjs-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.highlightjs.js))
@@ -643,6 +654,7 @@ gulp.task("compile-lightgalleryjs-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.lightgalleryjs.js))
@@ -664,6 +676,7 @@ gulp.task("compile-lightgalleryjs-plugins-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.lightgalleryjs.plugins.js))
@@ -707,9 +720,31 @@ gulp.task("compile-glightbox-js", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
+	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.glightbox.js))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-sw-js", function () {
+	gulp.src(options.sw.src)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.sw.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(stripDebug())
+	.pipe(uglify())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.sw.js))
 	.pipe(reload({
 			stream: true
 		}));
