@@ -702,7 +702,7 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 		var switchLayoutType = function () {
 
-			var addMq = function (mqString, callback) {
+			var addMqHandler = function (mqString, callback) {
 				var handle = function (x) {
 					if (x.matches) {
 						if (callback && "function" === typeof callback) {
@@ -719,18 +719,35 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 				document.body.setAttribute(attrName, layoutType);
 			};
 
-			addMq("(max-width: 639px)", mqCallback.bind(null, "data-layout-type", "overlay"));
-			addMq("(min-width: 640px) and (max-width: 1023px)", mqCallback.bind(null, "data-layout-type", "tabs"));
-			addMq("(min-width: 1024px)", mqCallback.bind(null, "data-layout-type", "docked-minimized"));
+			var mqHandlers = [{
+					val: "(max-width: 639px)",
+					fn: mqCallback.bind(null, "data-layout-type", "overlay")
+				}, {
+					val: "(min-width: 640px) and (max-width: 1023px)",
+					fn: mqCallback.bind(null, "data-layout-type", "tabs")
+				}, {
+					val: "(min-width: 1024px)",
+					fn: mqCallback.bind(null, "data-layout-type", "docked-minimized")
+				}
+			];
+
+			var i,
+			l;
+			for (i = 0, l = mqHandlers[_length]; i < l; i += 1) {
+				if ("function" === typeof mqHandlers[i].fn) {
+					addMqHandler(mqHandlers[i].val, mqHandlers[i].fn);
+				}
+			}
+			i = l = null;
 		};
 		switchLayoutType();
 	};
 
 	/* var scripts = [
-	"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-	"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-	"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-	"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 	]; */
 
 	var scripts = [
@@ -783,12 +800,13 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	}
 
 	/* var scripts = [
-	"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-	"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-	"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-	"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-	"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-	"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+			"../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
+			"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+			"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 	]; */
 
 	scripts.push("./libs/serguei-uwp/js/vendors.min.js",

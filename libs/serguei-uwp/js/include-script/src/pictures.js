@@ -88,7 +88,6 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var onMacyRender = function () {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();

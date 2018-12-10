@@ -1,1 +1,1 @@
-mogrify -path ../@1x/ -format jpg -interlace plane -quality 80 ./.src/*.png
+mogrify -path ../@1x/ -format jpg -strip -interlace JPEG -colorspace sRGB -quality 80 ./.src/*.png

@@ -145,6 +145,7 @@ module.exports = {
 		},
 		"css/vendors": {
 			styles: [
+				// "../../cdn/adaptivecards/1.1.0/scss/adaptivecards.custom.css",
 				// "../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
 				// "../../cdn/highlight.js/9.12.0/css/hljs.css",
 				// "../../cdn/iframe-lightbox/0.1.7/css/iframe-lightbox.fixed.css",
@@ -164,6 +165,7 @@ module.exports = {
 
 				"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 				"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+				// "../../cdn/adaptivecards/1.1.0/scss/adaptivecards.custom.css",
 				// "../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
 				// "../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.css",
 				"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
@@ -183,6 +185,7 @@ module.exports = {
 		},
 		"css/vendors.min": {
 			styles: [
+				// "../../cdn/adaptivecards/1.1.0/scss/adaptivecards.custom.css",
 				// "../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
 				// "../../cdn/highlight.js/9.12.0/css/hljs.css",
 				// "../../cdn/iframe-lightbox/0.1.7/css/iframe-lightbox.fixed.css",
@@ -202,6 +205,7 @@ module.exports = {
 
 				"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 				"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+				// "../../cdn/adaptivecards/1.1.0/scss/adaptivecards.custom.css",
 				// "../../cdn/glightbox/1.0.8/css/glightbox.fixed.css",
 				// "../../cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.css",
 				"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",

@@ -30,6 +30,22 @@
 	}
 }
 
+/*!
+ * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
+ */
+
+/* Push */
+
+@keyframes hvr-push {
+	50% {
+		transform: scale(0.96);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
 .macy-grid.macy-grid--about .glightbox img:hover,
 .macy-grid.macy-grid--about .glightbox img:focus,
 .macy-grid.macy-grid--about .glightbox img:active {

@@ -184,8 +184,6 @@ updateMacyThrottled*/
 
 		var onMacyRender = function onMacyRender() {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
-
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -426,8 +424,6 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var onMacyRender = function onMacyRender() {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
-
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -1541,8 +1537,6 @@ updateMacyThrottled*/
 
 		var onMacyRender = function onMacyRender() {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
-
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -1781,8 +1775,6 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var onMacyRender = function onMacyRender() {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
-
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -2136,8 +2128,6 @@ updateMacyThrottled*/
 
 		var onMacyRender = function onMacyRender() {
 			macyGrid[classList].add(macyGridIsActiveClass);
-			/* updateMacyThrottled(); */
-
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();

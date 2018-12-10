@@ -136,6 +136,12 @@ var options = {
 		scss: "../../cdn/highlight.js/9.12.0/scss/*.scss",
 		css: "../../cdn/highlight.js/9.12.0/css"
 	},
+	adaptivecards: {
+		custom: {
+			scss: "../../cdn/adaptivecards/1.1.0/scss/*.scss",
+			css: "../../cdn/adaptivecards/1.1.0/css"
+		}
+	},
 	typeboost: {
 		scss: "../../cdn/typeboost-uwp.css/0.1.8/scss/*.scss",
 		css: "../../cdn/typeboost-uwp.css/0.1.8/css"
@@ -202,6 +208,7 @@ var options = {
 		scss: [
 			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+			"../../cdn/adaptivecards/1.1.0/css/adaptivecards.custom.css",
 			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
 			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 		],
@@ -464,6 +471,29 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(minifyCss())
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.typeboost.css))
+	.pipe(reload({
+			stream: true
+		}));
+});
+
+gulp.task("compile-adaptivecards-custom-css", function () {
+	gulp.src(options.adaptivecards.custom.scss)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer(autoprefixerOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.adaptivecards.custom.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.adaptivecards.custom.css))
 	.pipe(reload({
 			stream: true
 		}));
