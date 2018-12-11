@@ -5,6 +5,11 @@
  * @see {@link https://gulpjs.com/plugins/blackList.json}
  * @see {@link https://hackernoon.com/how-to-automate-all-the-things-with-gulp-b21a3fc96885}
  */
+var getTimestamp = function () {
+	var dateTime = Date.now();
+	return Math.floor(dateTime / 1000);
+};
+
 var gulp = require("gulp");
 var plumber = require("gulp-plumber");
 var sass = require("gulp-sass");
@@ -12,6 +17,7 @@ var minifyCss = require("gulp-minify-css");
 var uglify = require("gulp-uglify");
 var sourcemaps = require('gulp-sourcemaps');
 var rename = require("gulp-rename");
+var replace = require("gulp-replace");
 var concat = require("gulp-concat");
 /* var bundle = require("gulp-bundle-assets"); */
 
@@ -226,8 +232,8 @@ var options = {
 			}
 		}
 	},
-	sw: {
-		src: "../../sw/src/*.js",
+	pwabuilderServiceworkers: {
+		src: "../../cdn/pwabuilder-serviceworkers/1.1.1/serviceWorker2/src/*.js",
 		js: "../../"
 	}
 };
@@ -729,22 +735,29 @@ gulp.task("compile-glightbox-js", function () {
 		}));
 });
 
-gulp.task("compile-sw-js", function () {
-	gulp.src(options.sw.src)
+gulp.task("compile-pwabuilder-serviceworkers-js", function () {
+	gulp.src(options.pwabuilderServiceworkers.src)
 	.pipe(plumber())
 	.pipe(sourcemaps.init())
+	.pipe(rename(function (path) {
+			/* path.basename = path.basename.replace("pwabuilder-", "");
+			path.basename = path.basename.replace(".fixed", ""); */
+			var pattern = /pwabuilder-|.fixed/ig;
+			path.basename = path.basename.replace(pattern, "");
+		}))
+	.pipe(replace("pwabuilder-offline", "serguei-uwp-offline-v" + getTimestamp()))
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */
 	.pipe(plumber.stop())
-	.pipe(gulp.dest(options.sw.js))
+	.pipe(gulp.dest(options.pwabuilderServiceworkers.js))
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.sw.js))
+	.pipe(gulp.dest(options.pwabuilderServiceworkers.js))
 	.pipe(reload({
 			stream: true
 		}));

@@ -1,10 +1,11 @@
 /*global caches, self, Promise, */
 
 /*!
+ * @see {@link https://github.com/pwa-builder/pwabuilder-serviceworkers/blob/master/serviceWorker2/pwabuilder-sw.js}
  * @see {@link https://github.com/pwa-builder/serviceworkers/pull/28}
  */
 //This is the "Offline copy of pages" service worker
-var cacheName = "serguei-uwp-offline"; //Install stage sets up the index page (home page) in the cache and opens a new cache
+var cacheName = "serguei-uwp-offline-v1544529111"; //Install stage sets up the index page (home page) in the cache and opens a new cache
 
 self.addEventListener("install", function(event) {
 	var indexPage = new Request("index.html");

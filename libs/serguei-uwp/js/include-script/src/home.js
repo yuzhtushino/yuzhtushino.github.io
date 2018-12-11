@@ -34,7 +34,7 @@ updateMacyThrottled*/
 							"items": [{
 									"type": "Image",
 									"altText": "",
-									"url": "./libs/serguei-uwp/img/shimanskybiz-instagram/@1x/c599a30aa1744c200a159bc418635d46.jpg",
+									"url": "./libs/serguei-uwp/img/shimanskybiz-instagram/@0.25x/c599a30aa1744c200a159bc418635d46.jpg",
 									"size": "stretch",
 									"style": "person"
 								}
@@ -145,27 +145,7 @@ updateMacyThrottled*/
 							"items": [{
 									"type": "Image",
 									"altText": "",
-									"url": "./libs/serguei-uwp/img/shimanskybiz-instagram/@1x/3b60033301b54ab6552f06ac61902749.jpg",
-									"size": "stretch"
-								}
-							]
-						}, {
-							"type": "Column",
-							"width": 1,
-							"items": [{
-									"type": "Image",
-									"altText": "",
 									"url": "./libs/serguei-uwp/img/shimanskybiz-instagram/@1x/6a6e4f6198cc19aaf08995bfbf390908.jpg",
-									"size": "stretch"
-								}
-							]
-						}, {
-							"type": "Column",
-							"width": 1,
-							"items": [{
-									"type": "Image",
-									"altText": "",
-									"url": "./libs/serguei-uwp/img/shimanskybiz-instagram/@1x/69861f6b540bc9377ea193dc043e991d.jpg",
 									"size": "stretch"
 								}
 							]
@@ -372,6 +352,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-email-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Мейл",
@@ -387,6 +368,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-phone-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Телефон",
@@ -402,6 +384,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-telegram-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Телеграм",
@@ -417,6 +400,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-viber-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Вайбер",
@@ -432,6 +416,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-whatsapp-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Вотсап",
@@ -447,6 +432,7 @@ updateMacyThrottled*/
 									"altText": "",
 									"url": "./libs/serguei-uwp/img/sprite-contacts/@1x/sprite-contacts-banner-skype-640x640.png",
 									"size": "stretch",
+									"style": "person",
 									"selectAction": {
 										"type": "Action.OpenUrl",
 										"title": "Скайп",
