@@ -5,6 +5,8 @@
  * @see {@link https://gulpjs.com/plugins/blackList.json}
  * @see {@link https://hackernoon.com/how-to-automate-all-the-things-with-gulp-b21a3fc96885}
  */
+var currentLibName = "serguei-uwp";
+
 var getTimestamp = function () {
 	var dateTime = Date.now();
 	return Math.floor(dateTime / 1000);
@@ -116,10 +118,6 @@ prettierOptions = {
 var stripDebug = require("gulp-strip-debug");
 
 var options = {
-	muicss: {
-		scss: "../../cdn/mui/0.9.39/scss/*.scss",
-		css: "../../cdn/mui/0.9.39/css"
-	},
 	uwp: {
 		src: "../../cdn/uwp-web-framework/2.0/src/*.js",
 		js: "../../cdn/uwp-web-framework/2.0/js",
@@ -210,7 +208,8 @@ var options = {
 			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
 			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js",
+			"../../cdn/iframe-lightbox/0.2.2/js/iframe-lightbox.fixed.js"
 		],
 		js: "./js",
 		scss: [
@@ -218,7 +217,8 @@ var options = {
 			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
 			"../../cdn/adaptivecards/1.1.0/css/adaptivecards.custom.css",
 			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css",
+			"../../cdn/iframe-lightbox/0.2.2/css/iframe-lightbox.fixed.css"
 		],
 		css: "./css",
 		concatOptions: {
@@ -244,6 +244,7 @@ var options = {
 gulp.task("browser-sync", [
 		/* "bundle-assets" */
 	], function () {
+
 	browserSync.init({
 		server: "../../"
 	});
@@ -255,15 +256,15 @@ gulp.task("browser-sync", [
 	//gulp.watch("../../fonts/roboto-mono-fontfacekit/2.0.986/scss/**/*.scss", ["compile-roboto-mono-scss"]);
 	//gulp.watch("../../cdn/highlight.js/9.12.0/scss/**/*.scss", ["compile-highlightjs-css"]);
 	gulp.watch("../../**/*.html").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/css/*.css").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/css/include-style/*.css").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/css/include-style/scss/*.scss", ["compile-include-style-css"]);
-	gulp.watch("../../libs/serguei-uwp/scss/*.scss", ["compile-libbundle-css"]);
-	gulp.watch("../../libs/serguei-uwp/js/*.js").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/js/include-script/*.js").on("change", reload);
-	gulp.watch("../../libs/serguei-uwp/js/include-script/src/*.js", ["compile-include-script-js"]);
-	gulp.watch("../../libs/serguei-uwp/src/*.js", ["compile-libbundle-js"]);
-	gulp.watch("../../libs/serguei-uwp/json/*.json").on("change", reload);
+	gulp.watch("../../libs/" + currentLibName + "/css/*.css").on("change", reload);
+	gulp.watch("../../libs/" + currentLibName + "/css/include-style/*.css").on("change", reload);
+	gulp.watch("../../libs/" + currentLibName + "/css/include-style/scss/*.scss", ["compile-include-style-css"]);
+	gulp.watch("../../libs/" + currentLibName + "/scss/*.scss", ["compile-libbundle-css"]);
+	gulp.watch("../../libs/" + currentLibName + "/js/*.js").on("change", reload);
+	gulp.watch("../../libs/" + currentLibName + "/js/include-script/*.js").on("change", reload);
+	gulp.watch("../../libs/" + currentLibName + "/js/include-script/src/*.js", ["compile-include-script-js"]);
+	gulp.watch("../../libs/" + currentLibName + "/src/*.js", ["compile-libbundle-js"]);
+	gulp.watch("../../libs/" + currentLibName + "/json/*.json").on("change", reload);
 });
 
 gulp.task("compile-material-css", function () {
@@ -517,29 +518,6 @@ gulp.task("compile-adaptivecards-custom-css", function () {
 		}));
 });
 
-gulp.task("compile-muicss-css", function () {
-	gulp.src(options.muicss.scss)
-	.pipe(plumber())
-	.pipe(sourcemaps.init())
-	.pipe(sass({
-			errLogToConsole: true
-		}))
-	.pipe(autoprefixer(autoprefixerOptions))
-	.pipe(prettier(prettierOptions))
-	/* .pipe(beautify(beautifyOptions)) */
-	.pipe(plumber.stop())
-	.pipe(gulp.dest(options.muicss.css))
-	.pipe(rename(function (path) {
-			path.basename += ".min";
-		}))
-	.pipe(minifyCss())
-	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.muicss.css))
-	.pipe(reload({
-			stream: true
-		}));
-});
-
 gulp.task("compile-uwp-web-framework-css", function () {
 	gulp.src(options.uwp.scss)
 	.pipe(plumber())
@@ -748,7 +726,7 @@ gulp.task("compile-pwabuilder-serviceworkers-js", function () {
 			var pattern = /pwabuilder-|.fixed/ig;
 			path.basename = path.basename.replace(pattern, "");
 		}))
-	.pipe(replace("pwabuilder-offline", "serguei-uwp-offline-v" + getTimestamp()))
+	.pipe(replace("pwabuilder-offline", "" + currentLibName + "-offline-v" + getTimestamp()))
 	.pipe(babel(babelOptions))
 	.pipe(prettier(prettierOptions))
 	/* .pipe(beautify(beautifyOptions)) */

@@ -1,5 +1,5 @@
-/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
+/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, IframeLightbox, isElectron,
+isNwjs, LoadingSpinner, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
 runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 
 /*!
@@ -546,6 +546,49 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	root.manageExternalLinkAll = manageExternalLinkAll;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * manageIframeLightboxLinkAll
+ */
+
+(function(root, document) {
+	"use strict";
+
+	var classList = "classList";
+	var getElementsByClassName = "getElementsByClassName";
+	var _length = "length";
+
+	var manageIframeLightboxLinkAll = function manageIframeLightboxLinkAll(
+		scope
+	) {
+		var ctx = scope && scope.nodeName ? scope : "";
+		var linkClass = "iframe-lightbox-link";
+		var link = ctx
+			? ctx[getElementsByClassName](linkClass) || ""
+			: document[getElementsByClassName](linkClass) || "";
+
+		var arrange = function arrange(e) {
+			var iframeLightboxLinkIsBindedClass =
+				"iframe-lightbox-link--is-binded";
+
+			if (!e[classList].contains(iframeLightboxLinkIsBindedClass)) {
+				e.lightbox = new IframeLightbox(e);
+				e[classList].add(iframeLightboxLinkIsBindedClass);
+			}
+		};
+
+		if (link) {
+			var i, l;
+
+			for (i = 0, l = link[_length]; i < l; i += 1) {
+				arrange(link[i]);
+			}
+
+			i = l = null;
+		}
+	};
+
+	root.manageIframeLightboxLinkAll = manageIframeLightboxLinkAll;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * Macy
  */
 
@@ -977,10 +1020,10 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		switchLayoutType();
 	};
 	/* var scripts = [
-  		"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-  		"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-  		"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-  		"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+  "../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+  "../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+  "../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+  "../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
   ]; */
 
 	var scripts = [
@@ -1053,13 +1096,13 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 	/* var scripts = [
-  		"../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
-  		"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-  		"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-  		"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-  		"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-  		"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-  		"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+  "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
+  "../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+  "../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+  "../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+  "../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+  "../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+  "../../cdn/macy.js/2.3.1/js/macy.fixed.js"
   ]; */
 
 	scripts.push(

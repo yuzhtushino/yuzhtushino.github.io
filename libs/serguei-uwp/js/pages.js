@@ -2043,7 +2043,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 	};
 })("undefined" !== typeof window ? window : this, document);
 
-/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll, manageMacy,
+/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll, manageIframeLightboxLinkAll, manageMacy,
 updateMacyThrottled*/
 
 /*!
@@ -2111,6 +2111,7 @@ updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
+			manageIframeLightboxLinkAll();
 		};
 
 		var onMacyResize = function onMacyResize() {
@@ -2174,11 +2175,6 @@ updateMacyThrottled*/
 
 		var macyItems = [
 			{
-				href: "https://build.phonegap.com/apps/1824701/share",
-				src:
-					"./libs/serguei-uwp/img/works-screenshots/@1x/build.phonegap.com-apps-1824701-share.jpg"
-			},
-			{
 				href: "https://englishextra.github.io/403.html",
 				src:
 					"./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.github.io-403-html.jpg"
@@ -2221,11 +2217,6 @@ updateMacyThrottled*/
 					"./libs/serguei-uwp/img/works-screenshots/@1x/englishextra.gitlab.io.jpg"
 			},
 			{
-				href: "https://github.com/englishextra",
-				src:
-					"./libs/serguei-uwp/img/works-screenshots/@1x/github.com-englishextra.jpg"
-			},
-			{
 				href: "https://mytushino.github.io/",
 				src:
 					"./libs/serguei-uwp/img/works-screenshots/@1x/mytushino.github.io.jpg"
@@ -2234,21 +2225,6 @@ updateMacyThrottled*/
 				href: "https://noushevr.github.io/",
 				src:
 					"./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
-			},
-			{
-				href: "https://www.behance.net/englishextra",
-				src:
-					"./libs/serguei-uwp/img/works-screenshots/@1x/www.behance.net-englishextra.jpg"
-			},
-			{
-				href: "https://www.domestika.org/en/englishextra",
-				src:
-					"./libs/serguei-uwp/img/works-screenshots/@1x/www.domestika.org-en-englishextra.jpg"
-			},
-			{
-				href: "https://www.npmjs.com/~englishextra",
-				src:
-					"./libs/serguei-uwp/img/works-screenshots/@1x/www.npmjs.com-englishextra.jpg"
 			}
 		];
 		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
@@ -2267,9 +2243,9 @@ updateMacyThrottled*/
 
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 				html.push(
-					'<a href="' +
+					'<a href="javascript:void(0);" data-src="' +
 						macyItems[i].href +
-						'" aria-label="Ссылка"><img src="' +
+						'" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' +
 						transparentPixel +
 						'" class="' +
 						dataSrcLazyClass +
@@ -2291,28 +2267,6 @@ updateMacyThrottled*/
 			}
 
 			i = l = null;
-			/* var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-      	var macyItem = document.createElement("a");
-      	macyItem[classList].add(macyGridItemIsRenderedClass);
-      	macyItem[setAttribute]("href", macyItems[i].href);
-      	macyItem[setAttribute]("aria-label", "Ссылка");
-      	var img = document.createElement("img");
-      	macyItem[appendChild](img);
-      	img[setAttribute]("src", transparentPixel);
-      	img[setAttribute]("class", dataSrcLazyClass);
-      	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macyGrid[appendChild](macyItem);
-      	count++;
-      	if (count === macyItems[_length]) {
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
 		};
 
 		if (macyGrid) {
