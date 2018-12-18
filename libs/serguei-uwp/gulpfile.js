@@ -15,9 +15,9 @@ var getTimestamp = function () {
 var gulp = require("gulp");
 var plumber = require("gulp-plumber");
 var sass = require("gulp-sass");
-var minifyCss = require("gulp-minify-css");
+var minifyCss = require("gulp-clean-css");
 var uglify = require("gulp-uglify");
-var sourcemaps = require('gulp-sourcemaps');
+var sourcemaps = require("gulp-sourcemaps");
 var rename = require("gulp-rename");
 var replace = require("gulp-replace");
 var concat = require("gulp-concat");
@@ -208,8 +208,7 @@ var options = {
 			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
 			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-			"../../cdn/macy.js/2.3.1/js/macy.fixed.js",
-			"../../cdn/iframe-lightbox/0.2.2/js/iframe-lightbox.fixed.js"
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 		],
 		js: "./js",
 		scss: [
@@ -217,8 +216,7 @@ var options = {
 			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
 			"../../cdn/adaptivecards/1.1.0/css/adaptivecards.custom.css",
 			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css",
-			"../../cdn/iframe-lightbox/0.2.2/css/iframe-lightbox.fixed.css"
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 		],
 		css: "./css",
 		concatOptions: {

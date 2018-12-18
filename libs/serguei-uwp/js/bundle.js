@@ -1,6 +1,7 @@
-/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, IframeLightbox, isElectron,
-isNwjs, LoadingSpinner, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
-runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
+/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP,
+IframeLightbox, isElectron, isNwjs, loadJsCss, Macy, openDeviceBrowser,
+parseLink, require, runHome, runWorks, runPictures, runGallery, runAbout,
+throttle, $readMoreJS*/
 
 /*!
  * modified loadExt
@@ -544,49 +545,6 @@ runWorks, runPictures, runGallery, runAbout,  throttle, $readMoreJS*/
 	};
 
 	root.manageExternalLinkAll = manageExternalLinkAll;
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * manageIframeLightboxLinkAll
- */
-
-(function(root, document) {
-	"use strict";
-
-	var classList = "classList";
-	var getElementsByClassName = "getElementsByClassName";
-	var _length = "length";
-
-	var manageIframeLightboxLinkAll = function manageIframeLightboxLinkAll(
-		scope
-	) {
-		var ctx = scope && scope.nodeName ? scope : "";
-		var linkClass = "iframe-lightbox-link";
-		var link = ctx
-			? ctx[getElementsByClassName](linkClass) || ""
-			: document[getElementsByClassName](linkClass) || "";
-
-		var arrange = function arrange(e) {
-			var iframeLightboxLinkIsBindedClass =
-				"iframe-lightbox-link--is-binded";
-
-			if (!e[classList].contains(iframeLightboxLinkIsBindedClass)) {
-				e.lightbox = new IframeLightbox(e);
-				e[classList].add(iframeLightboxLinkIsBindedClass);
-			}
-		};
-
-		if (link) {
-			var i, l;
-
-			for (i = 0, l = link[_length]; i < l; i += 1) {
-				arrange(link[i]);
-			}
-
-			i = l = null;
-		}
-	};
-
-	root.manageIframeLightboxLinkAll = manageIframeLightboxLinkAll;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * Macy

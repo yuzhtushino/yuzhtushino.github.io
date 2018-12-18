@@ -2043,8 +2043,8 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 	};
 })("undefined" !== typeof window ? window : this, document);
 
-/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll, manageIframeLightboxLinkAll, manageMacy,
-updateMacyThrottled*/
+/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll,
+manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -2062,6 +2062,60 @@ updateMacyThrottled*/
 
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+		var iframeLightboxLinkClass = "iframe-lightbox-link";
+		/*!
+		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
+		 */
+
+		var manageIframeLightbox = function manageIframeLightbox(
+			iframeLightboxLinkClass
+		) {
+			var initScript = function initScript() {
+				var link =
+					document[getElementsByClassName](iframeLightboxLinkClass) ||
+					"";
+
+				var arrange = function arrange(e) {
+					var iframeLightboxLinkIsBindedClass =
+						"iframe-lightbox-link--is-binded";
+
+					if (
+						!e[classList].contains(iframeLightboxLinkIsBindedClass)
+					) {
+						e.lightbox = new IframeLightbox(e);
+						e[classList].add(iframeLightboxLinkIsBindedClass);
+					}
+				};
+
+				if (link) {
+					var i, l;
+
+					for (i = 0, l = link[_length]; i < l; i += 1) {
+						arrange(link[i]);
+					}
+
+					i = l = null;
+				}
+			};
+
+			if (
+				!scriptIsLoaded(
+					"./cdn/iframe-lightbox/0.2.4/js/iframe-lightbox.fixed.js"
+				)
+			) {
+				var load;
+				load = new loadJsCss(
+					[
+						"./cdn/iframe-lightbox/0.2.4/css/iframe-lightbox.fixed.css",
+						"./cdn/iframe-lightbox/0.2.4/js/iframe-lightbox.fixed.js"
+					],
+					initScript
+				);
+			} else {
+				initScript();
+			}
+		};
+
 		var dataSrcLazyClass = "data-src-lazy";
 		/*!
 		 * @see {@link https://github.com/verlok/lazyload}
@@ -2111,7 +2165,7 @@ updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageIframeLightboxLinkAll();
+			manageIframeLightbox(iframeLightboxLinkClass);
 		};
 
 		var onMacyResize = function onMacyResize() {

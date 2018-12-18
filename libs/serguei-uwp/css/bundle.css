@@ -1,14 +1,11 @@
 /*! @import "englishextra-ui-variables"; */
-
 /*!
  * root
  */
-
 /*!
  * Default CSS Values for HTML Elements
  * @see {@link https://www.w3schools.com/cssref/css_default_values.asp}
  */
-
 html,
 body {
 	height: 100%;
@@ -27,7 +24,7 @@ html {
 body {
 	font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
 	font-weight: 400;
-	font-size: 1.000rem;
+	font-size: 1rem;
 	line-height: 1.333rem;
 	width: 100%;
 	color: #212121;
@@ -56,7 +53,6 @@ body {
 /*!
  * englishextra specific rules
  */
-
 a {
 	color: inherit;
 	text-decoration: none;
@@ -110,11 +106,6 @@ u,
 	box-sizing: border-box;
 }
 
-::-moz-selection {
-	color: #212121;
-	background-color: #b3e5fc;
-}
-
 ::selection {
 	color: #212121;
 	background-color: #b3e5fc;
@@ -126,6 +117,11 @@ u,
 }
 
 :-ms-input-placeholder {
+	color: #757575 !important;
+	opacity: 1;
+}
+
+::-ms-input-placeholder {
 	color: #757575 !important;
 	opacity: 1;
 }
@@ -152,17 +148,13 @@ template {
 /*!
  * fixes to uwp.style.fixed.scss
  */
-
 /*!
  * reveal on css loaded
  */
-
 /*!
  * .macy-grid visibility and opacity is set in js
  */
-
 /* .macy-grid, */
-
 .uwp-header,
 .uwp-main {
 	visibility: visible;
@@ -175,7 +167,7 @@ template {
 }
 
 .uwp-main a {
-	color: #00838F;
+	color: #00838f;
 }
 
 .uwp-main h1,
@@ -227,21 +219,21 @@ template {
 }
 
 [data-layout-type="docked-minimized"] .uwp-header {
-	background-color: #0097A7 !important;
+	background-color: #0097a7 !important;
 }
 
 [data-layout-type="docked"] .uwp-header {
-	background-color: #0097A7 !important;
+	background-color: #0097a7 !important;
 }
 
 /*!
  * fixes to  typeboost-uwp.scss
  */
-
 .col {
 	background-color: #fff;
 	border-radius: 3px;
-	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.12);
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16),
+		0 0 1px 0 rgba(0, 0, 0, 0.12);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.12);
 	padding: 15px 15px 0 15px;
 }
@@ -252,7 +244,7 @@ template {
 }
 
 .col h1 {
-	line-height: 2.400rem;
+	line-height: 2.4rem;
 	word-wrap: break-word;
 	-o-hyphens: auto;
 	-webkit-hyphens: auto;
@@ -265,19 +257,19 @@ template {
 }
 
 .col a {
-	color: #00838F;
+	color: #00838f;
 }
 
 .col a:focus,
 .col a:hover,
 .col a:active {
-	color: #00838F;
+	color: #00838f;
 }
 
 .col button {
 	font-weight: 400;
-	color: #00838F;
-	border: 1px solid #00838F;
+	color: #00838f;
+	border: 1px solid #00838f;
 	background-color: transparent;
 	border-radius: 3px;
 }
@@ -290,20 +282,20 @@ template {
 
 .col button:not([disabled]):hover {
 	color: #fff;
-	background-color: #26C6DA;
-	border: 1px solid #26C6DA;
+	background-color: #26c6da;
+	border: 1px solid #26c6da;
 }
 
 .col button:not([disabled]):active,
 .col button:not([disabled]):focus {
-	color: #26C6DA;
+	color: #26c6da;
 	background-color: #fff;
-	border: 1px solid #26C6DA;
+	border: 1px solid #26c6da;
 }
 
 .col button.primary {
 	color: #fff;
-	background-color: #00838F;
+	background-color: #00838f;
 }
 
 .col .fit-width {
@@ -318,10 +310,9 @@ template {
 /*!
  * fixes to adaptivecards.custom.scss
  */
-
 .ac-pushButton {
-	color: #00838F;
-	border-color: #00838F;
+	color: #00838f;
+	border-color: #00838f;
 	background-color: transparent;
 }
 
@@ -333,24 +324,24 @@ template {
 
 .ac-pushButton:not([disabled]):hover {
 	color: #fff;
-	background-color: #26C6DA;
-	border-color: #26C6DA;
+	background-color: #26c6da;
+	border-color: #26c6da;
 }
 
 .ac-pushButton:not([disabled]):active,
 .ac-pushButton:not([disabled]):focus {
-	color: #26C6DA;
+	color: #26c6da;
 	background-color: #fff;
-	border-color: #26C6DA;
+	border-color: #26c6da;
 }
 
 .ac-pushButton--primary {
 	color: #fff;
-	background-color: #00838F;
+	background-color: #00838f;
 }
 
 .ac-color--accent {
-	color: #00838F;
+	color: #00838f;
 }
 
 .ac-color--default {
@@ -365,9 +356,6 @@ template {
  * fixes to glightbox.fixed.scss
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  */
-
 /* .glightbox-open {
 	height: 100% !important;
 } */
-
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Njc3MvX3ZhcmlhYmxlcy5zY3NzIiwiLi4vc2Nzcy9fbWFpbi5zY3NzIiwiLi4vc2Nzcy9fbWF0ZXJpYWwtY29sb3Iuc2NzcyIsIi4uL3Njc3MvX2N1c3RvbS1jb2xvci5zY3NzIiwiYnVuZGxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSwyQ0FBMkM7QUNVM0M7O0dBRUc7QUFFSDs7O0dBR0c7QUFFSDs7Q0FFQyxhQUFZLEVBQ1o7O0FBRUQ7Q0FDQyxnQkFBZTtDQUNmLGtCQUFpQjtDQUNqQjs7O0lBR0c7Q0FDSCw4QkFBNkIsRUFDN0I7O0FBRUQ7Q0FDQyw2RUFBNEU7Q0FDNUUsaUJBQWdCO0NBQ2hCLG9CQUFtQjtDQUNuQixzQkFBcUI7Q0FDckIsWUFBVztDQUNYLGVDNnBCYztDRDVwQmQsK0JBQXNCO0lBQXRCLDRCQUFzQjtLQUF0QiwyQkFBc0I7U0FBdEIsdUJBQXNCO0NBQ3RCLG1DQUFrQztDQUNsQyxvQ0FBbUM7Q0FDbkMsbUNBQWtDO0NBQ2xDLDJDQUEwQztDQUMxQyw0QkFBMkI7Q0FDM0IseUNBQXdDO0NBQ3hDLGNBQWE7Q0FDYixtQkFBa0I7Q0FDbEIsd0JBQXdCO0NBQ3hCLFVBQVM7Q0FDVCxXQUFVO0NBQ1Y7Ozs7SUFJRyxFQUNIOztBQUVEOztHQUVHO0FBRUg7Q0FDQyxlQUFjO0NBQ2Qsc0JBQXFCLEVBQ3JCOztBQUVEOzs7Ozs7Q0FNQyx5Q0FBd0M7Q0FDeEMsY0FBYSxFQUNiOztBQUVEO0NBQ0MsVUFBUztDQUNULGdDQUErQjtDQUMvQix1QkFBc0IsRUFDdEI7O0FBRUQ7Q0FDQyxjQUFhLEVBQ2I7O0FBRUQ7Q0FDQyxpQkFBZ0IsRUFDaEI7O0FBRUQ7OztDQUdDLGtCQUFpQixFQUNqQjs7QUFFRDs7O0NBR0MsbUJBQWtCLEVBQ2xCOztBQUVEOztDQUVDLDJCQUEwQixFQUMxQjs7QUFFRDs7O0NBR0MsK0JBQXNCO1NBQXRCLHVCQUFzQixFQUN0Qjs7QUFFRDtDQUNDLGVDZ2xCYztDRC9rQmQsMEJDa0tjLEVEaktkOztBQUhEO0NBQ0MsZUNnbEJjO0NEL2tCZCwwQkNrS2MsRURqS2Q7O0FBRUQ7Q0FDQywwQkFBK0I7Q0FDL0IsV0FBVSxFQUNWOztBQUhEO0NBQ0MsMEJBQStCO0NBQy9CLFdBQVUsRUFDVjs7QUFIRDtDQUNDLDBCQUErQjtDQUMvQixXQUFVLEVBQ1Y7O0FBRUQ7Ozs7O0NBS0Msb0NBQW1DO0NBQ25DLG1DQUFrQztDQUNsQyw4Q0FBNkMsRUFDN0M7O0FBRUQ7Q0FDQyxlQUFjLEVBQ2Q7O0FBRUQ7O0dBRUc7QUFFSDs7R0FFRztBQUVIOztHQUVHO0FBQ0gsaUJBQWlCO0FBQ2pCOztDQUVDLG9CQUFtQjtDQUNuQixXQUFVLEVBQ1Y7O0FBRUQ7Q0FDQyxlQ3NpQmM7Q0RyaUJkLDhCQUE2QixFQUM3Qjs7QUFFRDtDQUNDLGVFL0l1QixFRmdKdkI7O0FBRUQ7Ozs7OztDQU1DLGVDd2hCYyxFRHZoQmQ7O0FBRUQ7Q0FDQyxnQkFBZSxFQUNmOztBQUVEO0NBQ0MsZ0JBQWUsRUFDZjs7QUFFRDs7Q0FFQyxlQUFjO0NBQ2QsWUFBVztDQUNYLGFBQVk7Q0FDWjs7SUFFRztDQUNILFVBQVM7Q0FDVCxtQkFBa0I7Q0FDbEIsU0FBUTtDQUNSLFVBQVM7Q0FDVCxtQkFBa0I7Q0FDbEIseUNBQWdDO1NBQWhDLGlDQUFnQyxFQUNoQzs7QUFFRDs7Q0FFQyxZQUFXO0NBQ1gsYUFBWSxFQUNaOztBR3BDRDtDSHVDQyxxQ0FBMEMsRUFDMUM7O0FHckNEO0NId0NDLHFDQUEwQyxFQUMxQzs7QUd0Q0Q7Q0h5Q0MscUNBQWtELEVBQ2xEOztBR3ZDRDtDSDBDQyxxQ0FBa0QsRUFDbEQ7O0FBRUQ7O0dBRUc7QUFFSDtDQUNDLHVCQ2dpQlk7Q0QvaEJaLG1CQUFrQjtDQUNsQixtRkFBMEU7U0FBMUUsMkVBQTBFO0NBQzFFLDBCQUF5QixFQUN6Qjs7QUFFRDs7Q0FFQyxjQUFhLEVBQ2I7O0FBRUQ7Q0FDQyxzQkFBcUI7Q0FDckIsc0JBQXFCO0NBQ3JCLGlCQUFnQjtDQUNoQixzQkFBYTtLQUFiLGtCQUFhO1NBQWIsY0FBYSxFQUNiOztBQUVEO0NBQ0MscUJBQW9CLEVBQ3BCOztBQUVEO0NBQ0MsZUVyT3VCLEVGc092Qjs7QUFFRDs7O0NBR0MsZUUzT3VCLEVGNE92Qjs7QUFFRDtDQUNDLGlCQUFnQjtDQUNoQixlRWhQdUI7Q0ZpUHZCLDBCRWpQdUI7Q0ZrUHZCLDhCQUE2QjtDQUM3QixtQkFBa0IsRUFDbEI7O0FBRUQ7Q0FDQyxlQ3NiYztDRHJiZCw4QkFBNkI7Q0FDN0IsMEJDb2JjLEVEbmJkOztBQUVEO0NBQ0MsWUNpZlk7Q0RoZlosMEJFL1B1QjtDRmdRdkIsMEJFaFF1QixFRmlRdkI7O0FBRUQ7O0NBRUMsZUVyUXVCO0NGc1F2Qix1QkN5ZVk7Q0R4ZVosMEJFdlF1QixFRndRdkI7O0FBRUQ7Q0FDQyxZQ29lWTtDRG5lWiwwQkUzUXVCLEVGNFF2Qjs7QUFFRDtDQUNDLFlBQVcsRUFDWDs7QUFFRDtDQUNDLG9CQUFtQjtDQUNuQixzQkFBcUIsRUFDckI7O0FBRUQ7O0dBRUc7QUFFSDtDQUNDLGVFNVJ1QjtDRjZSdkIsc0JFN1J1QjtDRjhSdkIsOEJBQTZCLEVBQzdCOztBQUVEO0NBQ0MsZUMyWWM7Q0QxWWQsOEJBQTZCO0NBQzdCLHNCQ3lZYyxFRHhZZDs7QUFFRDtDQUNDLFlDc2NZO0NEcmNaLDBCRTFTdUI7Q0YyU3ZCLHNCRTNTdUIsRUY0U3ZCOztBQUVEOztDQUVDLGVFaFR1QjtDRmlUdkIsdUJDOGJZO0NEN2JaLHNCRWxUdUIsRUZtVHZCOztBQUVEO0NBQ0MsWUN5Ylk7Q0R4YlosMEJFdFR1QixFRnVUdkI7O0FBRUQ7Q0FDQyxlRTFUdUIsRUYyVHZCOztBQUVEO0NBQ0MsZUNrWGMsRURqWGQ7O0FBRUQ7Q0FDQyxlQzJXYyxFRDFXZDs7QUFFRDs7O0dBR0c7QUFFSDs7SUFFSSIsImZpbGUiOiJidW5kbGUuY3NzIn0= */
