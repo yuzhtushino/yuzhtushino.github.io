@@ -2100,14 +2100,14 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 
 			if (
 				!scriptIsLoaded(
-					"./cdn/iframe-lightbox/0.2.4/js/iframe-lightbox.fixed.js"
+					"./cdn/iframe-lightbox/0.2.5/js/iframe-lightbox.fixed.js"
 				)
 			) {
 				var load;
 				load = new loadJsCss(
 					[
-						"./cdn/iframe-lightbox/0.2.4/css/iframe-lightbox.fixed.css",
-						"./cdn/iframe-lightbox/0.2.4/js/iframe-lightbox.fixed.js"
+						"./cdn/iframe-lightbox/0.2.5/css/iframe-lightbox.fixed.css",
+						"./cdn/iframe-lightbox/0.2.5/js/iframe-lightbox.fixed.js"
 					],
 					initScript
 				);
