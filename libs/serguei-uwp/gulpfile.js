@@ -16,6 +16,13 @@ var gulp = require("gulp");
 var plumber = require("gulp-plumber");
 var sass = require("gulp-sass");
 var minifyCss = require("gulp-clean-css");
+var cleanCssOptions = {
+	level: {
+		1: {
+			specialComments: 0
+		}
+	}
+};
 var uglify = require("gulp-uglify");
 var sourcemaps = require("gulp-sourcemaps");
 var rename = require("gulp-rename");
@@ -280,7 +287,7 @@ gulp.task("compile-material-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.material.css))
 	.pipe(reload({
@@ -303,7 +310,7 @@ gulp.task("compile-roboto-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.roboto.css))
 	.pipe(reload({
@@ -326,7 +333,7 @@ gulp.task("compile-roboto-mono-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.robotomono.css))
 	.pipe(reload({
@@ -349,7 +356,7 @@ gulp.task("compile-libbundle-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.libbundle.css))
 	.pipe(reload({
@@ -394,7 +401,7 @@ gulp.task("compile-include-style-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.includeStyle.css))
 	.pipe(reload({
@@ -440,7 +447,7 @@ gulp.task("compile-vendors-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.vendors.css))
 	.pipe(reload({
@@ -485,7 +492,7 @@ gulp.task("compile-typeboost-uwp-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.typeboost.css))
 	.pipe(reload({
@@ -508,7 +515,7 @@ gulp.task("compile-adaptivecards-custom-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.adaptivecards.custom.css))
 	.pipe(reload({
@@ -531,7 +538,7 @@ gulp.task("compile-uwp-web-framework-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.uwp.css))
 	.pipe(reload({
@@ -575,7 +582,7 @@ gulp.task("compile-highlightjs-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.highlightjs.css))
 	.pipe(reload({
@@ -619,7 +626,7 @@ gulp.task("compile-lightgalleryjs-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.lightgalleryjs.css))
 	.pipe(reload({
@@ -685,7 +692,7 @@ gulp.task("compile-glightbox-css", function () {
 	.pipe(rename(function (path) {
 			path.basename += ".min";
 		}))
-	.pipe(minifyCss())
+	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
 	.pipe(gulp.dest(options.glightbox.css))
 	.pipe(reload({
