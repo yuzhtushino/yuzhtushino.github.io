@@ -129,6 +129,8 @@ prettierOptions = {
 
 var stripDebug = require("gulp-strip-debug");
 
+var eslint = require("gulp-eslint");
+
 var options = {
 	uwp: {
 		src: "../../cdn/uwp-web-framework/2.0/src/*.js",
@@ -163,6 +165,18 @@ var options = {
 	typeboost: {
 		scss: "../../cdn/typeboost-uwp.css/0.1.8/scss/*.scss",
 		css: "../../cdn/typeboost-uwp.css/0.1.8/css"
+	},
+	iframelightbox: {
+		src: "../../cdn/iframe-lightbox/0.2.8/src/*.js",
+		js: "../../cdn/iframe-lightbox/0.2.8/js",
+		scss: "../../cdn/iframe-lightbox/0.2.8/scss/*.scss",
+		css: "../../cdn/iframe-lightbox/0.2.8/css"
+	},
+	imglightbox: {
+		src: "../../cdn/img-lightbox/0.2.1/src/*.js",
+		js: "../../cdn/img-lightbox/0.2.1/js",
+		scss: "../../cdn/img-lightbox/0.2.1/scss/*.scss",
+		css: "../../cdn/img-lightbox/0.2.1/css"
 	},
 	glightbox: {
 		src: "../../cdn/glightbox/1.0.8/src/*.js",
@@ -248,27 +262,6 @@ var options = {
 	}
 };
 
-/*!
- * @see {@link https://browsersync.io/docs/gulp}
- */
-gulp.task("browser-sync", function () {
-
-	browserSync.init({
-		server: "../../"
-	});
-
-	gulp.watch("../../**/*.html").on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/css/*.css").on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/css/include-style/*.css").on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/css/include-style/scss/*.scss", gulp.parallel("compile-include-style-css")).on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/scss/*.scss", gulp.parallel("compile-libbundle-css")).on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/js/*.js").on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/js/include-script/*.js").on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/js/include-script/src/*.js", gulp.parallel("compile-include-script-js")).on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/src/*.js", gulp.parallel("compile-libbundle-js")).on("change", reload);
-	gulp.watch("../../libs/" + currentLibName + "/json/*.json").on("change", reload);
-});
-
 gulp.task("compile-material-css", function () {
 	return gulp.src(options.material.scss)
 	.pipe(plumber())
@@ -286,7 +279,7 @@ gulp.task("compile-material-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.material.css))
+	.pipe(gulp.dest(options.material.css));
 });
 
 gulp.task("compile-roboto-css", function () {
@@ -306,7 +299,7 @@ gulp.task("compile-roboto-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.roboto.css))
+	.pipe(gulp.dest(options.roboto.css));
 });
 
 gulp.task("compile-roboto-mono-css", function () {
@@ -326,7 +319,7 @@ gulp.task("compile-roboto-mono-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.robotomono.css))
+	.pipe(gulp.dest(options.robotomono.css));
 });
 
 gulp.task("compile-libbundle-css", function () {
@@ -346,7 +339,7 @@ gulp.task("compile-libbundle-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.libbundle.css))
+	.pipe(gulp.dest(options.libbundle.css));
 });
 
 gulp.task("compile-libbundle-js", function () {
@@ -364,7 +357,14 @@ gulp.task("compile-libbundle-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.libbundle.js))
+	.pipe(gulp.dest(options.libbundle.js));
+});
+
+gulp.task("lint-libbundle-js", function () {
+	return gulp.src(options.libbundle.src)
+	.pipe(eslint())
+	.pipe(eslint.format())
+	.pipe(eslint.failAfterError());
 });
 
 gulp.task("compile-include-style-css", function () {
@@ -385,7 +385,7 @@ gulp.task("compile-include-style-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.includeStyle.css))
+	.pipe(gulp.dest(options.includeStyle.css));
 });
 
 gulp.task("compile-include-script-js", function () {
@@ -404,7 +404,14 @@ gulp.task("compile-include-script-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.includeScript.js))
+	.pipe(gulp.dest(options.includeScript.js));
+});
+
+gulp.task("lint-include-script-js", function () {
+	return gulp.src(options.includeScript.src)
+	.pipe(eslint())
+	.pipe(eslint.format())
+	.pipe(eslint.failAfterError());
 });
 
 gulp.task("compile-vendors-css", function () {
@@ -425,7 +432,7 @@ gulp.task("compile-vendors-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.vendors.css))
+	.pipe(gulp.dest(options.vendors.css));
 });
 
 gulp.task("compile-vendors-js", function () {
@@ -444,7 +451,14 @@ gulp.task("compile-vendors-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.vendors.js))
+	.pipe(gulp.dest(options.vendors.js));
+});
+
+gulp.task("lint-vendors-js", function () {
+	return gulp.src(options.vendors.src)
+	.pipe(eslint())
+	.pipe(eslint.format())
+	.pipe(eslint.failAfterError());
 });
 
 gulp.task("compile-typeboost-uwp-css", function () {
@@ -464,7 +478,7 @@ gulp.task("compile-typeboost-uwp-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.typeboost.css))
+	.pipe(gulp.dest(options.typeboost.css));
 });
 
 gulp.task("compile-adaptivecards-custom-css", function () {
@@ -484,7 +498,7 @@ gulp.task("compile-adaptivecards-custom-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.adaptivecards.custom.css))
+	.pipe(gulp.dest(options.adaptivecards.custom.css));
 });
 
 gulp.task("compile-uwp-web-framework-css", function () {
@@ -504,7 +518,7 @@ gulp.task("compile-uwp-web-framework-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.uwp.css))
+	.pipe(gulp.dest(options.uwp.css));
 });
 
 gulp.task("compile-uwp-web-framework-js", function () {
@@ -522,7 +536,7 @@ gulp.task("compile-uwp-web-framework-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.uwp.js))
+	.pipe(gulp.dest(options.uwp.js));
 });
 
 gulp.task("compile-highlightjs-css", function () {
@@ -542,7 +556,7 @@ gulp.task("compile-highlightjs-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.highlightjs.css))
+	.pipe(gulp.dest(options.highlightjs.css));
 });
 
 gulp.task("compile-highlightjs-js", function () {
@@ -560,7 +574,83 @@ gulp.task("compile-highlightjs-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.highlightjs.js))
+	.pipe(gulp.dest(options.highlightjs.js));
+});
+
+gulp.task("compile-img-lightbox-css", function () {
+	return gulp.src(options.imglightbox.scss)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer(autoprefixerOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.imglightbox.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss(cleanCssOptions))
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.imglightbox.css));
+});
+
+gulp.task("compile-img-lightbox-js", function () {
+	return gulp.src(options.imglightbox.src)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.imglightbox.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(stripDebug())
+	.pipe(uglify())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.imglightbox.js));
+});
+
+gulp.task("compile-iframe-lightbox-css", function () {
+	return gulp.src(options.iframelightbox.scss)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(sass({
+			errLogToConsole: true
+		}))
+	.pipe(autoprefixer(autoprefixerOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.iframelightbox.css))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(minifyCss(cleanCssOptions))
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.iframelightbox.css));
+});
+
+gulp.task("compile-iframe-lightbox-js", function () {
+	return gulp.src(options.iframelightbox.src)
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
+	.pipe(babel(babelOptions))
+	.pipe(prettier(prettierOptions))
+	/* .pipe(beautify(beautifyOptions)) */
+	.pipe(plumber.stop())
+	.pipe(gulp.dest(options.iframelightbox.js))
+	.pipe(rename(function (path) {
+			path.basename += ".min";
+		}))
+	.pipe(stripDebug())
+	.pipe(uglify())
+	.pipe(sourcemaps.write("."))
+	.pipe(gulp.dest(options.iframelightbox.js));
 });
 
 gulp.task("compile-lightgalleryjs-css", function () {
@@ -580,7 +670,7 @@ gulp.task("compile-lightgalleryjs-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.lightgalleryjs.css))
+	.pipe(gulp.dest(options.lightgalleryjs.css));
 });
 
 gulp.task("compile-lightgalleryjs-js", function () {
@@ -598,7 +688,7 @@ gulp.task("compile-lightgalleryjs-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.lightgalleryjs.js))
+	.pipe(gulp.dest(options.lightgalleryjs.js));
 });
 
 gulp.task("compile-lightgalleryjs-plugins-js", function () {
@@ -617,7 +707,7 @@ gulp.task("compile-lightgalleryjs-plugins-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.lightgalleryjs.plugins.js))
+	.pipe(gulp.dest(options.lightgalleryjs.plugins.js));
 });
 
 gulp.task("compile-glightbox-css", function () {
@@ -637,7 +727,7 @@ gulp.task("compile-glightbox-css", function () {
 		}))
 	.pipe(minifyCss(cleanCssOptions))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.glightbox.css))
+	.pipe(gulp.dest(options.glightbox.css));
 });
 
 gulp.task("compile-glightbox-js", function () {
@@ -655,7 +745,7 @@ gulp.task("compile-glightbox-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.glightbox.js))
+	.pipe(gulp.dest(options.glightbox.js));
 });
 
 gulp.task("compile-pwabuilder-serviceworkers-js", function () {
@@ -678,7 +768,31 @@ gulp.task("compile-pwabuilder-serviceworkers-js", function () {
 	.pipe(stripDebug())
 	.pipe(uglify())
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(options.pwabuilderServiceworkers.js))
+	.pipe(gulp.dest(options.pwabuilderServiceworkers.js));
 });
+
+/*!
+ * @see {@link https://browsersync.io/docs/gulp}
+ */
+gulp.task("browser-sync", gulp.series(gulp.parallel(
+			"lint-libbundle-js",
+			"lint-vendors-js",
+			"lint-include-script-js"), function watchChanges() {
+
+		browserSync.init({
+			server: "../../"
+		});
+
+		gulp.watch("../../**/*.html").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/css/*.css").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/scss/*.scss", gulp.parallel("compile-libbundle-css")).on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/js/*.js").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/src/*.js", gulp.parallel("compile-libbundle-js")).on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/json/*.json").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/css/include-style/*.css").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/css/include-style/scss/*.scss", gulp.parallel("compile-include-style-css")).on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/js/include-script/*.js").on("change", reload);
+		gulp.watch("../../libs/" + currentLibName + "/js/include-script/src/*.js", gulp.parallel("compile-include-script-js")).on("change", reload);
+	}));
 
 gulp.task("default", gulp.task("browser-sync"));

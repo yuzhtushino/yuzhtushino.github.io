@@ -1,7 +1,6 @@
-/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP,
-IframeLightbox, isElectron, isNwjs, loadJsCss, Macy, openDeviceBrowser,
-parseLink, require, runHome, runWorks, runPictures, runGallery, runAbout,
-throttle, $readMoreJS*/
+/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
+isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
+runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 /*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
@@ -623,6 +622,30 @@ throttle, $readMoreJS*/
 	root.revealYandexMap = revealYandexMap;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * loadingSpinner
+ */
+(function(root, document){
+	"use strict";
+	var classList = "classList";
+	var getElementsByClassName = "getElementsByClassName";
+	var uwpLoadingIsActiveClass = "uwp-loading--is-active";
+	var LoadingSpinner = function () {
+		var uwpLoading = document[getElementsByClassName]("uwp-loading")[0] || "";
+		if (!uwpLoading) {
+			return;
+		}
+		return {
+			hide: function () {
+				uwpLoading[classList].remove(uwpLoadingIsActiveClass);
+			},
+			show: function () {
+				uwpLoading[classList].add(uwpLoadingIsActiveClass);
+			}
+		};
+	}();
+	root.LoadingSpinner = LoadingSpinner;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * app logic
  */
 (function (root, document) {
@@ -640,7 +663,10 @@ throttle, $readMoreJS*/
 	var _addEventListener = "addEventListener";
 	var _length = "length";
 
-	docElem[classList].add("no-js");
+	if (docElem && docElem[classList]) {
+		docElem[classList].remove("no-js");
+		docElem[classList].add("js");
+	}
 
 	var run = function () {
 

@@ -817,9 +817,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 	};
 })("undefined" !== typeof window ? window : this, document);
 
-/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
-updateMacyThrottled*/
+/*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
+loadJsCss, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
+scriptIsLoaded, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -1430,39 +1430,57 @@ updateMacyThrottled*/
 			}
 		};
 
-		var glightboxClass = "glightbox";
+		var imgLightboxLinkClass = "img-lightbox-link";
 		/*!
-		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
+		 * @see {@link https://github.com/englishextra/img-lightbox}
 		 */
 
-		root.handleGLightbox = null;
-
-		var manageGlightbox = function manageGlightbox(macyGrid) {
+		var manageImgLightbox = function manageImgLightbox(
+			imgLightboxLinkClass
+		) {
 			var initScript = function initScript() {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
+				var link =
+					document[getElementsByClassName](imgLightboxLinkClass) ||
+					"";
 
-					if (macyGrid) {
-						root.handleGLightbox = GLightbox({
-							selector: glightboxClass
+				var arrange = function arrange() {
+					if (root.imgLightbox) {
+						imgLightbox(imgLightboxLinkClass, {
+							onLoaded: function onLoaded() {
+								LoadingSpinner.hide();
+							},
+							onClosed: function onClosed() {
+								LoadingSpinner.hide();
+							},
+							onCreated: function onCreated() {
+								LoadingSpinner.show();
+							},
+							touch: false
 						});
 					}
+				};
+
+				if (link) {
+					var i, l;
+
+					for (i = 0, l = link[_length]; i < l; i += 1) {
+						arrange(link[i]);
+					}
+
+					i = l = null;
 				}
 			};
 
 			if (
 				!scriptIsLoaded(
-					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+					"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"
 				)
 			) {
 				var load;
 				load = new loadJsCss(
 					[
-						"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-						"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+						"./cdn/img-lightbox/0.2.1/css/img-lightbox.fixed.css",
+						"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"
 					],
 					initScript
 				);
@@ -1470,6 +1488,35 @@ updateMacyThrottled*/
 				initScript();
 			}
 		};
+		/* var glightboxClass = "glightbox"; */
+
+		/*!
+		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
+		 */
+
+		/* root.handleGLightbox = null;
+    var manageGlightbox = function (macyGrid) {
+    	var initScript = function () {
+    		if (root.GLightbox) {
+    			if (root.handleGLightbox) {
+    				root.handleGLightbox.destroy();
+    				root.handleGLightbox = null;
+    			}
+    			if (macyGrid) {
+    				root.handleGLightbox = GLightbox({
+    						selector: glightboxClass
+    					});
+    			}
+    		}
+    	};
+    	if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+    		var load;
+    		load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+    					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+    	} else {
+    		initScript();
+    	}
+    }; */
 
 		var dataSrcLazyClass = "data-src-lazy";
 		/*!
@@ -1520,7 +1567,9 @@ updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			/* manageGlightbox(glightboxClass); */
+
+			manageImgLightbox(imgLightboxLinkClass);
 			manageReadMore(null, {
 				target: ".dummy",
 				numOfWords: 10,
@@ -2043,8 +2092,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 	};
 })("undefined" !== typeof window ? window : this, document);
 
-/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll,
-manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
+/*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
+loadJsCss, manageExternalLinkAll, manageMacy, scriptIsLoaded,
+updateMacyThrottled*/
 
 /*!
  * page logic
@@ -2064,7 +2114,7 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 		var _length = "length";
 		var iframeLightboxLinkClass = "iframe-lightbox-link";
 		/*!
-		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
+		 * @see {@link https://github.com/englishextra/iframe-lightbox}
 		 */
 
 		var manageIframeLightbox = function manageIframeLightbox(
@@ -2076,16 +2126,19 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 					"";
 
 				var arrange = function arrange(e) {
-					var iframeLightboxLinkIsBindedClass =
-						"iframe-lightbox-link--is-binded";
-
-					if (
-						!e[classList].contains(iframeLightboxLinkIsBindedClass)
-					) {
+					if (root.IframeLightbox) {
 						e.lightbox = new IframeLightbox(e, {
+							onLoaded: function onLoaded() {
+								LoadingSpinner.hide();
+							},
+							onClosed: function onClosed() {
+								LoadingSpinner.hide();
+							},
+							onOpened: function onOpened() {
+								LoadingSpinner.show();
+							},
 							touch: false
 						});
-						e[classList].add(iframeLightboxLinkIsBindedClass);
 					}
 				};
 
@@ -2102,14 +2155,14 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 
 			if (
 				!scriptIsLoaded(
-					"./cdn/iframe-lightbox/0.2.7/js/iframe-lightbox.fixed.js"
+					"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
 				)
 			) {
 				var load;
 				load = new loadJsCss(
 					[
-						"./cdn/iframe-lightbox/0.2.7/css/iframe-lightbox.fixed.css",
-						"./cdn/iframe-lightbox/0.2.7/js/iframe-lightbox.fixed.js"
+						"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
+						"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
 					],
 					initScript
 				);

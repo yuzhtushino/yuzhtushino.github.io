@@ -1,5 +1,6 @@
-/*global console, imagesLoaded, LazyLoad, manageExternalLinkAll,
-manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
+/*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
+loadJsCss, manageExternalLinkAll, manageMacy, scriptIsLoaded,
+updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -20,18 +21,25 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 		var iframeLightboxLinkClass = "iframe-lightbox-link";
 
 		/*!
-		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
+		 * @see {@link https://github.com/englishextra/iframe-lightbox}
 		 */
 		var manageIframeLightbox = function (iframeLightboxLinkClass) {
 			var initScript = function () {
 				var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
 				var arrange = function (e) {
-					var iframeLightboxLinkIsBindedClass = "iframe-lightbox-link--is-binded";
-					if (!e[classList].contains(iframeLightboxLinkIsBindedClass)) {
+					if (root.IframeLightbox) {
 						e.lightbox = new IframeLightbox(e, {
+								onLoaded: function () {
+									LoadingSpinner.hide();
+								},
+								onClosed: function () {
+									LoadingSpinner.hide();
+								},
+								onOpened: function () {
+									LoadingSpinner.show();
+								},
 								touch: false
 							});
-						e[classList].add(iframeLightboxLinkIsBindedClass);
 					}
 				};
 				if (link) {
@@ -44,10 +52,10 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 				}
 
 			};
-			if (!scriptIsLoaded("./cdn/iframe-lightbox/0.2.7/js/iframe-lightbox.fixed.js")) {
+			if (!scriptIsLoaded("./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js")) {
 				var load;
-				load = new loadJsCss(["./cdn/iframe-lightbox/0.2.7/css/iframe-lightbox.fixed.css",
-							"./cdn/iframe-lightbox/0.2.7/js/iframe-lightbox.fixed.js"], initScript);
+				load = new loadJsCss(["./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
+							"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"], initScript);
 			} else {
 				initScript();
 			}

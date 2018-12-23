@@ -345,6 +345,18 @@ template {
 }
 
 /*!
+ * fixes to lightgallery.fixed.scss
+ * @see {@link https://github.com/sachinchoolur/lightGallery/issues/798}
+ */
+
+.lg-on {
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+	touch-action: auto;
+	height: auto;
+}
+
+/*!
  * fixes to glightbox.fixed.scss
  * @see {@link https://github.com/mcstudios/glightbox/issues/22}
  */
@@ -352,3 +364,30 @@ template {
 /* .glightbox-open {
 	height: 100% !important;
 } */
+
+/*!
+ * iframe-lightbox
+ * hide default css preloader
+ */
+
+.iframe-lightbox .content > .body .half-circle-spinner {
+	display: none;
+}
+
+.iframe-lightbox iframe {
+	box-shadow: 0.250rem 0.250rem 0.250rem 0 rgba(3, 3, 3, 0.3);
+}
+
+/*!
+ * img-lightbox
+ * hide default css preloader
+ * daneden.github.io/animate.css/
+ */
+
+.img-lightbox .half-circle-spinner {
+	display: none;
+}
+
+.img-lightbox img {
+	box-shadow: 0.250rem 0.250rem 0.250rem 0 rgba(3, 3, 3, 0.3);
+}

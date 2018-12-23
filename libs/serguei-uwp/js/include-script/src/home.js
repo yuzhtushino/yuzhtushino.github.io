@@ -1,6 +1,6 @@
-/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
-updateMacyThrottled*/
+/*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
+loadJsCss, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
+scriptIsLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -529,12 +529,55 @@ updateMacyThrottled*/
 			}
 		};
 
-		var glightboxClass = "glightbox";
+		var imgLightboxLinkClass = "img-lightbox-link";
+
+		/*!
+		 * @see {@link https://github.com/englishextra/img-lightbox}
+		 */
+		var manageImgLightbox = function (imgLightboxLinkClass) {
+			var initScript = function () {
+				var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
+				var arrange = function () {
+					if (root.imgLightbox) {
+						imgLightbox(imgLightboxLinkClass, {
+							onLoaded: function () {
+								LoadingSpinner.hide();
+							},
+							onClosed: function () {
+								LoadingSpinner.hide();
+							},
+							onCreated: function () {
+								LoadingSpinner.show();
+							},
+							touch: false
+						});
+					}
+				};
+				if (link) {
+					var i,
+					l;
+					for (i = 0, l = link[_length]; i < l; i += 1) {
+						arrange(link[i]);
+					}
+					i = l = null;
+				}
+
+			};
+			if (!scriptIsLoaded("./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js")) {
+				var load;
+				load = new loadJsCss(["./cdn/img-lightbox/0.2.1/css/img-lightbox.fixed.css",
+							"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"], initScript);
+			} else {
+				initScript();
+			}
+		};
+
+		/* var glightboxClass = "glightbox"; */
 
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
-		root.handleGLightbox = null;
+		/* root.handleGLightbox = null;
 		var manageGlightbox = function (macyGrid) {
 			var initScript = function () {
 				if (root.GLightbox) {
@@ -556,7 +599,7 @@ updateMacyThrottled*/
 			} else {
 				initScript();
 			}
-		};
+		}; */
 
 		var dataSrcLazyClass = "data-src-lazy";
 
@@ -603,7 +646,8 @@ updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			/* manageGlightbox(glightboxClass); */
+			manageImgLightbox(imgLightboxLinkClass);
 			manageReadMore(null, {
 				target: ".dummy",
 				numOfWords: 10,
