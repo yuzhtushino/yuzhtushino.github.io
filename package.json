@@ -1,15 +1,26 @@
 {
 	"name": "yuzhtushino",
 	"productName": "yuzhtushino",
-	"companyName": "yuzhtushino",
+	"companyName": "yuzhtushino.github.io",
 	"version": "0.1.0",
-	"description": "Tutor of English in Tushino Portfolio",
+	"description": "A Portfolio Web App",
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/englishextra/serguei-uwp-dev.git"
+		"url": "https://github.com/yuzhtushino/yuzhtushino.github.io.git"
+	},
+	"dependencies": {
+		"npm": "^4.0.5"
+	},
+	"devDependencies": {
+		"gulp": "^4.0.0",
+		"gulp-cli": "^2.0.1",
+		"gulp-eslint": "^5.0.0"
+	},
+	"scripts": {
+		"test": "gulp lint-js"
 	},
 	"email": "englishextra@mail.ru",
-	"url": "https://gitlab.com/englishextra/serguei-uwp-dev/issues",
+	"url": "https://github.com/yuzhtushino/yuzhtushino.github.io/issues",
 	"maintainers": {
 		"name": "Serguei Shimansky",
 		"email": "englishextra@mail.ru",
