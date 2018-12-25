@@ -27,20 +27,18 @@ updateMacyThrottled*/
 			var initScript = function () {
 				var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
 				var arrange = function (e) {
-					if (root.IframeLightbox) {
-						e.lightbox = new IframeLightbox(e, {
-								onLoaded: function () {
-									LoadingSpinner.hide();
-								},
-								onClosed: function () {
-									LoadingSpinner.hide();
-								},
-								onOpened: function () {
-									LoadingSpinner.show();
-								},
-								touch: false
-							});
-					}
+					e.lightbox = new IframeLightbox(e, {
+							onLoaded: function () {
+								LoadingSpinner.hide();
+							},
+							onClosed: function () {
+								LoadingSpinner.hide();
+							},
+							onOpened: function () {
+								LoadingSpinner.show();
+							},
+							touch: false
+						});
 				};
 				if (link) {
 					var i,
@@ -50,9 +48,8 @@ updateMacyThrottled*/
 					}
 					i = l = null;
 				}
-
 			};
-			if (!scriptIsLoaded("./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js")) {
+			if (!root.IframeLightbox) {
 				var load;
 				load = new loadJsCss(["./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
 							"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"], initScript);

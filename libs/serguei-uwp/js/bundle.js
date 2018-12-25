@@ -70,10 +70,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 
 			_this.head[appendChild](script);
 			/* if (_this.ref[parentNode]) {
-      _this.ref[parentNode][insertBefore](script, _this.ref);
-      } else {
-      (_this.body || _this.head)[appendChild](script);
-      } */
+			_this.ref[parentNode][insertBefore](script, _this.ref);
+			} else {
+			(_this.body || _this.head)[appendChild](script);
+			} */
 
 			(_this.body || _this.head)[appendChild](script);
 		};
@@ -745,10 +745,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 
 		if (rmLink) {
 			/* var timer = setTimeout(function () {
-      clearTimeout(timer);
-      timer = null;
-      initScript();
-      }, 100); */
+			clearTimeout(timer);
+			timer = null;
+			initScript();
+			}, 100); */
 			initScript();
 		}
 	};
@@ -1012,11 +1012,11 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		switchLayoutType();
 	};
 	/* var scripts = [
-  "../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-  "../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-  "../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-  "../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
-  ]; */
+	"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+	"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+	"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+	"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+	]; */
 
 	var scripts = [
 		/* "./libs/serguei-uwp/css/vendors.min.css", */
@@ -1088,14 +1088,14 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 	/* var scripts = [
-  "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
-  "../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-  "../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-  "../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-  "../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-  "../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-  "../../cdn/macy.js/2.3.1/js/macy.fixed.js"
-  ]; */
+	"../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
+	"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+	"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+	"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+	"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+	"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+	"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+	]; */
 
 	scripts.push(
 		"./libs/serguei-uwp/js/vendors.min.js",
@@ -1140,11 +1140,11 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		};
 		/* if (supportsCanvas) {
-    slot = setInterval(checkFontIsLoaded, 100);
-    } else {
-    slot = null;
-    onFontsLoaded();
-    } */
+		slot = setInterval(checkFontIsLoaded, 100);
+		} else {
+		slot = null;
+		onFontsLoaded();
+		} */
 
 		onFontsLoaded();
 	};
@@ -1186,40 +1186,40 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	 */
 
 	/* root.WebFontConfig = {
-  google: {
-  families: [
-  "Roboto:300,400,500,700:cyrillic",
-  "Roboto Mono:400:cyrillic,latin-ext"
-  ]
-  },
-  listeners: [],
-  active: function () {
-  this.called_ready = true;
-  var i;
-  for (i = 0; i < this.listeners[_length]; i++) {
-  this.listeners[i]();
-  }
-  i = null;
-  },
-  ready: function (callback) {
-  if (this.called_ready) {
-  callback();
-  } else {
-  this.listeners.push(callback);
-  }
-  }
-  };
-  	var onFontsLoadedCallback = function () {
-  	var onFontsLoaded = function () {
-  progressBar.increase(20);
-  	var load;
-  load = new loadJsCss(scripts, run);
-  };
-  	root.WebFontConfig.ready(onFontsLoaded);
-  };
-  	var load;
-  load = new loadJsCss(
-  [forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
-  onFontsLoadedCallback
-  ); */
+	google: {
+	families: [
+	"Roboto:300,400,500,700:cyrillic",
+	"Roboto Mono:400:cyrillic,latin-ext"
+	]
+	},
+	listeners: [],
+	active: function () {
+	this.called_ready = true;
+	var i;
+	for (i = 0; i < this.listeners[_length]; i++) {
+	this.listeners[i]();
+	}
+	i = null;
+	},
+	ready: function (callback) {
+	if (this.called_ready) {
+	callback();
+	} else {
+	this.listeners.push(callback);
+	}
+	}
+	};
+		var onFontsLoadedCallback = function () {
+		var onFontsLoaded = function () {
+	progressBar.increase(20);
+		var load;
+	load = new loadJsCss(scripts, run);
+	};
+		root.WebFontConfig.ready(onFontsLoaded);
+	};
+		var load;
+	load = new loadJsCss(
+	[forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
+	onFontsLoadedCallback
+	); */
 })("undefined" !== typeof window ? window : this, document);

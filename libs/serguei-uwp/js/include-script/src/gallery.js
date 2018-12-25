@@ -23,22 +23,20 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		root.handleLightGallery = null;
 		var manageLightGallery = function (macyGrid) {
 			var initScript = function () {
-				if (root.lightGallery) {
-					if (root.handleLightGallery) {
-						root.handleLightGallery.destroy(true);
-						root.handleLightGallery = null;
-					}
-					if (macyGrid) {
-						root.handleLightGallery = lightGallery(macyGrid, {
-								autoplay: false,
-								autoplayControls: false,
-								hash: false,
-								share: false
-							});
-					}
+				if (root.handleLightGallery) {
+					root.handleLightGallery.destroy(true);
+					root.handleLightGallery = null;
+				}
+				if (macyGrid) {
+					root.handleLightGallery = lightGallery(macyGrid, {
+							autoplay: false,
+							autoplayControls: false,
+							hash: false,
+							share: false
+						});
 				}
 			};
-			if (!scriptIsLoaded("./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js")) {
+			if (!root.lightGallery) {
 				var load;
 				load = new loadJsCss(["./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
 							"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",

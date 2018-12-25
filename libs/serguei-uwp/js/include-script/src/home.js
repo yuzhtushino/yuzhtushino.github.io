@@ -538,20 +538,18 @@ scriptIsLoaded, updateMacyThrottled*/
 			var initScript = function () {
 				var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
 				var arrange = function () {
-					if (root.imgLightbox) {
-						imgLightbox(imgLightboxLinkClass, {
-							onLoaded: function () {
-								LoadingSpinner.hide();
-							},
-							onClosed: function () {
-								LoadingSpinner.hide();
-							},
-							onCreated: function () {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-					}
+					imgLightbox(imgLightboxLinkClass, {
+						onLoaded: function () {
+							LoadingSpinner.hide();
+						},
+						onClosed: function () {
+							LoadingSpinner.hide();
+						},
+						onCreated: function () {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
 				};
 				if (link) {
 					var i,
@@ -561,9 +559,8 @@ scriptIsLoaded, updateMacyThrottled*/
 					}
 					i = l = null;
 				}
-
 			};
-			if (!scriptIsLoaded("./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js")) {
+			if (!root.imgLightbox) {
 				var load;
 				load = new loadJsCss(["./cdn/img-lightbox/0.2.1/css/img-lightbox.fixed.css",
 							"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"], initScript);
@@ -571,35 +568,6 @@ scriptIsLoaded, updateMacyThrottled*/
 				initScript();
 			}
 		};
-
-		/* var glightboxClass = "glightbox"; */
-
-		/*!
-		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
-		 */
-		/* root.handleGLightbox = null;
-		var manageGlightbox = function (macyGrid) {
-			var initScript = function () {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
-					if (macyGrid) {
-						root.handleGLightbox = GLightbox({
-								selector: glightboxClass
-							});
-					}
-				}
-			};
-			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
-				var load;
-				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
-			} else {
-				initScript();
-			}
-		}; */
 
 		var dataSrcLazyClass = "data-src-lazy";
 
@@ -646,7 +614,6 @@ scriptIsLoaded, updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			/* manageGlightbox(glightboxClass); */
 			manageImgLightbox(imgLightboxLinkClass);
 			manageReadMore(null, {
 				target: ".dummy",

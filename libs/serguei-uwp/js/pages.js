@@ -106,25 +106,19 @@ updateMacyThrottled*/
 
 		var manageGlightbox = function manageGlightbox(macyGrid) {
 			var initScript = function initScript() {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
+				if (root.handleGLightbox) {
+					root.handleGLightbox.destroy();
+					root.handleGLightbox = null;
+				}
 
-					if (macyGrid) {
-						root.handleGLightbox = GLightbox({
-							selector: glightboxClass
-						});
-					}
+				if (macyGrid) {
+					root.handleGLightbox = GLightbox({
+						selector: glightboxClass
+					});
 				}
 			};
 
-			if (
-				!scriptIsLoaded(
-					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
-				)
-			) {
+			if (!root.GLightbox) {
 				var load;
 				load = new loadJsCss(
 					[
@@ -342,28 +336,22 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var manageLightGallery = function manageLightGallery(macyGrid) {
 			var initScript = function initScript() {
-				if (root.lightGallery) {
-					if (root.handleLightGallery) {
-						root.handleLightGallery.destroy(true);
-						root.handleLightGallery = null;
-					}
+				if (root.handleLightGallery) {
+					root.handleLightGallery.destroy(true);
+					root.handleLightGallery = null;
+				}
 
-					if (macyGrid) {
-						root.handleLightGallery = lightGallery(macyGrid, {
-							autoplay: false,
-							autoplayControls: false,
-							hash: false,
-							share: false
-						});
-					}
+				if (macyGrid) {
+					root.handleLightGallery = lightGallery(macyGrid, {
+						autoplay: false,
+						autoplayControls: false,
+						hash: false,
+						share: false
+					});
 				}
 			};
 
-			if (
-				!scriptIsLoaded(
-					"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js"
-				)
-			) {
+			if (!root.lightGallery) {
 				var load;
 				load = new loadJsCss(
 					[
@@ -1444,20 +1432,18 @@ scriptIsLoaded, updateMacyThrottled*/
 					"";
 
 				var arrange = function arrange() {
-					if (root.imgLightbox) {
-						imgLightbox(imgLightboxLinkClass, {
-							onLoaded: function onLoaded() {
-								LoadingSpinner.hide();
-							},
-							onClosed: function onClosed() {
-								LoadingSpinner.hide();
-							},
-							onCreated: function onCreated() {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-					}
+					imgLightbox(imgLightboxLinkClass, {
+						onLoaded: function onLoaded() {
+							LoadingSpinner.hide();
+						},
+						onClosed: function onClosed() {
+							LoadingSpinner.hide();
+						},
+						onCreated: function onCreated() {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
 				};
 
 				if (link) {
@@ -1471,11 +1457,7 @@ scriptIsLoaded, updateMacyThrottled*/
 				}
 			};
 
-			if (
-				!scriptIsLoaded(
-					"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"
-				)
-			) {
+			if (!root.imgLightbox) {
 				var load;
 				load = new loadJsCss(
 					[
@@ -1488,35 +1470,6 @@ scriptIsLoaded, updateMacyThrottled*/
 				initScript();
 			}
 		};
-		/* var glightboxClass = "glightbox"; */
-
-		/*!
-		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
-		 */
-
-		/* root.handleGLightbox = null;
-    var manageGlightbox = function (macyGrid) {
-    	var initScript = function () {
-    		if (root.GLightbox) {
-    			if (root.handleGLightbox) {
-    				root.handleGLightbox.destroy();
-    				root.handleGLightbox = null;
-    			}
-    			if (macyGrid) {
-    				root.handleGLightbox = GLightbox({
-    						selector: glightboxClass
-    					});
-    			}
-    		}
-    	};
-    	if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
-    		var load;
-    		load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-    					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
-    	} else {
-    		initScript();
-    	}
-    }; */
 
 		var dataSrcLazyClass = "data-src-lazy";
 		/*!
@@ -1567,8 +1520,6 @@ scriptIsLoaded, updateMacyThrottled*/
 			onImagesLoaded(macyGrid);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			/* manageGlightbox(glightboxClass); */
-
 			manageImgLightbox(imgLightboxLinkClass);
 			manageReadMore(null, {
 				target: ".dummy",
@@ -1726,25 +1677,19 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var manageGlightbox = function manageGlightbox(macyGrid) {
 			var initScript = function initScript() {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
+				if (root.handleGLightbox) {
+					root.handleGLightbox.destroy();
+					root.handleGLightbox = null;
+				}
 
-					if (macyGrid) {
-						root.handleGLightbox = GLightbox({
-							selector: glightboxClass
-						});
-					}
+				if (macyGrid) {
+					root.handleGLightbox = GLightbox({
+						selector: glightboxClass
+					});
 				}
 			};
 
-			if (
-				!scriptIsLoaded(
-					"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
-				)
-			) {
+			if (!root.GLightbox) {
 				var load;
 				load = new loadJsCss(
 					[
@@ -2126,20 +2071,18 @@ updateMacyThrottled*/
 					"";
 
 				var arrange = function arrange(e) {
-					if (root.IframeLightbox) {
-						e.lightbox = new IframeLightbox(e, {
-							onLoaded: function onLoaded() {
-								LoadingSpinner.hide();
-							},
-							onClosed: function onClosed() {
-								LoadingSpinner.hide();
-							},
-							onOpened: function onOpened() {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-					}
+					e.lightbox = new IframeLightbox(e, {
+						onLoaded: function onLoaded() {
+							LoadingSpinner.hide();
+						},
+						onClosed: function onClosed() {
+							LoadingSpinner.hide();
+						},
+						onOpened: function onOpened() {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
 				};
 
 				if (link) {
@@ -2153,11 +2096,7 @@ updateMacyThrottled*/
 				}
 			};
 
-			if (
-				!scriptIsLoaded(
-					"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
-				)
-			) {
+			if (!root.IframeLightbox) {
 				var load;
 				load = new loadJsCss(
 					[

@@ -98,19 +98,17 @@ updateMacyThrottled*/
 		root.handleGLightbox = null;
 		var manageGlightbox = function (macyGrid) {
 			var initScript = function () {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
-					if (macyGrid) {
-						root.handleGLightbox = GLightbox({
-								selector: glightboxClass
-							});
-					}
+				if (root.handleGLightbox) {
+					root.handleGLightbox.destroy();
+					root.handleGLightbox = null;
+				}
+				if (macyGrid) {
+					root.handleGLightbox = GLightbox({
+							selector: glightboxClass
+						});
 				}
 			};
-			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (!root.GLightbox) {
 				var load;
 				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
 							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
