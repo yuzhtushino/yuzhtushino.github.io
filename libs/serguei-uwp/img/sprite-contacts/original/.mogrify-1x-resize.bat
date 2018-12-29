@@ -1,1 +1,1 @@
-mogrify -path ../@1x/ -resize 88x ./.src/*.png
+mogrify -path ../@1x/ -resize 560x ./.src/*.png

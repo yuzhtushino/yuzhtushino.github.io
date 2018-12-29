@@ -71,14 +71,14 @@ updateMacyThrottled*/
 			}
 		};
 
-		var manageAC = function manageAC(macyGrid, callback) {
+		var manageAC = function manageAC(macy, callback) {
 			if (root.renderAC) {
 				var count = 0;
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 					renderAC(
-						macyGrid,
+						macy,
 						macyItems[i],
 						renderACOptions,
 						onExecuteAC,
@@ -104,14 +104,14 @@ updateMacyThrottled*/
 
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macyGrid) {
+		var manageGlightbox = function manageGlightbox(macy) {
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
 					root.handleGLightbox = null;
 				}
 
-				if (macyGrid) {
+				if (macy) {
 					root.handleGLightbox = GLightbox({
 						selector: glightboxClass
 					});
@@ -150,10 +150,10 @@ updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-		var onImagesLoaded = function onImagesLoaded(macyGrid) {
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 
 				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
@@ -172,13 +172,13 @@ updateMacyThrottled*/
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyGridClass = "macy-grid";
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyClass = "macy";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageGlightbox(glightboxClass);
@@ -195,11 +195,9 @@ updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid
-					? macyGrid.children ||
-					  macyGrid[querySelectorAll](
-							"." + macyGridClass + " > *"
-					  ) ||
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
@@ -234,7 +232,7 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function onMacyManage() {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 20,
@@ -254,12 +252,12 @@ updateMacyThrottled*/
 		/* var macyItems = [
     ]; */
 
-		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
+		var macyItemIsRenderedClass = "macy__item--is-rendered";
 
-		var addMacyItems = function addMacyItems(macyGrid, callback) {
+		var addMacyItems = function addMacyItems(macy, callback) {
 			if (root.AdaptiveCards) {
-				macyGrid.innerHTML = "";
-				manageAC(macyGrid, callback);
+				macy.innerHTML = "";
+				manageAC(macy, callback);
 			} else {
 				/*!
 				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
@@ -273,7 +271,7 @@ updateMacyThrottled*/
         	html.push(macyItems[i]);
         	count++;
         	if (count === macyItems[_length]) {
-        		macyGrid.innerHTML = html.join("");
+        		macy.innerHTML = html.join("");
         		if (callback && "function" === typeof callback) {
         			callback();
         		}
@@ -285,7 +283,7 @@ updateMacyThrottled*/
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyGridItemIsRenderedClass);
+					macyItems[i][classList].add(macyItemIsRenderedClass);
 					count++;
 
 					if (count === macyItems[_length]) {
@@ -299,8 +297,8 @@ updateMacyThrottled*/
 			}
 		};
 
-		if (macyGrid) {
-			addMacyItems(macyGrid, onMacyManage);
+		if (macy) {
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {
@@ -334,15 +332,15 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		root.handleLightGallery = null;
 
-		var manageLightGallery = function manageLightGallery(macyGrid) {
+		var manageLightGallery = function manageLightGallery(macy) {
 			var initScript = function initScript() {
 				if (root.handleLightGallery) {
 					root.handleLightGallery.destroy(true);
 					root.handleLightGallery = null;
 				}
 
-				if (macyGrid) {
-					root.handleLightGallery = lightGallery(macyGrid, {
+				if (macy) {
+					root.handleLightGallery = lightGallery(macy, {
 						autoplay: false,
 						autoplayControls: false,
 						hash: false,
@@ -384,10 +382,10 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-		var onImagesLoaded = function onImagesLoaded(macyGrid) {
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 
 				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
@@ -406,25 +404,23 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyGridClass = "macy-grid";
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyClass = "macy";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageLightGallery(macyGrid);
+			manageLightGallery(macy);
 		};
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid
-					? macyGrid.children ||
-					  macyGrid[querySelectorAll](
-							"." + macyGridClass + " > *"
-					  ) ||
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
@@ -459,7 +455,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function onMacyManage() {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 0,
@@ -731,9 +727,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/mytushino-gallery/@1x/zhantil_khimkinskij_bul_17.jpg"
 			}
 		];
-		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
+		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
 
-		var addMacyItems = function addMacyItems(macyGrid, callback) {
+		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
@@ -762,7 +758,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				count++;
 
 				if (count === macyItems[_length]) {
-					macyGrid.innerHTML = html.join("");
+					macy.innerHTML = html.join("");
 
 					if (callback && "function" === typeof callback) {
 						callback();
@@ -776,7 +772,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       l;
       for (i = 0, l = macyItems[_length]; i < l; i += 1) {
       	var macyItem = document.createElement("a");
-      	macyItem[classList].add(macyGridItemIsRenderedClass);
+      	macyItem[classList].add(macyItemIsRenderedClass);
       	macyItem[setAttribute]("href", macyItems[i].href);
       	macyItem[setAttribute]("aria-label", "Показать картинку");
       	var img = document.createElement("img");
@@ -784,7 +780,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       	img[setAttribute]("src", transparentPixel);
       	img[setAttribute]("class", dataSrcLazyClass);
       	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macyGrid[appendChild](macyItem);
+      	macy[appendChild](macyItem);
       	count++;
       	if (count === macyItems[_length]) {
       		if (callback && "function" === typeof callback) {
@@ -795,8 +791,8 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       i = l = null; */
 		};
 
-		if (macyGrid) {
-			addMacyItems(macyGrid, onMacyManage);
+		if (macy) {
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {
@@ -1392,14 +1388,14 @@ scriptIsLoaded, updateMacyThrottled*/
 			}
 		};
 
-		var manageAC = function manageAC(macyGrid, callback) {
+		var manageAC = function manageAC(macy, callback) {
 			if (root.renderAC) {
 				var count = 0;
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 					renderAC(
-						macyGrid,
+						macy,
 						macyItems[i],
 						renderACOptions,
 						onExecuteAC,
@@ -1489,10 +1485,10 @@ scriptIsLoaded, updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-		var onImagesLoaded = function onImagesLoaded(macyGrid) {
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 
 				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
@@ -1511,13 +1507,13 @@ scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyGridClass = "macy-grid";
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyClass = "macy";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageImgLightbox(imgLightboxLinkClass);
@@ -1534,11 +1530,9 @@ scriptIsLoaded, updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid
-					? macyGrid.children ||
-					  macyGrid[querySelectorAll](
-							"." + macyGridClass + " > *"
-					  ) ||
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
@@ -1573,16 +1567,16 @@ scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function onMacyManage() {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 20,
-				columns: 4,
+				columns: 3,
 				breakAt: {
-					1280: 4,
-					1024: 3,
+					1280: 2,
+					1024: 2,
 					960: 2,
-					640: 2,
+					640: 1,
 					480: 1,
 					360: 1
 				}
@@ -1593,12 +1587,12 @@ scriptIsLoaded, updateMacyThrottled*/
 		/* var macyItems = [
     ]; */
 
-		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
+		var macyItemIsRenderedClass = "macy__item--is-rendered";
 
-		var addMacyItems = function addMacyItems(macyGrid, callback) {
+		var addMacyItems = function addMacyItems(macy, callback) {
 			if (root.AdaptiveCards) {
-				macyGrid.innerHTML = "";
-				manageAC(macyGrid, callback);
+				macy.innerHTML = "";
+				manageAC(macy, callback);
 			} else {
 				/*!
 				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
@@ -1612,20 +1606,19 @@ scriptIsLoaded, updateMacyThrottled*/
         	html.push(macyItems[i]);
         	count++;
         	if (count === macyItems[_length]) {
-        		macyGrid.innerHTML = html.join("");
+        		macy.innerHTML = html.join("");
         		if (callback && "function" === typeof callback) {
         			callback();
         		}
         	}
         }
         i = l = null; */
-				macyItems =
-					document[getElementsByClassName]("ac-container") || "";
+				macyItems = document[getElementsByClassName]("col") || "";
 				var count = 0;
 				var i, l;
 
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyGridItemIsRenderedClass);
+					macyItems[i][classList].add(macyItemIsRenderedClass);
 					count++;
 
 					if (count === macyItems[_length]) {
@@ -1639,8 +1632,8 @@ scriptIsLoaded, updateMacyThrottled*/
 			}
 		};
 
-		if (macyGrid) {
-			addMacyItems(macyGrid, onMacyManage);
+		if (macy) {
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {
@@ -1675,14 +1668,14 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macyGrid) {
+		var manageGlightbox = function manageGlightbox(macy) {
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
 					root.handleGLightbox = null;
 				}
 
-				if (macyGrid) {
+				if (macy) {
 					root.handleGLightbox = GLightbox({
 						selector: glightboxClass
 					});
@@ -1721,10 +1714,10 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-		var onImagesLoaded = function onImagesLoaded(macyGrid) {
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 
 				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
@@ -1743,13 +1736,13 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyGridClass = "macy-grid";
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyClass = "macy";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageGlightbox(glightboxClass);
@@ -1757,11 +1750,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid
-					? macyGrid.children ||
-					  macyGrid[querySelectorAll](
-							"." + macyGridClass + " > *"
-					  ) ||
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
@@ -1796,7 +1787,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function onMacyManage() {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 0,
@@ -1960,9 +1951,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/serguei-pictures/@2x/36229259776_09b4755088_z.jpg"
 			}
 		];
-		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
+		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
 
-		var addMacyItems = function addMacyItems(macyGrid, callback) {
+		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
@@ -1993,7 +1984,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				count++;
 
 				if (count === macyItems[_length]) {
-					macyGrid.innerHTML = html.join("");
+					macy.innerHTML = html.join("");
 
 					if (callback && "function" === typeof callback) {
 						callback();
@@ -2007,7 +1998,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       l;
       for (i = 0, l = macyItems[_length]; i < l; i += 1) {
       	var macyItem = document.createElement("a");
-      	macyItem[classList].add(macyGridItemIsRenderedClass);
+      	macyItem[classList].add(macyItemIsRenderedClass);
       	macyItem[setAttribute]("href", macyItems[i].href);
       	macyItem[setAttribute]("class", glightboxClass);
       	macyItem[setAttribute]("aria-label", "Показать картинку");
@@ -2016,7 +2007,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       	img[setAttribute]("src", transparentPixel);
       	img[setAttribute]("class", dataSrcLazyClass);
       	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macyGrid[appendChild](macyItem);
+      	macy[appendChild](macyItem);
       	count++;
       	if (count === macyItems[_length]) {
       		if (callback && "function" === typeof callback) {
@@ -2027,8 +2018,8 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
       i = l = null; */
 		};
 
-		if (macyGrid) {
-			addMacyItems(macyGrid, onMacyManage);
+		if (macy) {
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {
@@ -2128,10 +2119,10 @@ updateMacyThrottled*/
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
 
-		var onImagesLoaded = function onImagesLoaded(macyGrid) {
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 
 				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
@@ -2150,13 +2141,13 @@ updateMacyThrottled*/
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyGridClass = "macy-grid";
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyClass = "macy";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageIframeLightbox(iframeLightboxLinkClass);
@@ -2164,11 +2155,9 @@ updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macyGrid
-					? macyGrid.children ||
-					  macyGrid[querySelectorAll](
-							"." + macyGridClass + " > *"
-					  ) ||
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
@@ -2203,7 +2192,7 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function onMacyManage() {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 0,
@@ -2275,9 +2264,9 @@ updateMacyThrottled*/
 					"./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
 			}
 		];
-		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
+		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
 
-		var addMacyItems = function addMacyItems(macyGrid, callback) {
+		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
@@ -2306,7 +2295,7 @@ updateMacyThrottled*/
 				count++;
 
 				if (count === macyItems[_length]) {
-					macyGrid.innerHTML = html.join("");
+					macy.innerHTML = html.join("");
 
 					if (callback && "function" === typeof callback) {
 						callback();
@@ -2317,8 +2306,8 @@ updateMacyThrottled*/
 			i = l = null;
 		};
 
-		if (macyGrid) {
-			addMacyItems(macyGrid, onMacyManage);
+		if (macy) {
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {

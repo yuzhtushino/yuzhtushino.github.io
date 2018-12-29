@@ -44,7 +44,7 @@
 			body {
 				font-family: Roboto, sans-serif;
 				color: #212121 !important;
-				background-color: #F5F5F5 !important;
+				background-color: #F2F2F2 !important;
 				margin: 0;
 			}
 			html,
@@ -119,7 +119,7 @@
 				transform: translate(-50%, -50%);
 				z-index: 1000000;
 			}
-			.uwp-loading.uwp-loading--is-active {
+			.uwp-loading.is-active {
 				visibility: visible;
 				opacity: 1;
 			}
@@ -200,47 +200,21 @@
 					border-width: calc(60px / 7);
 				}
 			}
-			.macy-grid {
+			.macy {
 				visibility: hidden;
 				opacity: 0;
 			}
-			.macy-grid img,
-			.macy-grid iframe {
+			.macy img,
+			.macy iframe {
 				display: none;
 			}
-			.macy-grid.macy-grid--is-active {
+			.macy.is-active {
 				visibility: visible;
 				opacity: 1;
 			}
-			.macy-grid.macy-grid--is-active img,
-			.macy-grid.macy-grid--is-active iframe {
+			.macy.is-active img,
+			.macy.is-active iframe {
 				display: block;
-			}
-			.macy-grid.macy-grid--home > .ac-container {
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-orient: vertical;
-				-webkit-box-direction: normal;
-					-ms-flex-direction: column;
-						flex-direction: column;
-				-webkit-box-pack: start;
-					-ms-flex-pack: start;
-						justify-content: flex-start;
-				background-color: #FFFFFF;
-				-webkit-box-sizing: border-box;
-						box-sizing: border-box;
-				-webkit-box-flex: 0;
-					-ms-flex: 0 0 auto;
-						flex: 0 0 auto;
-				padding: 15px;
-				font-family: Roboto,Segoe UI,Segoe MDL2 Assets,Helvetica Neue,sans-serif;
-				border: none;
-				padding: 15px !important;
-			}
-			.col {
-				background-color: #FFFFFF;
-				padding: 15px 15px 0 15px;
 			}
 			/*!
 			 * @see {@link https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.css}
@@ -256,16 +230,16 @@
 					visibility: visible;
 					opacity: 1;
 				}
-				.uwp-loading.uwp-loading--is-active {
+				.uwp-loading.is-active {
 					visibility: hidden;
 					opacity: 0;
 				}
-				.macy-grid {
+				.macy {
 					visibility: visible;
 					opacity: 1;
 				}
-				.macy-grid img,
-				.macy-grid iframe {
+				.macy img,
+				.macy iframe {
 					display: block;
 				}
 			</style>
@@ -293,7 +267,7 @@
 				</noscript>
 			</div>
 		</div>
-		<div class="uwp-loading uwp-loading--is-active">
+		<div class="uwp-loading is-active">
 			<div class="uwp-loading__part">
 				<div class="uwp-loading__rotator"></div>
 			</div>

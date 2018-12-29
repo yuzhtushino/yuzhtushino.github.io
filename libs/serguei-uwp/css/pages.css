@@ -1,90 +1,47 @@
 /*! @import "englishextra-ui-variables"; */
 /*!
- * macy-grid
+ * macy
  */
 /*!
  * the scrollbar will show
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--about {
+.macy.macy--about {
 	width: calc(100% - 40px);
 	background-color: transparent;
 	margin: 20px 20px 0 20px;
 }
 
-.macy-grid.macy-grid--about:after {
+.macy.macy--about:after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
 @media screen and (max-width: 480px) {
-	.macy-grid.macy-grid--about {
+	.macy.macy--about {
 		width: 100%;
 		margin: 20px 0 0 0;
 	}
 }
 
-/*!
- * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
- */
-/* Push */
-@keyframes hvr-push {
-	50% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-.macy-grid.macy-grid--about .glightbox img:hover,
-.macy-grid.macy-grid--about .glightbox img:focus,
-.macy-grid.macy-grid--about .glightbox img:active {
-	animation-name: hvr-push;
-	animation-duration: 0.3s;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-}
-
-/*!
- * yandex-map
- */
-.macy-grid.macy-grid--about .yandex-map-iframe {
-	width: 100%;
-	height: 100%;
-	border: none;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	opacity: 0;
-	z-index: -999;
-}
-
-.macy-grid.macy-grid--about .yandex-map-iframe.yandex-map-iframe--is-active {
-	position: relative;
-	opacity: 1;
-	z-index: auto;
-	min-height: 320px;
-}
-
 /*! @import "englishextra-ui-variables"; */
 /*!
- * macy-grid
+ * macy
  */
 /*!
  * the scrollbar will show
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--gallery {
+.macy.macy--gallery {
 	width: 100%;
 	background-color: transparent;
 	margin: 0;
 }
 
-.macy-grid.macy-grid--gallery:after {
+.macy.macy--gallery:after {
 	content: "";
 	display: table;
 	clear: both;
@@ -92,110 +49,57 @@
 
 /*! @import "englishextra-ui-variables"; */
 /*!
- * macy-grid
+ * macy
  */
 /*!
  * the scrollbar will show
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--home {
+.macy.macy--home {
 	width: calc(100% - 40px);
 	background-color: transparent;
 	margin: 20px 20px 0 20px;
 }
 
-.macy-grid.macy-grid--home:after {
+.macy.macy--home:after {
 	content: "";
 	display: table;
 	clear: both;
 }
 
 @media screen and (max-width: 480px) {
-	.macy-grid.macy-grid--home {
+	.macy.macy--home {
 		width: 100%;
 		margin: 20px 0 0 0;
 	}
 }
 
-.macy-grid.macy-grid--home > .ac-container {
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-	background-color: #ffffff;
-	box-sizing: border-box;
-	-ms-flex: 0 0 auto;
-	flex: 0 0 auto;
-	padding: 15px;
-	font-family: Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif;
-	border: none;
-	border-radius: 3px;
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 1px 0 rgba(0, 0, 0, 0.12);
-	padding: 15px !important;
-}
-
-/*!
- * @see {@link https://github.com/IanLunn/Hover/blob/master/css/hover.css}
- */
-/* Push */
-@keyframes hvr-push {
-	50% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-.macy-grid.macy-grid--home .ac-selectable:hover,
-.macy-grid.macy-grid--home .ac-selectable:focus,
-.macy-grid.macy-grid--home .ac-selectable:active {
-	animation-name: hvr-push;
-	animation-duration: 0.3s;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-}
-
-/*!
- * yandex-map
- */
-.macy-grid.macy-grid--home .yandex-map-iframe {
-	width: 100%;
-	height: 100%;
-	border: none;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	opacity: 0;
-	z-index: -999;
-}
-
-.macy-grid.macy-grid--home .yandex-map-iframe.yandex-map-iframe--is-active {
-	position: relative;
-	opacity: 1;
-	z-index: auto;
-	min-height: 320px;
+.macy.macy--home > .col {
+	background-color: #fff;
+	border-radius: 4px;
+	-webkit-box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+	box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 /*! @import "englishextra-ui-variables"; */
 /*!
- * macy-grid
+ * macy
  */
 /*!
  * the scrollbar will show 
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--pictures {
+.macy.macy--pictures {
 	width: 100%;
 	background-color: transparent;
 	margin: 0;
 }
 
-.macy-grid.macy-grid--pictures:after {
+.macy.macy--pictures:after {
 	content: "";
 	display: table;
 	clear: both;
@@ -203,20 +107,20 @@
 
 /*! @import "englishextra-ui-variables"; */
 /*!
- * macy-grid
+ * macy
  */
 /*!
  * the scrollbar will show 
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--works {
+.macy.macy--works {
 	width: 100%;
 	background-color: transparent;
 	margin: 0;
 }
 
-.macy-grid.macy-grid--works:after {
+.macy.macy--works:after {
 	content: "";
 	display: table;
 	clear: both;

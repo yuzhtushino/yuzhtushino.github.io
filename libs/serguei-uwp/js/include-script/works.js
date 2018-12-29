@@ -71,10 +71,10 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 		 * @see {@link https://imagesloaded.desandro.com/}
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
-		var onImagesLoaded = function (macyGrid) {
+		var onImagesLoaded = function (macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 				var onAlways = function (instance) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
@@ -87,15 +87,15 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 
-		var macyGridClass = "macy-grid";
+		var macyClass = "macy";
 
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function () {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageIframeLightbox(iframeLightboxLinkClass);
@@ -103,7 +103,7 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 
 		var onMacyResize = function () {
 			try {
-				var container = macyGrid ? (macyGrid.children || macyGrid[querySelectorAll]("." + macyGridClass + " > *") || "") : "";
+				var container = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
 				if (container) {
 					var i,
 					l;
@@ -123,7 +123,7 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 0,
@@ -174,9 +174,9 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 			}
 		];
 
-		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
+		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
 
-		var addMacyItems = function (macyGrid, callback) {
+		var addMacyItems = function (macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
 			/*!
@@ -190,7 +190,7 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcLazyClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems[_length]) {
-					macyGrid.innerHTML = html.join("");
+					macy.innerHTML = html.join("");
 					if (callback && "function" === typeof callback) {
 						callback();
 					}
@@ -199,9 +199,9 @@ manageIframeLightboxLinkAll, manageMacy, updateMacyThrottled*/
 			i = l = null;
 		};
 
-		if (macyGrid) {
+		if (macy) {
 
-			addMacyItems(macyGrid, onMacyManage);
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {

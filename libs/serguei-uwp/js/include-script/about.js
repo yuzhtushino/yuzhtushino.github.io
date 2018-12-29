@@ -72,13 +72,13 @@ updateMacyThrottled*/
 			}
 		};
 
-		var manageAC = function (macyGrid, callback) {
+		var manageAC = function (macy, callback) {
 			if (root.renderAC) {
 				var count = 0;
 				var i,
 				l;
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					renderAC(macyGrid, macyItems[i], renderACOptions, onExecuteAC, null);
+					renderAC(macy, macyItems[i], renderACOptions, onExecuteAC, null);
 					count++;
 					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {
@@ -96,14 +96,14 @@ updateMacyThrottled*/
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
 		root.handleGLightbox = null;
-		var manageGlightbox = function (macyGrid) {
+		var manageGlightbox = function (macy) {
 			var initScript = function () {
 				if (root.GLightbox) {
 					if (root.handleGLightbox) {
 						root.handleGLightbox.destroy();
 						root.handleGLightbox = null;
 					}
-					if (macyGrid) {
+					if (macy) {
 						root.handleGLightbox = GLightbox({
 								selector: glightboxClass
 							});
@@ -137,10 +137,10 @@ updateMacyThrottled*/
 		 * @see {@link https://imagesloaded.desandro.com/}
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
-		var onImagesLoaded = function (macyGrid) {
+		var onImagesLoaded = function (macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 				var onAlways = function (instance) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
@@ -153,15 +153,15 @@ updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 
-		var macyGridClass = "macy-grid";
+		var macyClass = "macy";
 
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function () {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageGlightbox(glightboxClass);
@@ -178,7 +178,7 @@ updateMacyThrottled*/
 
 		var onMacyResize = function () {
 			try {
-				var container = macyGrid ? (macyGrid.children || macyGrid[querySelectorAll]("." + macyGridClass + " > *") || "") : "";
+				var container = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
 				if (container) {
 					var i,
 					l;
@@ -198,7 +198,7 @@ updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 20,
@@ -219,12 +219,12 @@ updateMacyThrottled*/
 		/* var macyItems = [
 		]; */
 
-		var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";
+		var macyItemIsRenderedClass = "macy__item--is-rendered";
 
-		var addMacyItems = function (macyGrid, callback) {
+		var addMacyItems = function (macy, callback) {
 			if (root.AdaptiveCards) {
-				macyGrid.innerHTML = "";
-				manageAC(macyGrid, callback);
+				macy.innerHTML = "";
+				manageAC(macy, callback);
 			} else {
 				/*!
 				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
@@ -237,7 +237,7 @@ updateMacyThrottled*/
 					html.push(macyItems[i]);
 					count++;
 					if (count === macyItems[_length]) {
-						macyGrid.innerHTML = html.join("");
+						macy.innerHTML = html.join("");
 						if (callback && "function" === typeof callback) {
 							callback();
 						}
@@ -249,7 +249,7 @@ updateMacyThrottled*/
 				var i,
 				l;
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyGridItemIsRenderedClass);
+					macyItems[i][classList].add(macyItemIsRenderedClass);
 					count++;
 					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {
@@ -261,9 +261,9 @@ updateMacyThrottled*/
 			}
 		};
 
-		if (macyGrid) {
+		if (macy) {
 
-			addMacyItems(macyGrid, onMacyManage);
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {

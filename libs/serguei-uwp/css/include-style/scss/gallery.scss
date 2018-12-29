@@ -3,7 +3,7 @@
 @import "../../../scss/custom-color";
 
 /*!
- * macy-grid
+ * macy
  */
 
 /*!
@@ -11,13 +11,13 @@
  * if it is a child container
  * that has no height 100%
  */
-.macy-grid.macy-grid--gallery {
+.macy.macy--gallery {
 	width: 100%;
 	background-color: transparent;
 	margin: 0;
 }
 
-.macy-grid.macy-grid--gallery:after {
+.macy.macy--gallery:after {
 	content: "";
 	display: table;
 	clear: both;

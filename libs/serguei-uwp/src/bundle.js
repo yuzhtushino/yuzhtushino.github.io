@@ -1,6 +1,37 @@
 /*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
 isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, require, runHome,
 runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
+/*property console, join, split */
+/*!
+ * safe way to handle console.log
+ * @see {@link https://github.com/paulmillr/console-polyfill}
+ */
+(function(root){
+	"use strict";
+	if (!root.console) {
+		root.console = {};
+	}
+	var con = root.console;
+	var prop;
+	var method;
+	var dummy = function () {};
+	var properties = ["memory"];
+	var methods = ["assert,clear,count,debug,dir,dirxml,error,exception,group,",
+		"groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,",
+		"show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn"];
+	methods.join("").split(",");
+	for (; (prop = properties.pop()); ) {
+		if (!con[prop]) {
+			con[prop] = {};
+		}
+	}
+	for (; (method = methods.pop()); ) {
+		if (!con[method]) {
+			con[method] = dummy;
+		}
+	}
+	prop = method = dummy = properties = methods = null;
+})("undefined" !== typeof window ? window : this);
 /*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
@@ -55,9 +86,9 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			};
 			_this.head[appendChild](script);
 			/* if (_this.ref[parentNode]) {
-			_this.ref[parentNode][insertBefore](script, _this.ref);
+				_this.ref[parentNode][insertBefore](script, _this.ref);
 			} else {
-			(_this.body || _this.head)[appendChild](script);
+				(_this.body || _this.head)[appendChild](script);
 			} */
 			(_this.body || _this.head)[appendChild](script);
 		};
@@ -79,29 +110,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		}
 	};
 	root.loadJsCss = loadJsCss;
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * scriptIsLoaded
- */
-(function (root, document) {
-	"use strict";
-	var getAttribute = "getAttribute";
-	var getElementsByTagName = "getElementsByTagName";
-	var _length = "length";
-	var scriptIsLoaded = function (scriptSrc) {
-		var scriptAll,
-		i,
-		l;
-		for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
-			if (scriptAll[i][getAttribute]("src") === scriptSrc) {
-				scriptAll = i = l = null;
-				return true;
-			}
-		}
-		scriptAll = i = l = null;
-		return false;
-	};
-	root.scriptIsLoaded = scriptIsLoaded;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * throttle
@@ -349,16 +357,12 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var getElementsByTagName = "getElementsByTagName";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
-	var manageExternalLinkAll = function (scope) {
-		var ctx = scope && scope.nodeName ? scope : "";
-		var linkTag = "a";
-		var linkAll = ctx ? ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+	var manageExternalLinkAll = function () {
+		var link = document[getElementsByTagName]("a") || "";
 		var handleExternalLink = function (url, ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			var logicHandleExternalLink = openDeviceBrowser.bind(null, url);
-			var debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
-			debounceLogicHandleExternalLink();
+			debounce(openDeviceBrowser.bind(null, url), 200).call(root);
 		};
 		var arrange = function (e) {
 			var externalLinkIsBindedClass = "external-link--is-binded";
@@ -376,11 +380,11 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				}
 			}
 		};
-		if (linkAll) {
+		if (link) {
 			var i,
 			l;
-			for (i = 0, l = linkAll[_length]; i < l; i += 1) {
-				arrange(linkAll[i]);
+			for (i = 0, l = link[_length]; i < l; i += 1) {
+				arrange(link[i]);
 			}
 			i = l = null;
 		}
@@ -394,27 +398,27 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var macyGridIsActiveClass = "macy-grid--is-active";
-	root.handleMacy = null;
+	var macyIsActiveClass = "is-active";
+	root.macyInstance = null;
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
 		var logThis;
 		logThis = function () {
 			console.log("updateMacy");
 		};
-		if (root.handleMacy) {
+		if (root.macyInstance) {
 			var timer = setTimeout(function () {
 					clearTimeout(timer);
 					timer = null;
 					logThis();
-					root.handleMacy.recalculate(true, true);
+					root.macyInstance.recalculate(true, true);
 				}, timeout);
 		}
 	};
 	var updateMacyThrottled = throttle(updateMacy, 1000);
-	var initMacy = function (macyGridClass, options) {
+	var initMacy = function (macyClass, options) {
 		var defaultSettings = {
-			/* container: ".macy-grid", */
+			/* container: ".macy", */
 			trueOrder: false,
 			waitForImages: false,
 			margin: 0,
@@ -429,7 +433,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		};
 		var settings = options || {};
-		settings.container = "." + macyGridClass;
+		settings.container = "." + macyClass;
 		var opt;
 		for (opt in defaultSettings) {
 			if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
@@ -437,29 +441,30 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var macyContainer = document[getElementsByClassName](macyGridClass)[0] || "";
+		var macyContainer = document[getElementsByClassName](macyClass)[0] || "";
 		if (macyContainer) {
 			try {
-				if (root.handleMacy) {
-					root.handleMacy.remove();
-					root.handleMacy = null;
+				if (root.macyInstance) {
+					root.macyInstance.remove();
+					root.macyInstance = null;
 				}
-				root.handleMacy = new Macy(settings);
-				/* macyContainer[classList].add(macyGridIsActiveClass); */
+				root.macyInstance = new Macy(settings);
+				/* this will be set later after rendering all macy items */
+				/* macyContainer[classList].add(macyIsActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
 		}
 	};
-	var manageMacy = function (macyGridClass, options) {
-		var macyContainer = document[getElementsByClassName](macyGridClass)[0] || "";
-		var handleMacyContainer = function () {
-			if (!macyContainer[classList].contains(macyGridIsActiveClass)) {
-				initMacy(macyGridClass, options);
+	var manageMacy = function (macyClass, options) {
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var handleMacy = function () {
+			if (!macy[classList].contains(macyIsActiveClass)) {
+				initMacy(macyClass, options);
 			}
 		};
-		if (root.Macy && macyContainer) {
-			handleMacyContainer();
+		if (root.Macy && macy) {
+			handleMacy();
 		}
 	};
 	root.updateMacyThrottled = updateMacyThrottled;
@@ -538,11 +543,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		};
 		if (rmLink) {
-			/* var timer = setTimeout(function () {
-			clearTimeout(timer);
-			timer = null;
-			initScript();
-			}, 100); */
 			initScript();
 		}
 	};
@@ -608,14 +608,14 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var classList = "classList";
 	var dataset = "dataset";
 	var parentNode = "parentNode";
-	var style = "style";
+	var yandexMapIframeIsActiveClass = "is-active";
 	var revealYandexMap = function (_this) {
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
 			yandexMap.src = yandexMap[dataset].src;
-			yandexMap[classList].add("yandex-map-iframe--is-active");
-			if (_this[parentNode]) {
-				_this[parentNode][style].display = "none";
+			yandexMap[classList].add(yandexMapIframeIsActiveClass);
+			if (_this[parentNode][parentNode] !== null) {
+				_this[parentNode][parentNode].removeChild(_this[parentNode]);
 			}
 		}
 	};
@@ -628,7 +628,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	"use strict";
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var uwpLoadingIsActiveClass = "uwp-loading--is-active";
+	var uwpLoadingIsActiveClass = "is-active";
 	var LoadingSpinner = function () {
 		var uwpLoading = document[getElementsByClassName]("uwp-loading")[0] || "";
 		if (!uwpLoading) {
@@ -771,10 +771,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	};
 
 	/* var scripts = [
-	"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
-	"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-	"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-	"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
+			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
+			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 	]; */
 
 	var scripts = [
@@ -827,13 +827,12 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	}
 
 	/* var scripts = [
-	"../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
-	"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
-	"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
-	"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
-	"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
-	"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
-	"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+			"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
+			"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
+			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
+			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
+			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 	]; */
 
 	scripts.push("./libs/serguei-uwp/js/vendors.min.js",
@@ -876,10 +875,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		};
 
 		/* if (supportsCanvas) {
-		slot = setInterval(checkFontIsLoaded, 100);
+			slot = setInterval(checkFontIsLoaded, 100);
 		} else {
-		slot = null;
-		onFontsLoaded();
+			slot = null;
+			onFontsLoaded();
 		} */
 		onFontsLoaded();
 	};
@@ -915,45 +914,44 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	 */
 
 	/* root.WebFontConfig = {
-	google: {
-	families: [
-	"Roboto:300,400,500,700:cyrillic",
-	"Roboto Mono:400:cyrillic,latin-ext"
-	]
-	},
-	listeners: [],
-	active: function () {
-	this.called_ready = true;
-	var i;
-	for (i = 0; i < this.listeners[_length]; i++) {
-	this.listeners[i]();
-	}
-	i = null;
-	},
-	ready: function (callback) {
-	if (this.called_ready) {
-	callback();
-	} else {
-	this.listeners.push(callback);
-	}
-	}
+		google: {
+			families: [
+				"Roboto:300,400,500,700:cyrillic",
+				"Roboto Mono:400:cyrillic,latin-ext"
+			]
+		},
+		listeners: [],
+		active: function () {
+			this.called_ready = true;
+			var i;
+			for (i = 0; i < this.listeners[_length]; i++) {
+				this.listeners[i]();
+			}
+			i = null;
+		},
+		ready: function (callback) {
+			if (this.called_ready) {
+				callback();
+			} else {
+				this.listeners.push(callback);
+			}
+		}
 	};
 
 	var onFontsLoadedCallback = function () {
 
-	var onFontsLoaded = function () {
-	progressBar.increase(20);
+		var onFontsLoaded = function () {
+			progressBar.increase(20);
 
-	var load;
-	load = new loadJsCss(scripts, run);
-	};
+			var load;
+			load = new loadJsCss(scripts, run);
+		};
 
-	root.WebFontConfig.ready(onFontsLoaded);
+		root.WebFontConfig.ready(onFontsLoaded);
 	};
 
 	var load;
 	load = new loadJsCss(
-	[forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
-	onFontsLoadedCallback
-	); */
+			[forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
+			onFontsLoadedCallback); */
 })("undefined" !== typeof window ? window : this, document);

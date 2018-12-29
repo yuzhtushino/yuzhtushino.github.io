@@ -49,6 +49,14 @@
 		);
 	};
 
+	var removeChildren = function removeChildren(e) {
+		if (e && e.firstChild) {
+			for (; e.firstChild; ) {
+				e.removeChild(e.firstChild);
+			}
+		}
+	};
+
 	var removeJsCssFile = function removeJsCssFile(filename, filetype) {
 		var targetelement =
 			filetype == "js" ? "script" : filetype == "css" ? "link" : "none";
@@ -177,19 +185,19 @@
 			}
 
 			UWP.revealUWPLoading = function() {
-				UWP.loading.classList.add("uwp-loading--is-active");
+				UWP.loading.classList.add("is-active");
 			};
 
 			UWP.concealUWPLoading = function() {
 				var timer = setTimeout(function() {
 					clearTimeout(timer);
 					timer = null;
-					UWP.loading.classList.remove("uwp-loading--is-active");
+					UWP.loading.classList.remove("is-active");
 				}, 1000);
 			};
 
 			UWP.removeUWPLoading = function() {
-				UWP.loading.classList.remove("uwp-loading--is-active");
+				UWP.loading.classList.remove("is-active");
 			};
 
 			UWP.getConfig(params);
@@ -506,8 +514,9 @@
 					)
 				);
 			}
+			/* UWP.main.innerHTML = ""; */
 
-			UWP.main.innerHTML = "";
+			removeChildren(UWP.main);
 
 			function displayError(title, linkText) {
 				UWP.main.innerHTML = '\n\t<div class="uwp-error">\n\t<p>'.concat(
@@ -585,7 +594,9 @@
 					var pageIncludeStyle = page
 						? page.getElementsByTagName("include-style")[0] || ""
 						: "";
-					UWP.main.innerHTML = "";
+					/* UWP.main.innerHTML = ""; */
+
+					removeChildren(UWP.main);
 					UWP.main.innerHTML = pageBody;
 					UWP.main.classList.remove("uwp-main--with-animation");
 

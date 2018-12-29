@@ -21,15 +21,15 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
 		root.handleLightGallery = null;
-		var manageLightGallery = function (macyGrid) {
+		var manageLightGallery = function (macy) {
 			var initScript = function () {
 				if (root.lightGallery) {
 					if (root.handleLightGallery) {
 						root.handleLightGallery.destroy(true);
 						root.handleLightGallery = null;
 					}
-					if (macyGrid) {
-						root.handleLightGallery = lightGallery(macyGrid, {
+					if (macy) {
+						root.handleLightGallery = lightGallery(macy, {
 								autoplay: false,
 								autoplayControls: false,
 								hash: false,
@@ -66,10 +66,10 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		 * @see {@link https://imagesloaded.desandro.com/}
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
-		var onImagesLoaded = function (macyGrid) {
+		var onImagesLoaded = function (macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
-				imgLoad = new imagesLoaded(macyGrid);
+				imgLoad = new imagesLoaded(macy);
 				var onAlways = function (instance) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
@@ -82,23 +82,23 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 
-		var macyGridClass = "macy-grid";
+		var macyClass = "macy";
 
-		var macyGrid = document[getElementsByClassName](macyGridClass)[0] || "";
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyGridIsActiveClass = "macy-grid--is-active";
+		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function () {
-			macyGrid[classList].add(macyGridIsActiveClass);
-			onImagesLoaded(macyGrid);
+			macy[classList].add(macyIsActiveClass);
+			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageLightGallery(macyGrid);
+			manageLightGallery(macy);
 		};
 
 		var onMacyResize = function () {
 			try {
-				var container = macyGrid ? (macyGrid.children || macyGrid[querySelectorAll]("." + macyGridClass + " > *") || "") : "";
+				var container = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
 				if (container) {
 					var i,
 					l;
@@ -118,7 +118,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 		};
 
 		var onMacyManage = function () {
-			manageMacy(macyGridClass, {
+			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 0,
@@ -265,9 +265,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			}
 		];
 
-		/*var macyGridItemIsRenderedClass = "macy-grid__item--is-rendered";*/
+		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
 
-		var addMacyItems = function (macyGrid, callback) {
+		var addMacyItems = function (macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
 			/*!
@@ -281,7 +281,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				html.push('<a href="' + macyItems[i].href + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcLazyClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems[_length]) {
-					macyGrid.innerHTML = html.join("");
+					macy.innerHTML = html.join("");
 					if (callback && "function" === typeof callback) {
 						callback();
 					}
@@ -293,7 +293,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 				var macyItem = document.createElement("a");
-				macyItem[classList].add(macyGridItemIsRenderedClass);
+				macyItem[classList].add(macyItemIsRenderedClass);
 				macyItem[setAttribute]("href", macyItems[i].href);
 				macyItem[setAttribute]("aria-label", "Показать картинку");
 				var img = document.createElement("img");
@@ -301,7 +301,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 				img[setAttribute]("src", transparentPixel);
 				img[setAttribute]("class", dataSrcLazyClass);
 				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-				macyGrid[appendChild](macyItem);
+				macy[appendChild](macyItem);
 				count++;
 				if (count === macyItems[_length]) {
 					if (callback && "function" === typeof callback) {
@@ -312,9 +312,9 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 			i = l = null; */
 		};
 
-		if (macyGrid) {
+		if (macy) {
 
-			addMacyItems(macyGrid, onMacyManage);
+			addMacyItems(macy, onMacyManage);
 		}
 
 		if (root.manageExternalLinkAll) {

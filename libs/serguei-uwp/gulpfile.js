@@ -303,7 +303,6 @@ var options = {
 	},
 	vendors: {
 		src: [
-			// "../../cdn/adaptivecards/1.1.0/js/adaptivecards.fixed.js",
 			"../../cdn/imagesloaded/4.1.4/js/imagesloaded.pkgd.fixed.js",
 			"../../cdn/lazyload/10.19.0/js/lazyload.iife.fixed.js",
 			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
@@ -315,7 +314,6 @@ var options = {
 		scss: [
 			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
-			"../../cdn/adaptivecards/1.1.0/css/adaptivecards.custom.css",
 			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
 			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
 		],
