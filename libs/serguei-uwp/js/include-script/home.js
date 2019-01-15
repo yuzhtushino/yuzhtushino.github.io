@@ -472,8 +472,8 @@ updateMacyThrottled*/
 							"subtle": "#bdbdbd"
 						},
 						"accent": {
-							"default": "#0097a7",
-							"subtle": "#26c6da"
+							"default": "#0288d1",
+							"subtle": "#29b6f6"
 						},
 						"good": {
 							"default": "#388e3c",

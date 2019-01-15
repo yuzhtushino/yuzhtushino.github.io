@@ -308,6 +308,7 @@ var options = {
 			"../../cdn/ReadMore.js/1.0.0/js/readMoreJS.fixed.js",
 			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
+			"../../cdn/ripple-js/1.4.4/js/ripple.fixed.js",
 			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
 		],
 		js: "./js",

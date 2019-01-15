@@ -472,8 +472,8 @@ updateMacyThrottled*/
 							"subtle": "#bdbdbd"
 						},
 						"accent": {
-							"default": "#0097a7",
-							"subtle": "#26c6da"
+							"default": "#0288d1",
+							"subtle": "#29b6f6"
 						},
 						"good": {
 							"default": "#388e3c",
@@ -654,10 +654,10 @@ updateMacyThrottled*/
 				margin: 20,
 				columns: 3,
 				breakAt: {
-					1280: 2,
-					1024: 2,
+					1280: 3,
+					1024: 3,
 					960: 2,
-					640: 1,
+					640: 2,
 					480: 1,
 					360: 1
 				}

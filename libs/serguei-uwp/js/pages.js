@@ -1,5 +1,5 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
+manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
 updateMacyThrottled*/
 
 /*!
@@ -44,8 +44,8 @@ updateMacyThrottled*/
 							subtle: "#bdbdbd"
 						},
 						accent: {
-							default: "#0097a7",
-							subtle: "#26c6da"
+							default: "#0288d1",
+							subtle: "#29b6f6"
 						},
 						good: {
 							default: "#388e3c",
@@ -238,10 +238,10 @@ updateMacyThrottled*/
 				margin: 20,
 				columns: 3,
 				breakAt: {
-					1280: 2,
-					1024: 2,
+					1280: 3,
+					1024: 3,
 					960: 2,
-					640: 1,
+					640: 2,
 					480: 1,
 					360: 1
 				}
@@ -308,7 +308,7 @@ updateMacyThrottled*/
 })("undefined" !== typeof window ? window : this, document);
 
 /*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss,
-manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -803,7 +803,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 
 /*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
 loadJsCss, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
-scriptIsLoaded, updateMacyThrottled*/
+updateMacyThrottled*/
 
 /*!
  * page logic
@@ -1350,8 +1350,8 @@ scriptIsLoaded, updateMacyThrottled*/
 							subtle: "#bdbdbd"
 						},
 						accent: {
-							default: "#0097a7",
-							subtle: "#26c6da"
+							default: "#0288d1",
+							subtle: "#29b6f6"
 						},
 						good: {
 							default: "#388e3c",
@@ -1573,10 +1573,10 @@ scriptIsLoaded, updateMacyThrottled*/
 				margin: 20,
 				columns: 3,
 				breakAt: {
-					1280: 2,
-					1024: 2,
+					1280: 3,
+					1024: 3,
 					960: 2,
-					640: 1,
+					640: 2,
 					480: 1,
 					360: 1
 				}
@@ -1643,7 +1643,7 @@ scriptIsLoaded, updateMacyThrottled*/
 })("undefined" !== typeof window ? window : this, document);
 
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -2029,8 +2029,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 })("undefined" !== typeof window ? window : this, document);
 
 /*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-loadJsCss, manageExternalLinkAll, manageMacy, scriptIsLoaded,
-updateMacyThrottled*/
+loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
