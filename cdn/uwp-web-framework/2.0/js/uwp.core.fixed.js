@@ -54,14 +54,6 @@
 		}
 	};
 
-	var removeChildren = function removeChildren(e) {
-		if (e && e.firstChild) {
-			for (; e.firstChild; ) {
-				e.removeChild(e.firstChild);
-			}
-		}
-	};
-
 	var removeJsCssFile = function removeJsCssFile(filename, filetype) {
 		var targetelement =
 			filetype == "js" ? "script" : filetype == "css" ? "link" : "none";
@@ -519,8 +511,8 @@
 					)
 				);
 			}
-			/* UWP.main.innerHTML = ""; */
 
+			/* UWP.main.innerHTML = ""; */
 			removeChildren(UWP.main);
 
 			function displayError(title, linkText) {
@@ -600,7 +592,6 @@
 						? page.getElementsByTagName("include-style")[0] || ""
 						: "";
 					/* UWP.main.innerHTML = ""; */
-
 					removeChildren(UWP.main);
 					UWP.main.innerHTML = pageBody;
 					UWP.main.classList.remove("uwp-main--with-animation");

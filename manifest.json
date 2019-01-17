@@ -1,6 +1,6 @@
 {
-	"name": "yuzhtushino",
-	"short_name": "yuzhtushino",
+	"name": "englishextra",
+	"short_name": "englishextra",
 	"manifest_version": 2,
 	"icons": [{
 		"src": "/android-chrome-192x192.png",
@@ -19,12 +19,12 @@
 	}],
 	"scope": "/",
 	"mjs_access_whitelist": [{
-		"url": "https://yuzhtushino.github.io/"
+		"url": "https://englishextra.gitlab.io/"
 	}],
-	"start_url": "https://yuzhtushino.github.io/",
+	"start_url": "https://englishextra.gitlab.io/",
 	"display": "standalone",
 	"orientation": "any",
-	"ms_TileColor": "#0097A7",
-	"theme_color": "#0097A7",
-	"background_color": "#0097A7"
+	"ms_TileColor": "#F03B4C",
+	"theme_color": "#F03B4C",
+	"background_color": "#F03B4C"
 }
