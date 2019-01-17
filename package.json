@@ -1,12 +1,12 @@
 {
-	"name": "englishextra",
-	"productName": "englishextra",
-	"companyName": "englishextra.gitlab.io",
+	"name": "yuzhtushino",
+	"productName": "yuzhtushino",
+	"companyName": "yuzhtushino.github.io",
 	"version": "0.1.0",
 	"description": "A Portfolio Web App",
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/englishextra/englishextra.gitlab.io.git"
+		"url": "https://github.com/yuzhtushino/yuzhtushino.github.io.git"
 	},
 	"dependencies": {
 		"npm": "^6.5.0"
@@ -20,7 +20,7 @@
 		"test": "gulp lint-libbundle-js"
 	},
 	"email": "englishextra@mail.ru",
-	"url": "https://gitlab.com/englishextra/englishextra.gitlab.io/issues",
+	"url": "https://github.com/yuzhtushino/yuzhtushino.github.io/issues",
 	"maintainers": {
 		"name": "Serguei Shimansky",
 		"email": "englishextra@mail.ru",
