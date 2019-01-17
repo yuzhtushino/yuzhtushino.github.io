@@ -45,7 +45,7 @@ updateMacyThrottled*/
 						},
 						accent: {
 							default: "#0288d1",
-							subtle: "#29b6f6"
+							subtle: "#29B6F6"
 						},
 						good: {
 							default: "#388e3c",
@@ -1351,7 +1351,7 @@ updateMacyThrottled*/
 						},
 						accent: {
 							default: "#0288d1",
-							subtle: "#29b6f6"
+							subtle: "#29B6F6"
 						},
 						good: {
 							default: "#388e3c",
@@ -1427,7 +1427,7 @@ updateMacyThrottled*/
 					document[getElementsByClassName](imgLightboxLinkClass) ||
 					"";
 
-				var arrange = function arrange() {
+				if (link) {
 					imgLightbox(imgLightboxLinkClass, {
 						onLoaded: function onLoaded() {
 							LoadingSpinner.hide();
@@ -1440,16 +1440,6 @@ updateMacyThrottled*/
 						},
 						touch: false
 					});
-				};
-
-				if (link) {
-					var i, l;
-
-					for (i = 0, l = link[_length]; i < l; i += 1) {
-						arrange(link[i]);
-					}
-
-					i = l = null;
 				}
 			};
 
@@ -1457,8 +1447,8 @@ updateMacyThrottled*/
 				var load;
 				load = new loadJsCss(
 					[
-						"./cdn/img-lightbox/0.2.1/css/img-lightbox.fixed.css",
-						"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"
+						"./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.min.css",
+						"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.min.js"
 					],
 					initScript
 				);
@@ -2090,8 +2080,8 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 				var load;
 				load = new loadJsCss(
 					[
-						"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
-						"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
+						"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.min.css",
+						"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.min.js"
 					],
 					initScript
 				);

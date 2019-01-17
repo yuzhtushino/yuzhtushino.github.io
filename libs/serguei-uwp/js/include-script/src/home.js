@@ -473,7 +473,7 @@ updateMacyThrottled*/
 						},
 						"accent": {
 							"default": "#0288d1",
-							"subtle": "#29b6f6"
+							"subtle": "#29B6F6"
 						},
 						"good": {
 							"default": "#388e3c",
@@ -537,7 +537,7 @@ updateMacyThrottled*/
 		var manageImgLightbox = function (imgLightboxLinkClass) {
 			var initScript = function () {
 				var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
-				var arrange = function () {
+				if (link) {
 					imgLightbox(imgLightboxLinkClass, {
 						onLoaded: function () {
 							LoadingSpinner.hide();
@@ -550,20 +550,12 @@ updateMacyThrottled*/
 						},
 						touch: false
 					});
-				};
-				if (link) {
-					var i,
-					l;
-					for (i = 0, l = link[_length]; i < l; i += 1) {
-						arrange(link[i]);
-					}
-					i = l = null;
 				}
 			};
 			if (!root.imgLightbox) {
 				var load;
-				load = new loadJsCss(["./cdn/img-lightbox/0.2.1/css/img-lightbox.fixed.css",
-							"./cdn/img-lightbox/0.2.1/js/img-lightbox.fixed.js"], initScript);
+				load = new loadJsCss(["./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.min.css",
+							"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.min.js"], initScript);
 			} else {
 				initScript();
 			}

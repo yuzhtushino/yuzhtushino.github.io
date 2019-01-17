@@ -248,10 +248,10 @@ var options = {
 		css: "../../cdn/iframe-lightbox/0.2.8/css"
 	},
 	imglightbox: {
-		src: "../../cdn/img-lightbox/0.2.1/src/*.js",
-		js: "../../cdn/img-lightbox/0.2.1/js",
-		scss: "../../cdn/img-lightbox/0.2.1/scss/*.scss",
-		css: "../../cdn/img-lightbox/0.2.1/css"
+		src: "../../cdn/img-lightbox/0.2.3/src/*.js",
+		js: "../../cdn/img-lightbox/0.2.3/js",
+		scss: "../../cdn/img-lightbox/0.2.3/scss/*.scss",
+		css: "../../cdn/img-lightbox/0.2.3/css"
 	},
 	glightbox: {
 		src: "../../cdn/glightbox/1.0.8/src/*.js",

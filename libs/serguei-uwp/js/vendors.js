@@ -1319,9 +1319,9 @@ var LazyLoad = (function() {
 		config: {
 			pageTitle: "UWP web framework",
 			layoutType: "docked-minimized",
-			activeColor: "#29b6f6",
+			activeColor: "#26C6DA",
 			mainColor: "#373737",
-			mainColorDarkened: "#0288d1",
+			mainColorDarkened: "#0097A7",
 			includes: "./includes/serguei-uwp",
 			includeScript: "./libs/serguei-uwp/js/include-script",
 			includeStyle: "./libs/serguei-uwp/css/include-style",

@@ -2537,8 +2537,8 @@ body {
 	width: 60px;
 	height: 60px;
 	border: calc(60px / 7) solid transparent;
-	border-right-color: #29b6f6;
-	border-top-color: #29b6f6;
+	border-right-color: #26C6DA;
+	border-top-color: #26C6DA;
 	border-radius: 50%;
 	box-sizing: border-box;
 	animation: uwp-loading-animation 3s ease-in-out infinite;
