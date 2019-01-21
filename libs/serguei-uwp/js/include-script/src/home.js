@@ -1,6 +1,6 @@
 /*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
 loadJsCss, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
-updateMacyThrottled*/
+removeChildren, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -22,7 +22,7 @@ updateMacyThrottled*/
 		 * @see {@link https://adaptivecards.io/samples/}
 		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1984}
 		 */
-		var renderACVCard = {
+		/* var renderACVCard = {
 			"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 			"type": "AdaptiveCard",
 			"version": "1.0",
@@ -444,7 +444,7 @@ updateMacyThrottled*/
 					]
 				}
 			]
-		};
+		}; */
 
 		/*!
 		 * to change default style
@@ -454,7 +454,7 @@ updateMacyThrottled*/
 		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
 		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
 		 */
-		var renderACOptions = {
+		/* var renderACOptions = {
 			"fontFamily": "Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif",
 			"containerStyles": {
 				"default": {
@@ -491,9 +491,9 @@ updateMacyThrottled*/
 					"backgroundColor": "#ffffff"
 				}
 			}
-		};
+		}; */
 
-		var macyItems = [
+		/* var macyItems = [
 			renderACVCard,
 			renderACIntro,
 			renderACBackground,
@@ -503,7 +503,11 @@ updateMacyThrottled*/
 			renderACDiploma3,
 			renderACDiploma4,
 			renderACContacts
-		];
+		]; */
+
+		var renderACOptions = {};
+
+		var macyItems = [];
 
 		var onExecuteAC = function (action) {
 			if (action.url) {
@@ -665,7 +669,8 @@ updateMacyThrottled*/
 
 		var addMacyItems = function (macy, callback) {
 			if (root.AdaptiveCards) {
-				macy.innerHTML = "";
+				/* macy.innerHTML = ""; */
+				removeChildren(macy);
 				manageAC(macy, callback);
 			} else {
 				/*!

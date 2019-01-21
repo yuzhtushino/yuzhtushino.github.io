@@ -1,6 +1,5 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -15,80 +14,6 @@ updateMacyThrottled*/
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
 		var _length = "length";
-
-		var macyItems = [
-		];
-
-		/*!
-		 * to change default style
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config}
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config#adaptivecardconfig}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/pull/905}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
-		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
-		 */
-		var renderACOptions = {
-			"fontFamily": "Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif",
-			"containerStyles": {
-				"default": {
-					"foregroundColors": {
-						"default": {
-							"default": "#212121",
-							"subtle": "#757575"
-						},
-						"dark": {
-							"default": "#000000",
-							"subtle": "#424242"
-						},
-						"light": {
-							"default": "#757575",
-							"subtle": "#bdbdbd"
-						},
-						"accent": {
-							"default": "#0288d1",
-							"subtle": "#29B6F6"
-						},
-						"good": {
-							"default": "#388e3c",
-							"subtle": "#66bb6a"
-						},
-						"warning": {
-							"default": "#e64a19",
-							"subtle": "#ff7043"
-						},
-						"attention": {
-							"default": "#d81b60",
-							"subtle": "#f06292"
-						}
-					},
-					"backgroundColor": "#ffffff"
-				}
-			}
-		};
-
-		var onExecuteAC = function (action) {
-			if (action.url) {
-				root[location].href = action.url;
-			}
-		};
-
-		var manageAC = function (macy, callback) {
-			if (root.renderAC) {
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					renderAC(macy, macyItems[i], renderACOptions, onExecuteAC, null);
-					count++;
-					if (count === macyItems[_length]) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-				i = l = null;
-			}
-		};
 
 		var glightboxClass = "glightbox";
 
@@ -214,49 +139,43 @@ updateMacyThrottled*/
 			onMacyResize();
 		};
 
-		/* var macyItems = [
-		]; */
+		var macyItems = [];
 
 		var macyItemIsRenderedClass = "macy__item--is-rendered";
 
 		var addMacyItems = function (macy, callback) {
-			if (root.AdaptiveCards) {
-				macy.innerHTML = "";
-				manageAC(macy, callback);
-			} else {
-				/*!
-				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-				 */
-				/* var html = [];
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					html.push(macyItems[i]);
-					count++;
-					if (count === macyItems[_length]) {
-						macy.innerHTML = html.join("");
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
+			/*!
+			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+			 */
+			/* var html = [];
+			var count = 0;
+			var i,
+			l;
+			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+				html.push(macyItems[i]);
+				count++;
+				if (count === macyItems[_length]) {
+					macy.innerHTML = html.join("");
+					if (callback && "function" === typeof callback) {
+						callback();
 					}
 				}
-				i = l = null; */
-				macyItems = document[getElementsByClassName]("col") || "";
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyItemIsRenderedClass);
-					count++;
-					if (count === macyItems[_length]) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-				i = l = null;
 			}
+			i = l = null; */
+			macyItems = document[getElementsByClassName]("col") || "";
+			var count = 0;
+			var i,
+			l;
+			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+				macyItems[i][classList].add(macyItemIsRenderedClass);
+				count++;
+				if (count === macyItems[_length]) {
+					if (callback && "function" === typeof callback) {
+						callback();
+					}
+				}
+			}
+			i = l = null;
 		};
 
 		if (macy) {

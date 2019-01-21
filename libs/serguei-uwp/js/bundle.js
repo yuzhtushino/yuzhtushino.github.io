@@ -498,7 +498,12 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var handleExternalLink = function handleExternalLink(url, ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			debounce(openDeviceBrowser.bind(null, url), 200).call(root);
+
+			var logic = function logic() {
+				openDeviceBrowser(url);
+			};
+
+			debounce(logic, 200).call(root);
 		};
 
 		var arrange = function arrange(e) {
@@ -809,6 +814,23 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		docBody[setAttribute]("data-layout-type", "docked");
 	};
 })("undefined" !== typeof window ? window : this, document);
+/*!
+ * removeChildren
+ */
+
+(function(root) {
+	"use strict";
+
+	var removeChildren = function removeChildren(e) {
+		if (e && e.firstChild) {
+			for (; e.firstChild; ) {
+				e.removeChild(e.firstChild);
+			}
+		}
+	};
+
+	root.removeChildren = removeChildren;
+})("undefined" !== typeof window ? window : this);
 /*!
  * revealYandexMap
  */

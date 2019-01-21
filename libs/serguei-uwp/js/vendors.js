@@ -33,20 +33,7 @@ function _typeof(obj) {
 	/* jshint strict: false */
 
 	/* globals define, module, window */
-	if (typeof define == "function" && define.amd) {
-		// AMD - RequireJS
-		define("ev-emitter/ev-emitter", factory);
-	} else if (
-		(typeof module === "undefined" ? "undefined" : _typeof(module)) ==
-			"object" &&
-		module.exports
-	) {
-		// CommonJS - Browserify, Webpack
-		module.exports = factory();
-	} else {
-		// Browser globals
-		global.EvEmitter = factory();
-	}
+	global.EvEmitter = factory();
 })(typeof window != "undefined" ? window : this, function() {
 	"use strict";
 
@@ -151,22 +138,7 @@ function _typeof(obj) {
 
 	/*global define: false, module: false, require: false */
 
-	if (typeof define == "function" && define.amd) {
-		// AMD
-		define(["ev-emitter/ev-emitter"], function(EvEmitter) {
-			return factory(window, EvEmitter);
-		});
-	} else if (
-		(typeof module === "undefined" ? "undefined" : _typeof(module)) ==
-			"object" &&
-		module.exports
-	) {
-		// CommonJS
-		module.exports = factory(window, require("ev-emitter"));
-	} else {
-		// browser global
-		window.imagesLoaded = factory(window, window.EvEmitter);
-	}
+	window.imagesLoaded = factory(window, window.EvEmitter);
 })(
 	typeof window !== "undefined" ? window : this, // --------------------------  factory -------------------------- //
 	function factory(window, EvEmitter) {

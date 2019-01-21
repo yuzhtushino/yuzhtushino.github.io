@@ -362,7 +362,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var handleExternalLink = function (url, ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			debounce(openDeviceBrowser.bind(null, url), 200).call(root);
+			var logic = function () {
+				openDeviceBrowser(url);
+			};
+			debounce(logic, 200).call(root);
 		};
 		var arrange = function (e) {
 			var externalLinkIsBindedClass = "external-link--is-binded";
@@ -601,6 +604,20 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		docBody[setAttribute]("data-layout-type", "docked");
 	};
 })("undefined" !== typeof window ? window : this, document);
+/*!
+ * removeChildren
+ */
+(function(root){
+	"use strict";
+	var removeChildren = function (e) {
+		if (e && e.firstChild) {
+			for (; e.firstChild; ) {
+				e.removeChild(e.firstChild);
+			}
+		}
+	};
+	root.removeChildren = removeChildren;
+})("undefined" !== typeof window ? window : this);
 /*!
  * revealYandexMap
  */
