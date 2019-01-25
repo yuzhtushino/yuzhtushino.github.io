@@ -150,7 +150,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function(root) {
 	"use strict";
 
-	var throttle = function throttle(func, wait) {
+	var throttle = function (func, wait) {
 		var ctx;
 		var args;
 		var rtn;
@@ -191,7 +191,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function(root) {
 	"use strict";
 
-	var debounce = function debounce(func, wait) {
+	var debounce = function (func, wait) {
 		var timeout;
 		var args;
 		var context;
