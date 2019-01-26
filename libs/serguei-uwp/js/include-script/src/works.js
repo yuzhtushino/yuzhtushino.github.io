@@ -23,8 +23,8 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		 * @see {@link https://github.com/englishextra/iframe-lightbox}
 		 */
 		var manageIframeLightbox = function (iframeLightboxLinkClass) {
+			var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
 			var initScript = function () {
-				var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
 				var arrange = function (e) {
 					e.lightbox = new IframeLightbox(e, {
 							onLoaded: function () {
@@ -39,21 +39,21 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 							touch: false
 						});
 				};
-				if (link) {
-					var i,
-					l;
-					for (i = 0, l = link[_length]; i < l; i += 1) {
-						arrange(link[i]);
-					}
-					i = l = null;
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
 				}
+				i = l = null;
 			};
-			if (!root.IframeLightbox) {
-				var load;
-				load = new loadJsCss(["./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
-							"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"], initScript);
-			} else {
-				initScript();
+			if (link) {
+				if (!root.IframeLightbox) {
+					var load;
+					load = new loadJsCss(["./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
+								"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"], initScript);
+				} else {
+					initScript();
+				}
 			}
 		};
 

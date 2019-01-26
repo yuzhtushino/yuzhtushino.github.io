@@ -1254,38 +1254,37 @@ removeChildren, updateMacyThrottled*/
 		var manageImgLightbox = function manageImgLightbox(
 			imgLightboxLinkClass
 		) {
-			var initScript = function initScript() {
-				var link =
-					document[getElementsByClassName](imgLightboxLinkClass) ||
-					"";
+			var link =
+				document[getElementsByClassName](imgLightboxLinkClass) || "";
 
-				if (link) {
-					imgLightbox(imgLightboxLinkClass, {
-						onLoaded: function onLoaded() {
-							LoadingSpinner.hide();
-						},
-						onClosed: function onClosed() {
-							LoadingSpinner.hide();
-						},
-						onCreated: function onCreated() {
-							LoadingSpinner.show();
-						},
-						touch: false
-					});
-				}
+			var initScript = function initScript() {
+				imgLightbox(imgLightboxLinkClass, {
+					onLoaded: function onLoaded() {
+						LoadingSpinner.hide();
+					},
+					onClosed: function onClosed() {
+						LoadingSpinner.hide();
+					},
+					onCreated: function onCreated() {
+						LoadingSpinner.show();
+					},
+					touch: false
+				});
 			};
 
-			if (!root.imgLightbox) {
-				var load;
-				load = new loadJsCss(
-					[
-						"./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.min.css",
-						"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"
-					],
-					initScript
-				);
-			} else {
-				initScript();
+			if (link) {
+				if (!root.imgLightbox) {
+					var load;
+					load = new loadJsCss(
+						[
+							"./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
+							"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"
+						],
+						initScript
+					);
+				} else {
+					initScript();
+				}
 			}
 		};
 
@@ -1878,11 +1877,10 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		var manageIframeLightbox = function manageIframeLightbox(
 			iframeLightboxLinkClass
 		) {
-			var initScript = function initScript() {
-				var link =
-					document[getElementsByClassName](iframeLightboxLinkClass) ||
-					"";
+			var link =
+				document[getElementsByClassName](iframeLightboxLinkClass) || "";
 
+			var initScript = function initScript() {
 				var arrange = function arrange(e) {
 					e.lightbox = new IframeLightbox(e, {
 						onLoaded: function onLoaded() {
@@ -1898,28 +1896,28 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					});
 				};
 
-				if (link) {
-					var i, l;
+				var i, l;
 
-					for (i = 0, l = link[_length]; i < l; i += 1) {
-						arrange(link[i]);
-					}
-
-					i = l = null;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
 				}
+
+				i = l = null;
 			};
 
-			if (!root.IframeLightbox) {
-				var load;
-				load = new loadJsCss(
-					[
-						"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.min.css",
-						"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
-					],
-					initScript
-				);
-			} else {
-				initScript();
+			if (link) {
+				if (!root.IframeLightbox) {
+					var load;
+					load = new loadJsCss(
+						[
+							"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
+							"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
+						],
+						initScript
+					);
+				} else {
+					initScript();
+				}
 			}
 		};
 

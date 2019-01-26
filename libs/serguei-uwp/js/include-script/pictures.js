@@ -37,7 +37,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js")) {
+			if (!root.GLightbox) {
 				var load;
 				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
 							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);

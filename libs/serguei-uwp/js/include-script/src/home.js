@@ -539,29 +539,29 @@ removeChildren, updateMacyThrottled*/
 		 * @see {@link https://github.com/englishextra/img-lightbox}
 		 */
 		var manageImgLightbox = function (imgLightboxLinkClass) {
+			var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
 			var initScript = function () {
-				var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
-				if (link) {
-					imgLightbox(imgLightboxLinkClass, {
-						onLoaded: function () {
-							LoadingSpinner.hide();
-						},
-						onClosed: function () {
-							LoadingSpinner.hide();
-						},
-						onCreated: function () {
-							LoadingSpinner.show();
-						},
-						touch: false
-					});
-				}
+				imgLightbox(imgLightboxLinkClass, {
+					onLoaded: function () {
+						LoadingSpinner.hide();
+					},
+					onClosed: function () {
+						LoadingSpinner.hide();
+					},
+					onCreated: function () {
+						LoadingSpinner.show();
+					},
+					touch: false
+				});
 			};
-			if (!root.imgLightbox) {
-				var load;
-				load = new loadJsCss(["./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
-							"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"], initScript);
-			} else {
-				initScript();
+			if (link) {
+				if (!root.imgLightbox) {
+					var load;
+					load = new loadJsCss(["./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
+								"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"], initScript);
+				} else {
+					initScript();
+				}
 			}
 		};
 

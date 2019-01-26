@@ -38,7 +38,7 @@ manageExternalLinkAll, manageMacy, scriptIsLoaded, updateMacyThrottled*/
 					}
 				}
 			};
-			if (!scriptIsLoaded("./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js")) {
+			if (!root.lightGallery) {
 				var load;
 				load = new loadJsCss(["./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
 							"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
