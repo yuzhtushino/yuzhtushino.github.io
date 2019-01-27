@@ -1,165 +1,99 @@
 /*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, scriptIsLoaded,
-updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
+
 /*!
  * page logic
  */
-(function (root, document) {
+(function(root, document) {
 	"use strict";
 
 	var getElementsByClassName = "getElementsByClassName";
 
-	root.runAbout = function () {
-
+	root.runAbout = function() {
 		var classList = "classList";
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
 		var _length = "length";
-
-		var macyItems = [
-		];
-
-		/*!
-		 * to change default style
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config}
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config#adaptivecardconfig}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/pull/905}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
-		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
-		 */
-		var renderACOptions = {
-			"fontFamily": "Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif",
-			"containerStyles": {
-				"default": {
-					"foregroundColors": {
-						"default": {
-							"default": "#212121",
-							"subtle": "#757575"
-						},
-						"dark": {
-							"default": "#000000",
-							"subtle": "#424242"
-						},
-						"light": {
-							"default": "#757575",
-							"subtle": "#bdbdbd"
-						},
-						"accent": {
-							"default": "#0288d1",
-							"subtle": "#29b6f6"
-						},
-						"good": {
-							"default": "#388e3c",
-							"subtle": "#66bb6a"
-						},
-						"warning": {
-							"default": "#e64a19",
-							"subtle": "#ff7043"
-						},
-						"attention": {
-							"default": "#d81b60",
-							"subtle": "#f06292"
-						}
-					},
-					"backgroundColor": "#ffffff"
-				}
-			}
-		};
-
-		var onExecuteAC = function (action) {
-			if (action.url) {
-				root[location].href = action.url;
-			}
-		};
-
-		var manageAC = function (macy, callback) {
-			if (root.renderAC) {
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					renderAC(macy, macyItems[i], renderACOptions, onExecuteAC, null);
-					count++;
-					if (count === macyItems[_length]) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-				i = l = null;
-			}
-		};
-
 		var glightboxClass = "glightbox";
-
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
+
 		root.handleGLightbox = null;
-		var manageGlightbox = function (macy) {
-			var initScript = function () {
-				if (root.GLightbox) {
-					if (root.handleGLightbox) {
-						root.handleGLightbox.destroy();
-						root.handleGLightbox = null;
-					}
-					if (macy) {
-						root.handleGLightbox = GLightbox({
-								selector: glightboxClass
-							});
-					}
+
+		var manageGlightbox = function manageGlightbox(macy) {
+			var initScript = function initScript() {
+				if (root.handleGLightbox) {
+					root.handleGLightbox.destroy();
+					root.handleGLightbox = null;
+				}
+
+				if (macy) {
+					root.handleGLightbox = GLightbox({
+						selector: glightboxClass
+					});
 				}
 			};
+
 			if (!root.GLightbox) {
 				var load;
-				load = new loadJsCss(["./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"], initScript);
+				load = new loadJsCss(
+					[
+						"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+						"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+					],
+					initScript
+				);
 			} else {
 				initScript();
 			}
 		};
 
 		var dataSrcLazyClass = "data-src-lazy";
-
 		/*!
 		 * @see {@link https://github.com/verlok/lazyload}
 		 */
-		var manageLazyLoad = function (dataSrcLazyClass) {
+
+		var manageLazyLoad = function manageLazyLoad(dataSrcLazyClass) {
 			if (root.LazyLoad) {
 				var lzld;
 				lzld = new LazyLoad({
-						elements_selector: "." + dataSrcLazyClass
-					});
+					elements_selector: "." + dataSrcLazyClass
+				});
 			}
 		};
-
 		/*!
 		 * @see {@link https://imagesloaded.desandro.com/}
 		 * Triggered after all images have been either loaded or confirmed broken.
 		 */
-		var onImagesLoaded = function (macy) {
+
+		var onImagesLoaded = function onImagesLoaded(macy) {
 			if (root.imagesLoaded) {
 				var imgLoad;
 				imgLoad = new imagesLoaded(macy);
-				var onAlways = function (instance) {
+
+				var onAlways = function onAlways(instance) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
-					console.log("imagesLoaded: found " + instance.images[_length] + " images");
+
+					console.log(
+						"imagesLoaded: found " +
+							instance.images[_length] +
+							" images"
+					);
 				};
+
 				imgLoad.on("always", onAlways);
 			}
 		};
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-
 		var macyClass = "macy";
-
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
-
 		var macyIsActiveClass = "is-active";
 
-		var onMacyRender = function () {
+		var onMacyRender = function onMacyRender() {
 			macy[classList].add(macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
@@ -176,20 +110,37 @@ updateMacyThrottled*/
 			});
 		};
 
-		var onMacyResize = function () {
+		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
+				var container = macy
+					? macy.children ||
+					  macy[querySelectorAll]("." + macyClass + " > *") ||
+					  ""
+					: "";
+
 				if (container) {
-					var i,
-					l;
+					var i, l;
+
 					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (!container[i][classList].contains(anyResizeEventIsBindedClass)) {
-							container[i][classList].add(anyResizeEventIsBindedClass);
-							container[i][_addEventListener]("onresize", updateMacyThrottled, {
-								passive: true
-							});
+						if (
+							!container[i][classList].contains(
+								anyResizeEventIsBindedClass
+							)
+						) {
+							container[i][classList].add(
+								anyResizeEventIsBindedClass
+							);
+
+							container[i][_addEventListener](
+								"onresize",
+								updateMacyThrottled,
+								{
+									passive: true
+								}
+							);
 						}
 					}
+
 					i = l = null;
 				}
 			} catch (err) {
@@ -197,17 +148,17 @@ updateMacyThrottled*/
 			}
 		};
 
-		var onMacyManage = function () {
+		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
 				trueOrder: false,
 				waitForImages: false,
 				margin: 20,
 				columns: 3,
 				breakAt: {
-					1280: 2,
-					1024: 2,
+					1280: 3,
+					1024: 3,
 					960: 2,
-					640: 1,
+					640: 2,
 					480: 1,
 					360: 1
 				}
@@ -216,53 +167,48 @@ updateMacyThrottled*/
 			onMacyResize();
 		};
 
-		/* var macyItems = [
-		]; */
-
+		var macyItems = [];
 		var macyItemIsRenderedClass = "macy__item--is-rendered";
 
-		var addMacyItems = function (macy, callback) {
-			if (root.AdaptiveCards) {
-				macy.innerHTML = "";
-				manageAC(macy, callback);
-			} else {
-				/*!
-				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-				 */
-				/* var html = [];
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					html.push(macyItems[i]);
-					count++;
-					if (count === macyItems[_length]) {
-						macy.innerHTML = html.join("");
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
+		var addMacyItems = function addMacyItems(macy, callback) {
+			/*!
+			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
+			 */
+
+			/* var html = [];
+      var count = 0;
+      var i,
+      l;
+      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+      	html.push(macyItems[i]);
+      	count++;
+      	if (count === macyItems[_length]) {
+      		macy.innerHTML = html.join("");
+      		if (callback && "function" === typeof callback) {
+      			callback();
+      		}
+      	}
+      }
+      i = l = null; */
+			macyItems = document[getElementsByClassName]("col") || "";
+			var count = 0;
+			var i, l;
+
+			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+				macyItems[i][classList].add(macyItemIsRenderedClass);
+				count++;
+
+				if (count === macyItems[_length]) {
+					if (callback && "function" === typeof callback) {
+						callback();
 					}
 				}
-				i = l = null; */
-				macyItems = document[getElementsByClassName]("col") || "";
-				var count = 0;
-				var i,
-				l;
-				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyItemIsRenderedClass);
-					count++;
-					if (count === macyItems[_length]) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-				i = l = null;
 			}
+
+			i = l = null;
 		};
 
 		if (macy) {
-
 			addMacyItems(macy, onMacyManage);
 		}
 
