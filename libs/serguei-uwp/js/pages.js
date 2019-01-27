@@ -21,7 +21,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macy) {
+		var manageGlightbox = function manageGlightbox(macy, glightboxClass) {
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
@@ -98,7 +98,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			manageGlightbox(macy, glightboxClass);
 			manageReadMore(null, {
 				target: ".dummy",
 				numOfWords: 10,
@@ -1272,19 +1272,8 @@ removeChildren, updateMacyThrottled*/
 				});
 			};
 
-			if (link) {
-				if (!root.imgLightbox) {
-					var load;
-					load = new loadJsCss(
-						[
-							"./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
-							"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"
-						],
-						initScript
-					);
-				} else {
-					initScript();
-				}
+			if (link && root.imgLightbox) {
+				initScript();
 			}
 		};
 
@@ -1490,7 +1479,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macy) {
+		var manageGlightbox = function manageGlightbox(macy, glightboxClass) {
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
@@ -1567,7 +1556,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			manageGlightbox(macy, glightboxClass);
 		};
 
 		var onMacyResize = function onMacyResize() {
@@ -1905,19 +1894,8 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 				i = l = null;
 			};
 
-			if (link) {
-				if (!root.IframeLightbox) {
-					var load;
-					load = new loadJsCss(
-						[
-							"./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
-							"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
-						],
-						initScript
-					);
-				} else {
-					initScript();
-				}
+			if (link && root.IframeLightbox) {
+				initScript();
 			}
 		};
 

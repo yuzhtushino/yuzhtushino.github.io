@@ -46,14 +46,8 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 				}
 				i = l = null;
 			};
-			if (link) {
-				if (!root.IframeLightbox) {
-					var load;
-					load = new loadJsCss(["./cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css",
-								"./cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"], initScript);
-				} else {
-					initScript();
-				}
+			if (link && root.IframeLightbox) {
+				initScript();
 			}
 		};
 

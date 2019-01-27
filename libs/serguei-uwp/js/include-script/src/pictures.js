@@ -23,7 +23,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
 		root.handleGLightbox = null;
-		var manageGlightbox = function (macy) {
+		var manageGlightbox = function (macy, glightboxClass) {
 			var initScript = function () {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
@@ -89,7 +89,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			manageGlightbox(macy, glightboxClass);
 		};
 
 		var onMacyResize = function () {

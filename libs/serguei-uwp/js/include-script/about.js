@@ -21,7 +21,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macy) {
+		var manageGlightbox = function manageGlightbox(macy, glightboxClass) {
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
@@ -98,7 +98,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
-			manageGlightbox(glightboxClass);
+			manageGlightbox(macy, glightboxClass);
 			manageReadMore(null, {
 				target: ".dummy",
 				numOfWords: 10,

@@ -554,14 +554,8 @@ removeChildren, updateMacyThrottled*/
 					touch: false
 				});
 			};
-			if (link) {
-				if (!root.imgLightbox) {
-					var load;
-					load = new loadJsCss(["./cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
-								"./cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js"], initScript);
-				} else {
-					initScript();
-				}
+			if (link && root.imgLightbox) {
+				initScript();
 			}
 		};
 

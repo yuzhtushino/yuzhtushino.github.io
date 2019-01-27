@@ -312,14 +312,18 @@ var options = {
 			"../../cdn/uwp-web-framework/2.0/js/uwp.core.fixed.js",
 			"../../cdn/resize/1.0.0/js/any-resize-event.fixed.js",
 			"../../cdn/ripple-js/1.4.4/js/ripple.fixed.js",
-			"../../cdn/macy.js/2.3.1/js/macy.fixed.js"
+			"../../cdn/macy.js/2.3.1/js/macy.fixed.js",
+			"../../cdn/img-lightbox/0.2.3/js/img-lightbox.fixed.js",
+			"../../cdn/iframe-lightbox/0.2.8/js/iframe-lightbox.fixed.js"
 		],
 		js: "./js",
 		scss: [
 			"../../fonts/roboto-fontfacekit/2.137/css/roboto.css",
 			"../../fonts/roboto-mono-fontfacekit/2.0.986/css/roboto-mono.css",
 			"../../cdn/typeboost-uwp.css/0.1.8/css/typeboost-uwp.css",
-			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css"
+			"../../cdn/uwp-web-framework/2.0/css/uwp.style.fixed.css",
+			"../../cdn/img-lightbox/0.2.3/css/img-lightbox.fixed.css",
+			"../../cdn/iframe-lightbox/0.2.8/css/iframe-lightbox.fixed.css"
 		],
 		css: "./css",
 		concatOptions: {
