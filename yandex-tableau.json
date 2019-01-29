@@ -2,8 +2,8 @@
 	"version": "1.0",
 	"api_version": 1,
 	"layout": {
-		"logo": "https://englishextra.gitlab.io///yandex-tableau-50x50.png",
-		"color": "#F03B4C",
+		"logo": "https://yuzhtushino.github.io///yandex-tableau-50x50.png",
+		"color": "#0288d1",
 		"show_title": false
 	}
 }

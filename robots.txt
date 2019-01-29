@@ -2,4 +2,4 @@
 # http://code.google.com/web/controlcrawlindex/
 User-agent: *
 Disallow:
-Sitemap: http://englishextra.gitlab.io/sitemap.xml
+Sitemap: http://yuzhtushino.github.io/sitemap.xml
