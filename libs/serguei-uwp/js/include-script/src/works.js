@@ -1,5 +1,5 @@
 /*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 /*!
  * page logic
  */

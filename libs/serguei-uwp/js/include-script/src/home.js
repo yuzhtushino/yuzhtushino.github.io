@@ -1,6 +1,6 @@
 /*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-loadJsCss, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
-removeChildren, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, manageReadMore, renderAC, removeChildren,
+updateMacyThrottled*/
 /*!
  * page logic
  */
