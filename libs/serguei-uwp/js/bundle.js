@@ -39,22 +39,21 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var loadJsCss = function (files, callback) {
+	var loadJsCss = function (files, callback, type) {
 		var _this = this;
 		var appendChild = "appendChild";
 		var body = "body";
 		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
-		/* var insertBefore = "insertBefore"; */
-		var _length = "length";
-		/* var parentNode = "parentNode"; */
 		var setAttribute = "setAttribute";
+		var _length = "length";
 		_this.files = files;
 		_this.js = [];
 		_this.head = document[getElementsByTagName]("head")[0] || "";
 		_this.body = document[body] || "";
 		_this.ref = document[getElementsByTagName]("script")[0] || "";
 		_this.callback = callback || function () {};
+		_this.type = type ? type.toLowerCase() : "";
 		_this.loadStyle = function (file) {
 			var link = document[createElement]("link");
 			link.rel = "stylesheet";
@@ -95,10 +94,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var i,
 		l;
 		for (i = 0, l = _this.files[_length]; i < l; i += 1) {
-			if ((/\.js$|\.js\?/).test(_this.files[i])) {
+			if ((/\.js$|\.js\?/).test(_this.files[i]) || _this.type === "js") {
 				_this.js.push(_this.files[i]);
 			}
-			if ((/\.css$|\.css\?|\/css\?/).test(_this.files[i])) {
+			if ((/\.css$|\.css\?|\/css\?/).test(_this.files[i]) || _this.type === "css") {
 				_this.loadStyle(_this.files[i]);
 			}
 		}
@@ -655,7 +654,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
 	var uwpLoadingIsActiveClass = "is-active";
-	var LoadingSpinner = function () {
+	var LoadingSpinner = (function () {
 		var uwpLoading = document[getElementsByClassName]("uwp-loading")[0] || "";
 		if (!uwpLoading) {
 			return;
@@ -668,7 +667,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				uwpLoading[classList].add(uwpLoadingIsActiveClass);
 			}
 		};
-	}();
+	})();
 	root.LoadingSpinner = LoadingSpinner;
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -698,25 +697,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	if (supportsSvgSmilAnimation && docElem) {
 		docElem[classList].add("svganimate");
 	}
-
-	var toStringFn = {}.toString;
-	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
-
-	if (supportsSvgSmilAnimation && docElem) {
-		docElem[classList].add("svganimate");
-	}
-
-	var hasTouch = "ontouchstart" in docElem || "";
-
-	var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
-
-	var getHTTP = function(force) {
-		var any = force || "";
-		var locationProtocol = root.location.protocol || "";
-		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : any ? "http" : "";
-	};
-
-	var forcedHTTP = getHTTP(true);
 
 	var supportsCanvas;
 	supportsCanvas	= (function () {
@@ -952,10 +932,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		switchLayoutType();
 	};
 
-	var scripts = [
-		/* "./libs/serguei-uwp/css/vendors.min.css", */
-		"./libs/serguei-uwp/css/bundle.min.css"
-	];
+	var scripts = ["./libs/serguei-uwp/css/bundle.min.css"];
 
 	var supportsPassive = (function () {
 		var support = false;
@@ -999,7 +976,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	scripts.push("./libs/serguei-uwp/js/vendors.min.js",
+	scripts.push(
+		"./libs/serguei-uwp/js/vendors.min.js",
 		"./libs/serguei-uwp/js/pages.min.js");
 
 	var onFontsLoadedCallback = function () {
@@ -1015,7 +993,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		};
 		var checkFontIsLoaded;
 		checkFontIsLoaded = function () {
-			if (doesFontExist("Roboto") /* && doesFontExist("Roboto Mono") */) {
+			if (doesFontExist("Roboto")) {
 				onFontsLoaded();
 			}
 		};
@@ -1037,8 +1015,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			load = new loadJsCss([
 						"./libs/serguei-uwp/css/vendors.min.css",
 						"./libs/serguei-uwp/css/pages.min.css"
-					],
-					onFontsLoadedCallback);
+					], onFontsLoadedCallback);
 		};
 		var req;
 		var raf = function () {
@@ -1056,15 +1033,17 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	/* root.WebFontConfig = {
 		google: {
 			families: [
-				"Roboto:300,400,500,700:cyrillic",
-				"Roboto Mono:400:cyrillic,latin-ext"
+				"Roboto:300,400,400i,700,700i:cyrillic",
+				"Roboto Mono:400,700:cyrillic,latin-ext",
+				"Roboto Condensed:700:cyrillic",
+				"PT Serif:400:cyrillic"
 			]
 		},
 		listeners: [],
 		active: function () {
 			this.called_ready = true;
 			var i;
-			for (i = 0; i < this.listeners[_length]; i++) {
+			for (i = 0; i < this.listeners[_length]; i += 1) {
 				this.listeners[i]();
 			}
 			i = null;
