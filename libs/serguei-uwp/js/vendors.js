@@ -1029,7 +1029,7 @@ var LazyLoad = (function() {
 	var RM = {};
 	RM.helpers = {
 		extendObj: function extendObj() {
-			for (var i = 1, l = arguments.length; i < l; i++) {
+			for (var i = 1, l = arguments.length; i < l; i += 1) {
 				for (var key in arguments[i]) {
 					if (arguments[i].hasOwnProperty(key)) {
 						if (

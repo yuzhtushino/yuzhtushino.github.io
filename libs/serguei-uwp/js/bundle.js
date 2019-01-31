@@ -59,13 +59,13 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
-			/* _this.head[appendChild](link); */
 			link.media = "only x";
 			link.onload = function () {
 				this.onload = null;
 				this.media = "all";
 			};
 			link[setAttribute]("property", "stylesheet");
+			/* _this.head[appendChild](link); */
 			(_this.body || _this.head)[appendChild](link);
 		};
 		_this.loadScript = function (i) {
@@ -1006,16 +1006,13 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		onFontsLoaded();
 	};
 
-	var loadDeferred = function () {
+	var loadDeferred = function (urlArray, callback) {
 		var timer;
 		var logic = function () {
 			clearTimeout(timer);
 			timer = null;
 			var load;
-			load = new loadJsCss([
-						"./libs/serguei-uwp/css/vendors.min.css",
-						"./libs/serguei-uwp/css/pages.min.css"
-					], onFontsLoadedCallback);
+			load = new loadJsCss(urlArray, callback);
 		};
 		var req;
 		var raf = function () {
@@ -1028,7 +1025,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			root[_addEventListener]("load", logic);
 		}
 	};
-	loadDeferred();
+	loadDeferred([
+			"./libs/serguei-uwp/css/vendors.min.css",
+			"./libs/serguei-uwp/css/pages.min.css"
+		], onFontsLoadedCallback);
 
 	/* root.WebFontConfig = {
 		google: {
