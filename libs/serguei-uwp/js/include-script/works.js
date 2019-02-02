@@ -1,5 +1,5 @@
 /*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -53,7 +53,7 @@ loadJsCss, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 				i = l = null;
 			};
 
-			if (link && root.IframeLightbox) {
+			if (root.IframeLightbox && link) {
 				initScript();
 			}
 		};

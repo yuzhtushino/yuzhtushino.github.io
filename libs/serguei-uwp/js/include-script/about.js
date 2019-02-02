@@ -29,7 +29,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 				}
 
 				if (macy) {
-					root.handleGLightbox = GLightbox({
+					root.handleGLightbox = new GLightbox({
 						selector: glightboxClass
 					});
 				}
@@ -176,20 +176,20 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 			 */
 
 			/* var html = [];
-      var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-      	html.push(macyItems[i]);
-      	count++;
-      	if (count === macyItems[_length]) {
-      		macy.innerHTML = html.join("");
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
+	  var count = 0;
+	  var i,
+	  l;
+	  for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+	  	html.push(macyItems[i]);
+	  	count++;
+	  	if (count === macyItems[_length]) {
+	  		macy.innerHTML = html.join("");
+	  		if (callback && "function" === typeof callback) {
+	  			callback();
+	  		}
+	  	}
+	  }
+	  i = l = null; */
 			macyItems = document[getElementsByClassName]("col") || "";
 			var count = 0;
 			var i, l;

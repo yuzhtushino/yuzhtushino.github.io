@@ -363,12 +363,12 @@ template {
 	height: 100%;
 	position: absolute;
 	object-fit: cover; */
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50.100%, -50%);
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50.100%, -50%);
 }
 
 .col .media.media--ar iframe {

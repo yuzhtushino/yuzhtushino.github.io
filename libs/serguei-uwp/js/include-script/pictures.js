@@ -32,7 +32,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 				}
 
 				if (macy) {
-					root.handleGLightbox = GLightbox({
+					root.handleGLightbox = new GLightbox({
 						selector: glightboxClass
 					});
 				}
@@ -350,28 +350,28 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 			i = l = null;
 			/* var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-      	var macyItem = document.createElement("a");
-      	macyItem[classList].add(macyItemIsRenderedClass);
-      	macyItem[setAttribute]("href", macyItems[i].href);
-      	macyItem[setAttribute]("class", glightboxClass);
-      	macyItem[setAttribute]("aria-label", "Показать картинку");
-      	var img = document.createElement("img");
-      	macyItem[appendChild](img);
-      	img[setAttribute]("src", transparentPixel);
-      	img[setAttribute]("class", dataSrcLazyClass);
-      	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macy[appendChild](macyItem);
-      	count++;
-      	if (count === macyItems[_length]) {
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
+	  var i,
+	  l;
+	  for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+	  	var macyItem = document.createElement("a");
+	  	macyItem[classList].add(macyItemIsRenderedClass);
+	  	macyItem[setAttribute]("href", macyItems[i].href);
+	  	macyItem[setAttribute]("class", glightboxClass);
+	  	macyItem[setAttribute]("aria-label", "Показать картинку");
+	  	var img = document.createElement("img");
+	  	macyItem[appendChild](img);
+	  	img[setAttribute]("src", transparentPixel);
+	  	img[setAttribute]("class", dataSrcLazyClass);
+	  	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
+	  	macy[appendChild](macyItem);
+	  	count++;
+	  	if (count === macyItems[_length]) {
+	  		if (callback && "function" === typeof callback) {
+	  			callback();
+	  		}
+	  	}
+	  }
+	  i = l = null; */
 		};
 
 		if (macy) {

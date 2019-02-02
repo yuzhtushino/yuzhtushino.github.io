@@ -451,8 +451,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var macyContainer = document[getElementsByClassName](macyClass)[0] || "";
-		if (macyContainer) {
+		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		if (macy) {
 			try {
 				if (root.macyInstance) {
 					root.macyInstance.remove();
@@ -460,7 +460,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				}
 				root.macyInstance = new Macy(settings);
 				/* this will be set later after rendering all macy items */
-				/* macyContainer[classList].add(macyIsActiveClass); */
+				/* macy[classList].add(macyIsActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
@@ -699,7 +699,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	}
 
 	var supportsCanvas;
-	supportsCanvas	= (function () {
+	supportsCanvas = (function () {
 		var elem = document[createElement]("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
@@ -980,6 +980,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		"./libs/serguei-uwp/js/vendors.min.js",
 		"./libs/serguei-uwp/js/pages.min.js");
 
+	var bodyFontFamily = "Roboto";
 	var onFontsLoadedCallback = function () {
 		var slot;
 		var onFontsLoaded = function () {
@@ -993,7 +994,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		};
 		var checkFontIsLoaded;
 		checkFontIsLoaded = function () {
-			if (doesFontExist("Roboto")) {
+			if (doesFontExist(bodyFontFamily)) {
 				onFontsLoaded();
 			}
 		};
@@ -1025,49 +1026,9 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			root[_addEventListener]("load", logic);
 		}
 	};
+
 	loadDeferred([
 			"./libs/serguei-uwp/css/vendors.min.css",
 			"./libs/serguei-uwp/css/pages.min.css"
 		], onFontsLoadedCallback);
-
-	/* root.WebFontConfig = {
-		google: {
-			families: [
-				"Roboto:300,400,400i,700,700i:cyrillic",
-				"Roboto Mono:400,700:cyrillic,latin-ext",
-				"Roboto Condensed:700:cyrillic",
-				"PT Serif:400:cyrillic"
-			]
-		},
-		listeners: [],
-		active: function () {
-			this.called_ready = true;
-			var i;
-			for (i = 0; i < this.listeners[_length]; i += 1) {
-				this.listeners[i]();
-			}
-			i = null;
-		},
-		ready: function (callback) {
-			if (this.called_ready) {
-				callback();
-			} else {
-				this.listeners.push(callback);
-			}
-		}
-	};
-
-	var onFontsLoadedCallback = function () {
-		var onFontsLoaded = function () {
-			if (!supportsSvgSmilAnimation && "undefined" !== typeof progressBar) {
-				progressBar.increase(20);
-			}
-			var load;
-			load = new loadJsCss(scripts, run);
-		};
-		root.WebFontConfig.ready(onFontsLoaded);
-	};
-
-	var load;
-	load = new loadJsCss([forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"], onFontsLoadedCallback); */
 })("undefined" !== typeof window ? window : this, document);

@@ -598,7 +598,7 @@ var LazyLoad = (function() {
 		window.dispatchEvent(event);
 	};
 	/* Auto initialization of one or more instances of lazyload, depending on the
-      options passed in (plain object or an array) */
+	  options passed in (plain object or an array) */
 
 	function autoInitialize(classObj, options) {
 		if (!options) {
@@ -894,7 +894,7 @@ var LazyLoad = (function() {
 		callbackIfSet(settings.callback_set, element);
 	}
 	/* entry.isIntersecting needs fallback because is null on some versions of MS Edge, and
-     entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
+	 entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
 
 	var isIntersecting = function isIntersecting(entry) {
 		return entry.isIntersecting || entry.intersectionRatio > 0;
@@ -3516,7 +3516,7 @@ function _typeof(obj) {
 				};
 
 				img.src = dummySrc;
-				container[style].display = "none";
+				setStyleDisplayNone(container);
 				callCallback(callback, root);
 			};
 
@@ -3636,7 +3636,7 @@ function _typeof(obj) {
 					};
 
 					img.src = hrefString;
-					container[style].display = "block";
+					setStyleDisplayBlock(container);
 				};
 
 				debounce(logic, rate).call();

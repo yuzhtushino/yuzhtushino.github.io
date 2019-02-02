@@ -30,7 +30,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					root.handleGLightbox = null;
 				}
 				if (macy) {
-					root.handleGLightbox = GLightbox({
+					root.handleGLightbox = new GLightbox({
 							selector: glightboxClass
 						});
 				}
@@ -94,14 +94,14 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 		var onMacyResize = function () {
 			try {
-				var container = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
-				if (container) {
+				var item = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
+				if (item) {
 					var i,
 					l;
-					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (!container[i][classList].contains(anyResizeEventIsBindedClass)) {
-							container[i][classList].add(anyResizeEventIsBindedClass);
-							container[i][_addEventListener]("onresize", updateMacyThrottled, {
+					for (i = 0, l = item[_length]; i < l; i += 1) {
+						if (!item[i][classList].contains(anyResizeEventIsBindedClass)) {
+							item[i][classList].add(anyResizeEventIsBindedClass);
+							item[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
 						}
