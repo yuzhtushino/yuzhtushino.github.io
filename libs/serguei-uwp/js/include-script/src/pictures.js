@@ -1,5 +1,7 @@
-/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+/*jslint browser: true */
+/*jslint node: true */
+/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss, addClass,
+hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -10,12 +12,11 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 	root.runPictures = function () {
 
-		/*var appendChild = "appendChild";*/
-		var classList = "classList";
 		var querySelectorAll = "querySelectorAll";
-		/*var setAttribute = "setAttribute";*/
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+
+		var isActiveClass = "is-active";
 
 		var glightboxClass = "glightbox";
 
@@ -82,10 +83,8 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyIsActiveClass = "is-active";
-
 		var onMacyRender = function () {
-			macy[classList].add(macyIsActiveClass);
+			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -99,8 +98,8 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					var i,
 					l;
 					for (i = 0, l = item[_length]; i < l; i += 1) {
-						if (!item[i][classList].contains(anyResizeEventIsBindedClass)) {
-							item[i][classList].add(anyResizeEventIsBindedClass);
+						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
+							addClass(item[i], anyResizeEventIsBindedClass);
 							item[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
@@ -207,7 +206,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			}
 		];
 
-		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
+		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function (macy, callback) {
 			var dataSrcImgKeyName = "src";
@@ -235,7 +234,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
 				var macyItem = document.createElement("a");
-				macyItem[classList].add(macyItemIsRenderedClass);
+				addClass(macyItem, macyItemIsBindedClass);
 				macyItem[setAttribute]("href", macyItems[i].href);
 				macyItem[setAttribute]("class", glightboxClass);
 				macyItem[setAttribute]("aria-label", "Показать картинку");

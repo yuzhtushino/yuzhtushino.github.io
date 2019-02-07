@@ -1,5 +1,9 @@
-/*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss,
-manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+/*jslint browser: true */
+
+/*jslint node: true */
+
+/*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss, addClass,
+hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -10,13 +14,10 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 	var getElementsByClassName = "getElementsByClassName";
 
 	root.runGallery = function() {
-		/*var appendChild = "appendChild";*/
-		var classList = "classList";
 		var querySelectorAll = "querySelectorAll";
-		/*var setAttribute = "setAttribute";*/
-
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+		var isActiveClass = "is-active";
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
@@ -97,10 +98,9 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyClass = "macy";
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
-		var macyIsActiveClass = "is-active";
 
 		var onMacyRender = function onMacyRender() {
-			macy[classList].add(macyIsActiveClass);
+			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
@@ -109,26 +109,20 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 		var onMacyResize = function onMacyResize() {
 			try {
-				var container = macy
+				var item = macy
 					? macy.children ||
 					  macy[querySelectorAll]("." + macyClass + " > *") ||
 					  ""
 					: "";
 
-				if (container) {
+				if (item) {
 					var i, l;
 
-					for (i = 0, l = container[_length]; i < l; i += 1) {
-						if (
-							!container[i][classList].contains(
-								anyResizeEventIsBindedClass
-							)
-						) {
-							container[i][classList].add(
-								anyResizeEventIsBindedClass
-							);
+					for (i = 0, l = item[_length]; i < l; i += 1) {
+						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
+							addClass(item[i], anyResizeEventIsBindedClass);
 
-							container[i][_addEventListener](
+							item[i][_addEventListener](
 								"onresize",
 								updateMacyThrottled,
 								{
@@ -418,7 +412,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/mytushino-gallery/@1x/zhantil_khimkinskij_bul_17.jpg"
 			}
 		];
-		/*var macyItemIsRenderedClass = "macy__item--is-rendered";*/
+		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
@@ -459,27 +453,27 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 			i = l = null;
 			/* var count = 0;
-	  var i,
-	  l;
-	  for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-	  	var macyItem = document.createElement("a");
-	  	macyItem[classList].add(macyItemIsRenderedClass);
-	  	macyItem[setAttribute]("href", macyItems[i].href);
-	  	macyItem[setAttribute]("aria-label", "Показать картинку");
-	  	var img = document.createElement("img");
-	  	macyItem[appendChild](img);
-	  	img[setAttribute]("src", transparentPixel);
-	  	img[setAttribute]("class", dataSrcLazyClass);
-	  	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-	  	macy[appendChild](macyItem);
-	  	count++;
-	  	if (count === macyItems[_length]) {
-	  		if (callback && "function" === typeof callback) {
-	  			callback();
-	  		}
-	  	}
-	  }
-	  i = l = null; */
+      var i,
+      l;
+      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+      	var macyItem = document.createElement("a");
+      	addClass(macyItem, macyItemIsBindedClass);
+      	macyItem[setAttribute]("href", macyItems[i].href);
+      	macyItem[setAttribute]("aria-label", "Показать картинку");
+      	var img = document.createElement("img");
+      	macyItem[appendChild](img);
+      	img[setAttribute]("src", transparentPixel);
+      	img[setAttribute]("class", dataSrcLazyClass);
+      	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
+      	macy[appendChild](macyItem);
+      	count++;
+      	if (count === macyItems[_length]) {
+      		if (callback && "function" === typeof callback) {
+      			callback();
+      		}
+      	}
+      }
+      i = l = null; */
 		};
 
 		if (macy) {

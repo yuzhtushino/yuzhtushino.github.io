@@ -1,6 +1,9 @@
+/*jslint browser: true */
+/*jslint node: true */
 /*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, Macy, openDeviceBrowser, parseLink, progressBar, require, runHome,
-runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
+isNwjs, loadJsCss, addClass, hasClass, removeClass, Macy, openDeviceBrowser,
+parseLink, progressBar, require, runHome, runWorks, runPictures, runGallery,
+runAbout, throttle, $readMoreJS*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -32,6 +35,50 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	}
 	prop = method = dummy = properties = methods = null;
 })("undefined" !== typeof window ? window : this);
+/*!
+ * class list wrapper
+ */
+(function (root, document) {
+	"use strict";
+	var classList = "classList";
+	var hasClass;
+	var addClass;
+	var removeClass;
+	if ('classList' in document.documentElement) {
+		hasClass = function (el, className) {
+			return el[classList].contains(className);
+		};
+		addClass = function (el, className) {
+			el[classList].add(className);
+		};
+		removeClass = function (el, className) {
+			el[classList].remove(className);
+		};
+	} else {
+		hasClass = function (el, className) {
+			return new RegExp('\\b' + className + '\\b').test(el.className);
+		};
+		addClass = function (el, className) {
+			if (!hasClass(el, className)) {
+				el.className += ' ' + className;
+			}
+		};
+		removeClass = function (el, className) {
+			el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+		};
+	}
+	var toggleClass = function (el, className) {
+		if (hasClass(el, className)) {
+			removeClass(el, className);
+		} else {
+			addClass(el, className);
+		}
+	};
+	root.hasClass = hasClass;
+	root.addClass = addClass;
+	root.removeClass = removeClass;
+	root.toggleClass = toggleClass;
+})("undefined" !== typeof window ? window : this, document);
 /*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
@@ -115,33 +162,33 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var throttle = function (func, wait) {
-		var ctx;
-		var args;
-		var rtn;
-		var timeoutID;
-		var last = 0;
-		function call() {
-			timeoutID = 0;
-			last = +new Date();
-			rtn = func.apply(ctx, args);
-			ctx = null;
-			args = null;
-		}
-		return function throttled() {
-			ctx = this;
-			args = arguments;
-			var delta = new Date() - last;
-			if (!timeoutID) {
-				if (delta >= wait) {
-					call();
-				} else {
-					timeoutID = setTimeout(call, wait - delta);
-				}
+		var throttle = function (func, wait) {
+			var ctx;
+			var args;
+			var rtn;
+			var timeoutID;
+			var last = 0;
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
 			}
-			return rtn;
+			return function throttled() {
+				ctx = this;
+				args = arguments;
+				var delta = new Date() - last;
+				if (!timeoutID) {
+					if (delta >= wait) {
+						call();
+					} else {
+						timeoutID = setTimeout(call, wait - delta);
+					}
+				}
+				return rtn;
+			};
 		};
-	};
 	root.throttle = throttle;
 })("undefined" !== typeof window ? window : this);
 /*!
@@ -149,29 +196,29 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var debounce = function (func, wait) {
-		var timeout;
-		var args;
-		var context;
-		var timestamp;
-		return function () {
-			context = this;
-			args = [].slice.call(arguments, 0);
-			timestamp = new Date();
-			var later = function () {
-				var last = (new Date()) - timestamp;
-				if (last < wait) {
-					timeout = setTimeout(later, wait - last);
-				} else {
-					timeout = null;
-					func.apply(context, args);
+		var debounce = function (func, wait) {
+			var timeout;
+			var args;
+			var context;
+			var timestamp;
+			return function () {
+				context = this;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = (new Date()) - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
+				if (!timeout) {
+					timeout = setTimeout(later, wait);
 				}
 			};
-			if (!timeout) {
-				timeout = setTimeout(later, wait);
-			}
 		};
-	};
 	root.debounce = debounce;
 })("undefined" !== typeof window ? window : this);
 /*!
@@ -179,31 +226,38 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
-	var isElectron = (function () {
-		if (typeof root !== "undefined" && typeof root.process === "object" && root.process.type === "renderer") {
-			return true;
-		}
-		if (typeof root !== "undefined" && typeof root.process !== "undefined" && typeof root.process.versions === "object" && !!root.process.versions.electron) {
-			return true;
-		}
-		if (typeof navigator === "object" && typeof navigator.userAgent === "string" && navigator.userAgent.indexOf("Electron") >= 0) {
-			return true;
-		}
-		return false;
-	})();
-	var isNwjs = (function () {
-		if ("undefined" !== typeof isNodejs && isNodejs) {
-			try {
-				if ("undefined" !== typeof require("nw.gui")) {
-					return true;
-				}
-			} catch (e) {
-				return false;
+		var isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
+		var isElectron = (function () {
+			if (typeof root !== "undefined" &&
+				typeof root.process === "object" &&
+				root.process.type === "renderer") {
+				return true;
 			}
-		}
-		return false;
-	})();
+			if (typeof root !== "undefined" &&
+				typeof root.process !== "undefined" &&
+				typeof root.process.versions === "object" &&
+				!!root.process.versions.electron) {
+				return true;
+			}
+			if (typeof navigator === "object" &&
+				typeof navigator.userAgent === "string" &&
+				navigator.userAgent.indexOf("Electron") >= 0) {
+				return true;
+			}
+			return false;
+		})();
+		var isNwjs = (function () {
+			if ("undefined" !== typeof isNodejs && isNodejs) {
+				try {
+					if ("undefined" !== typeof require("nw.gui")) {
+						return true;
+					}
+				} catch (e) {
+					return false;
+				}
+			}
+			return false;
+		})();
 	root.isNodejs = isNodejs;
 	root.isElectron = isElectron;
 	root.isNwjs = isNwjs;
@@ -214,28 +268,28 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function (root) {
 	"use strict";
 	var openDeviceBrowser = function (url) {
-		var triggerForElectron = function () {
+		var onElectron = function () {
 			var es = isElectron ? require("electron").shell : "";
 			return es ? es.openExternal(url) : "";
 		};
-		var triggerForNwjs = function () {
+		var onNwjs = function () {
 			var ns = isNwjs ? require("nw.gui").Shell : "";
 			return ns ? ns.openExternal(url) : "";
 		};
-		var triggerForLocal = function () {
+		var onLocal = function () {
 			return root.open(url, "_system", "scrollbars=1,location=no");
 		};
 		if (isElectron) {
-			triggerForElectron();
+			onElectron();
 		} else if (isNwjs) {
-			triggerForNwjs();
+			onNwjs();
 		} else {
-			var locationProtocol = root.location.protocol || "",
-			hasHTTP = locationProtocol ? "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : "" : "";
+			var locProtocol = root.location.protocol || "",
+			hasHTTP = locProtocol ? "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : "" : "";
 			if (hasHTTP) {
 				return true;
 			} else {
-				triggerForLocal();
+				onLocal();
 			}
 		}
 	};
@@ -248,8 +302,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	"use strict";
 	var getHTTP = function (force) {
 		var any = force || "";
-		var locationProtocol = root.location.protocol || "";
-		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : any ? "http" : "";
+		var locProtocol = root.location.protocol || "";
+		return "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : any ? "http" : "";
 	};
 	root.getHTTP = getHTTP;
 })("undefined" !== typeof window ? window : this);
@@ -258,58 +312,68 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	/*jshint bitwise: false */
 	var createElement = "createElement";
-	var parseLink = function (url, full) {
-		var _full = full || "";
-		return (function () {
-			var _replace = function (s) {
-				return s.replace(/^(#|\?)/, "").replace(/\:$/, "");
-			};
-			var _location = location || "";
-			var _protocol = function (protocol) {
-				switch (protocol) {
-				case "http:":
-					return _full ? ":" + 80 : 80;
-				case "https:":
-					return _full ? ":" + 443 : 443;
-				default:
-					return _full ? ":" + _location.port : _location.port;
-				}
-			};
-			var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
-			var _locationHref = root.location || "";
-			var _origin = function () {
-				var o = _locationHref.protocol + "//" + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
-				return o || "";
-			};
-			var _isCrossDomain = function () {
-				var c = document[createElement]("a");
-				c.href = url;
-				var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
-				return v !== _origin();
-			};
-			var _link = document[createElement]("a");
-			_link.href = url;
-			return {
-				href: _link.href,
-				origin: _origin(),
-				host: _link.host || _location.host,
-				port: ("0" === _link.port || "" === _link.port) ? _protocol(_link.protocol) : (_full ? _link.port : _replace(_link.port)),
-				hash: _full ? _link.hash : _replace(_link.hash),
-				hostname: _link.hostname || _location.hostname,
-				pathname: _link.pathname.charAt(0) !== "/" ? (_full ? "/" + _link.pathname : _link.pathname) : (_full ? _link.pathname : _link.pathname.slice(1)),
-				protocol: !_link.protocol || ":" === _link.protocol ? (_full ? _location.protocol : _replace(_location.protocol)) : (_full ? _link.protocol : _replace(_link.protocol)),
-				search: _full ? _link.search : _replace(_link.search),
-				query: _full ? _link.search : _replace(_link.search),
-				isAbsolute: _isAbsolute,
-				isRelative: !_isAbsolute,
-				isCrossDomain: _isCrossDomain(),
-				hasHTTP: (/^(http|https):\/\//i).test(url) ? true : false
-			};
-		})();
-	};
-	/*jshint bitwise: true */
+		/*jshint bitwise: false */
+		var parseLink = function (url, full) {
+			var _full = full || "";
+			return (function () {
+				var _replace = function (s) {
+					return s.replace(/^(#|\?)/, "").replace(/\:$/, "");
+				};
+				var _location = location || "";
+				var _protocol = function (protocol) {
+					switch (protocol) {
+					case "http:":
+						return _full ? ":" + 80 : 80;
+					case "https:":
+						return _full ? ":" + 443 : 443;
+					default:
+						return _full ? ":" + _location.port : _location.port;
+					}
+				};
+				var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
+				var _locationHref = root.location || "";
+				var _origin = function () {
+					var o = _locationHref.protocol +
+						"//" +
+						_locationHref.hostname +
+						(_locationHref.port ? ":" + _locationHref.port : "");
+					return o || "";
+				};
+				var _isCrossDomain = function () {
+					var c = document[createElement]("a");
+					c.href = url;
+					var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
+					return v !== _origin();
+				};
+				var _link = document[createElement]("a");
+				_link.href = url;
+				return {
+					href: _link.href,
+					origin: _origin(),
+					host: _link.host || _location.host,
+					port: ("0" === _link.port || "" === _link.port) ?
+						_protocol(_link.protocol) :
+						(_full ? _link.port : _replace(_link.port)),
+					hash: _full ? _link.hash : _replace(_link.hash),
+					hostname: _link.hostname || _location.hostname,
+					pathname: _link.pathname.charAt(0) !== "/" ?
+						(_full ? "/" + _link.pathname : _link.pathname) :
+						(_full ? _link.pathname : _link.pathname.slice(1)),
+					protocol: !_link.protocol ||
+						":" === _link.protocol ?
+						(_full ? _location.protocol : _replace(_location.protocol)) :
+						(_full ? _link.protocol : _replace(_link.protocol)),
+					search: _full ? _link.search : _replace(_link.search),
+					query: _full ? _link.search : _replace(_link.search),
+					isAbsolute: _isAbsolute,
+					isRelative: !_isAbsolute,
+					isCrossDomain: _isCrossDomain(),
+					hasHTTP: (/^(http|https):\/\//i).test(url) ? true : false
+				};
+			})();
+		};
+		/*jshint bitwise: true */
 	root.parseLink = parseLink;
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -318,40 +382,40 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function (root, document) {
 	"use strict";
 	var docElem = document.documentElement || "";
-	var scroll2Top = function (scrollTargetY, speed, easing) {
-		var scrollY = root.scrollY || docElem.scrollTop;
-		var posY = scrollTargetY || 0;
-		var rate = speed || 2000;
-		var soothing = easing || "easeOutSine";
-		var currentTime = 0;
-		var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
-		var easingEquations = {
-			easeOutSine: function (pos) {
-				return Math.sin(pos * (Math.PI / 2));
-			},
-			easeInOutSine: function (pos) {
-				return (-0.5 * (Math.cos(Math.PI * pos) - 1));
-			},
-			easeInOutQuint: function (pos) {
-				if ((pos /= 0.5) < 1) {
-					return 0.5 * Math.pow(pos, 5);
+		var scroll2Top = function (scrollTargetY, speed, easing) {
+			var scrollY = root.scrollY || docElem.scrollTop;
+			var posY = scrollTargetY || 0;
+			var rate = speed || 2000;
+			var soothing = easing || "easeOutSine";
+			var currentTime = 0;
+			var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
+			var easingEquations = {
+				easeOutSine: function (pos) {
+					return Math.sin(pos * (Math.PI / 2));
+				},
+				easeInOutSine: function (pos) {
+					return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+				},
+				easeInOutQuint: function (pos) {
+					if ((pos /= 0.5) < 1) {
+						return 0.5 * Math.pow(pos, 5);
+					}
+					return 0.5 * (Math.pow((pos - 2), 5) + 2);
 				}
-				return 0.5 * (Math.pow((pos - 2), 5) + 2);
+			};
+			function tick() {
+				currentTime += 1 / 60;
+				var p = currentTime / time;
+				var t = easingEquations[soothing](p);
+				if (p < 1) {
+					requestAnimationFrame(tick);
+					root.scrollTo(0, scrollY + ((posY - scrollY) * t));
+				} else {
+					root.scrollTo(0, posY);
+				}
 			}
+			tick();
 		};
-		function tick() {
-			currentTime += 1 / 60;
-			var p = currentTime / time;
-			var t = easingEquations[soothing](p);
-			if (p < 1) {
-				requestAnimationFrame(tick);
-				root.scrollTo(0, scrollY + ((posY - scrollY) * t));
-			} else {
-				root.scrollTo(0, posY);
-			}
-		}
-		tick();
-	};
 	root.scroll2Top = scroll2Top;
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -359,46 +423,45 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var classList = "classList";
 	var getAttribute = "getAttribute";
 	var getElementsByTagName = "getElementsByTagName";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
-	var manageExternalLinkAll = function () {
-		var link = document[getElementsByTagName]("a") || "";
-		var handleExternalLink = function (url, ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			var logic = function () {
-				openDeviceBrowser(url);
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
+			var handle = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
+				};
+				debounce(logic, 200).call(root);
 			};
-			debounce(logic, 200).call(root);
-		};
-		var arrange = function (e) {
-			var externalLinkIsBindedClass = "external-link--is-binded";
-			if (!e[classList].contains(externalLinkIsBindedClass)) {
-				var url = e[getAttribute]("href") || "";
-				if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
-					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
-					if ("undefined" !== typeof getHTTP && getHTTP()) {
-						e.target = "_blank";
-						e.rel = "noopener";
-					} else {
-						e[_addEventListener]("click", handleExternalLink.bind(null, url));
+			var arrange = function (e) {
+				var externalLinkIsBindedClass = "external-link--is-binded";
+				if (!hasClass(e, externalLinkIsBindedClass)) {
+					var url = e[getAttribute]("href") || "";
+					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
+						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+						if ("undefined" !== typeof getHTTP && getHTTP()) {
+							e.target = "_blank";
+							e.rel = "noopener";
+						} else {
+							e[_addEventListener]("click", handle.bind(null, url));
+						}
+						addClass(e, externalLinkIsBindedClass);
 					}
-					e[classList].add(externalLinkIsBindedClass);
 				}
+			};
+			if (link) {
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
+				}
+				i = l = null;
 			}
 		};
-		if (link) {
-			var i,
-			l;
-			for (i = 0, l = link[_length]; i < l; i += 1) {
-				arrange(link[i]);
-			}
-			i = l = null;
-		}
-	};
 	root.manageExternalLinkAll = manageExternalLinkAll;
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -406,9 +469,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var macyIsActiveClass = "is-active";
+	var isActiveClass = "is-active";
 	root.macyInstance = null;
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
@@ -460,7 +522,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				}
 				root.macyInstance = new Macy(settings);
 				/* this will be set later after rendering all macy items */
-				/* macy[classList].add(macyIsActiveClass); */
+				/* addClass(macy, isActiveClass); */
 			} catch (err) {
 				throw new Error("cannot init Macy " + err);
 			}
@@ -469,7 +531,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var manageMacy = function (macyClass, options) {
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
 		var handleMacy = function () {
-			if (!macy[classList].contains(macyIsActiveClass)) {
+			if (!hasClass(macy, isActiveClass)) {
 				initMacy(macyClass, options);
 			}
 		};
@@ -477,6 +539,7 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			handleMacy();
 		}
 	};
+	root.updateMacy = updateMacy;
 	root.updateMacyThrottled = updateMacyThrottled;
 	root.manageMacy = manageMacy;
 })("undefined" !== typeof window ? window : this);
@@ -507,42 +570,39 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var rmLinkClass = "rm-link";
-	var rmLinkIsBindedClass = "rm-link--is-binded";
 	var _addEventListener = "addEventListener";
 	var _length = "length";
-	var manageReadMore = function (callback, options) {
-		var cb = function () {
-			return callback && "function" === typeof callback && callback();
-		};
-		var defaultSettings = {
-			target: ".dummy",
-			numOfWords: 10,
-			toggle: true,
-			moreLink: "БОЛЬШЕ",
-			lessLink: "МЕНЬШЕ",
-			inline: true,
-			customBlockElement: "p"
-		};
-		var settings = options || {};
-		var opt;
-		for (opt in defaultSettings) {
-			if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
-				settings[opt] = defaultSettings[opt];
+		var manageReadMore = function (callback, options) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
+			var defaultSettings = {
+				target: ".dummy",
+				numOfWords: 10,
+				toggle: true,
+				moreLink: "БОЛЬШЕ",
+				lessLink: "МЕНЬШЕ",
+				inline: true,
+				customBlockElement: "p"
+			};
+			var settings = options || {};
+			var opt;
+			for (opt in defaultSettings) {
+				if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
+					settings[opt] = defaultSettings[opt];
+				}
 			}
-		}
-		opt = null;
-		var rmLink = document[getElementsByClassName](rmLinkClass) || "";
-		var arrange = function (e) {
-			if (!e[classList].contains(rmLinkIsBindedClass)) {
-				e[classList].add(rmLinkIsBindedClass);
-				e[_addEventListener]("click", cb);
-			}
-		};
-		var initScript = function () {
-			if (root.$readMoreJS) {
+			opt = null;
+			var rmLink = document[getElementsByClassName]("rm-link") || "";
+			var arrange = function (e) {
+				var rmLinkIsBindedClass = "rm-link--is-binded";
+				if (!hasClass(e, rmLinkIsBindedClass)) {
+					addClass(e, rmLinkIsBindedClass);
+					e[_addEventListener]("click", cb);
+				}
+			};
+			var initScript = function () {
 				$readMoreJS.init(settings);
 				var i,
 				l;
@@ -550,12 +610,11 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 					arrange(rmLink[i]);
 				}
 				i = l = null;
+			};
+			if (root.$readMoreJS && rmLink) {
+				initScript();
 			}
 		};
-		if (rmLink) {
-			initScript();
-		}
-	};
 	root.manageReadMore = manageReadMore;
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -580,7 +639,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		evt.target.disabled = true;
 		docBody[setAttribute]("data-layout-type", "tabs");
 	};
-
 	root.layoutTypeToOverlay = function (e) {
 		var evt = root.event || e;
 		evt.preventDefault();
@@ -590,7 +648,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		evt.target.disabled = true;
 		docBody[setAttribute]("data-layout-type", "overlay");
 	};
-
 	root.layoutTypeToDockedMinimized = function (e) {
 		var evt = root.event || e;
 		evt.preventDefault();
@@ -600,7 +657,6 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		evt.target.disabled = true;
 		docBody[setAttribute]("data-layout-type", "docked-minimized");
 	};
-
 	root.layoutTypeToDocked = function (e) {
 		var evt = root.event || e;
 		evt.preventDefault();
@@ -616,13 +672,13 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function(root){
 	"use strict";
-	var removeChildren = function (e) {
-		if (e && e.firstChild) {
-			for (; e.firstChild; ) {
-				e.removeChild(e.firstChild);
+		var removeChildren = function (e) {
+			if (e && e.firstChild) {
+				for (; e.firstChild; ) {
+					e.removeChild(e.firstChild);
+				}
 			}
-		}
-	};
+		};
 	root.removeChildren = removeChildren;
 })("undefined" !== typeof window ? window : this);
 /*!
@@ -630,15 +686,14 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var classList = "classList";
 	var dataset = "dataset";
 	var parentNode = "parentNode";
-	var yandexMapIframeIsActiveClass = "is-active";
+	var isActiveClass = "is-active";
 	var revealYandexMap = function (_this) {
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
 			yandexMap.src = yandexMap[dataset].src;
-			yandexMap[classList].add(yandexMapIframeIsActiveClass);
+			addClass(yandexMap, isActiveClass);
 			if (_this[parentNode][parentNode] !== null) {
 				_this[parentNode][parentNode].removeChild(_this[parentNode]);
 			}
@@ -651,9 +706,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function(root, document){
 	"use strict";
-	var classList = "classList";
 	var getElementsByClassName = "getElementsByClassName";
-	var uwpLoadingIsActiveClass = "is-active";
+	var isActiveClass = "is-active";
 	var LoadingSpinner = (function () {
 		var uwpLoading = document[getElementsByClassName]("uwp-loading")[0] || "";
 		if (!uwpLoading) {
@@ -661,10 +715,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		}
 		return {
 			hide: function () {
-				uwpLoading[classList].remove(uwpLoadingIsActiveClass);
+				removeClass(uwpLoading, isActiveClass);
 			},
 			show: function () {
-				uwpLoading[classList].add(uwpLoadingIsActiveClass);
+				addClass(uwpLoading, isActiveClass);
 			}
 		};
 	})();
@@ -692,10 +746,11 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var _length = "length";
 
 	var toStringFn = {}.toString;
-	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
+	var supportsSvgSmilAnimation = !!document[createElementNS] &&
+		(/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
 
 	if (supportsSvgSmilAnimation && docElem) {
-		docElem[classList].add("svganimate");
+		addClass(docElem, "svganimate");
 	}
 
 	var supportsCanvas;
@@ -707,8 +762,8 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var run = function () {
 
 		if (docElem && docElem[classList]) {
-			docElem[classList].remove("no-js");
-			docElem[classList].add("js");
+			removeClass(docElem, "no-js");
+			addClass(docElem, "js");
 		}
 
 		var earlyDeviceFormfactor = (function (selectors) {
@@ -789,26 +844,29 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		})(docElem[classList] || "");
 
 		var earlyDeviceType = (function (mobile, desktop, opera) {
-			var selector = (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i).test(opera) || (/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i).test(opera.substr(0, 4)) ? mobile : desktop;
-			docElem[classList].add(selector);
+			var selector = (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i).test(opera) ||
+				(/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i).test(opera.substr(0, 4)) ?
+				mobile :
+				desktop;
+			addClass(docElem, selector);
 			return selector;
 		})("mobile", "desktop", navigator.userAgent || navigator.vendor || (root).opera);
 
 		var earlySvgSupport = (function (selector) {
 			selector = docImplem.hasFeature("http://www.w3.org/2000/svg", "1.1") ? selector : "no-" + selector;
-			docElem[classList].add(selector);
+			addClass(docElem, selector);
 			return selector;
 		})("svg");
 
 		var earlySvgasimgSupport = (function (selector) {
 			selector = docImplem.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") ? selector : "no-" + selector;
-			docElem[classList].add(selector);
+			addClass(docElem, selector);
 			return selector;
 		})("svgasimg");
 
 		var earlyHasTouch = (function (selector) {
 			selector = "ontouchstart" in docElem ? selector : "no-" + selector;
-			docElem[classList].add(selector);
+			addClass(docElem, selector);
 			return selector;
 		})("touch");
 
@@ -827,13 +885,21 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return newYear + "-" + newMonth + "-" + newDay;
 		})();
 
-		var userBrowsingDetails = " [" + (getHumanDate ? getHumanDate : "") + (earlyDeviceType ? " " + earlyDeviceType : "") + (earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") + (earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") + (earlySvgSupport ? " " + earlySvgSupport : "") + (earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") + (earlyHasTouch ? " " + earlyHasTouch : "") + "]";
+		var userBrowser = " [" +
+			(getHumanDate ? getHumanDate : "") +
+			(earlyDeviceType ? " " + earlyDeviceType : "") +
+			(earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") +
+			(earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") +
+			(earlySvgSupport ? " " + earlySvgSupport : "") +
+			(earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") +
+			(earlyHasTouch ? " " + earlyHasTouch : "") +
+			"]";
 
 		var hashBang = "#/";
 
 		var onPageLoad = function () {
 			if (document[title]) {
-				document[title] = document[title] + userBrowsingDetails;
+				document[title] = document[title] + userBrowser;
 			}
 			var hashName = root.location.hash ? root.location.hash.split(hashBang)[1] : "";
 			var routes = [{
@@ -981,9 +1047,10 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		"./libs/serguei-uwp/js/pages.min.js");
 
 	var bodyFontFamily = "Roboto";
-	var onFontsLoadedCallback = function () {
+
+	var onFontsLoaded = function () {
 		var slot;
-		var onFontsLoaded = function () {
+		var init = function () {
 			clearInterval(slot);
 			slot = null;
 			if (!supportsSvgSmilAnimation && "undefined" !== typeof progressBar) {
@@ -992,24 +1059,24 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			var load;
 			load = new loadJsCss(scripts, run);
 		};
-		var checkFontIsLoaded;
-		checkFontIsLoaded = function () {
+		var check;
+		check = function () {
 			if (doesFontExist(bodyFontFamily)) {
-				onFontsLoaded();
+				init();
 			}
 		};
 		/* if (supportsCanvas) {
-			slot = setInterval(checkFontIsLoaded, 100);
+			slot = setInterval(check, 100);
 		} else {
 			slot = null;
-			onFontsLoaded();
+			init();
 		} */
-		onFontsLoaded();
+		init();
 	};
 
 	var loadDeferred = function (urlArray, callback) {
 		var timer;
-		var logic = function () {
+		var handle = function () {
 			clearTimeout(timer);
 			timer = null;
 			var load;
@@ -1018,17 +1085,17 @@ runWorks, runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var req;
 		var raf = function () {
 			cancelAnimationFrame(req);
-			timer = setTimeout(logic, 0);
+			timer = setTimeout(handle, 0);
 		};
 		if (root.requestAnimationFrame) {
 			req = requestAnimationFrame(raf);
 		} else {
-			root[_addEventListener]("load", logic);
+			root[_addEventListener]("load", handle);
 		}
 	};
 
 	loadDeferred([
 			"./libs/serguei-uwp/css/vendors.min.css",
 			"./libs/serguei-uwp/css/pages.min.css"
-		], onFontsLoadedCallback);
+		], onFontsLoaded);
 })("undefined" !== typeof window ? window : this, document);

@@ -1,6 +1,8 @@
-/*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-manageExternalLinkAll, manageMacy, manageReadMore, renderAC, removeChildren,
-updateMacyThrottled*/
+/*jslint browser: true */
+/*jslint node: true */
+/*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner, addClass,
+hasClass, manageExternalLinkAll, manageMacy, manageReadMore, renderAC,
+removeChildren, updateMacy, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,11 +13,12 @@ updateMacyThrottled*/
 
 	root.runHome = function () {
 
-		var classList = "classList";
 		var location = "location";
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+
+		var isActiveClass = "is-active";
 
 		/*!
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
@@ -597,23 +600,13 @@ updateMacyThrottled*/
 
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyIsActiveClass = "is-active";
-
 		var onMacyRender = function () {
-			macy[classList].add(macyIsActiveClass);
+			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageImgLightbox(imgLightboxLinkClass);
-			manageReadMore(null, {
-				target: ".dummy",
-				numOfWords: 10,
-				toggle: true,
-				moreLink: "БОЛЬШЕ",
-				lessLink: "МЕНЬШЕ",
-				inline: true,
-				customBlockElement: "p"
-			});
+			manageReadMore(updateMacy);
 		};
 
 		var onMacyResize = function () {
@@ -623,8 +616,8 @@ updateMacyThrottled*/
 					var i,
 					l;
 					for (i = 0, l = item[_length]; i < l; i += 1) {
-						if (!item[i][classList].contains(anyResizeEventIsBindedClass)) {
-							item[i][classList].add(anyResizeEventIsBindedClass);
+						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
+							addClass(item[i], anyResizeEventIsBindedClass);
 							item[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
@@ -659,7 +652,7 @@ updateMacyThrottled*/
 		/* var macyItems = [
 		]; */
 
-		var macyItemIsRenderedClass = "macy__item--is-rendered";
+		var macyItemIsBindedClass = "macy__item--is-binded";
 
 		var addMacyItems = function (macy, callback) {
 			if (root.AdaptiveCards) {
@@ -690,7 +683,7 @@ updateMacyThrottled*/
 				var i,
 				l;
 				for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-					macyItems[i][classList].add(macyItemIsRenderedClass);
+					addClass(macyItems[i], macyItemIsBindedClass);
 					count++;
 					if (count === macyItems[_length]) {
 						if (callback && "function" === typeof callback) {

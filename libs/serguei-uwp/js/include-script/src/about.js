@@ -1,5 +1,8 @@
-/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss,
-manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
+/*jslint browser: true */
+/*jslint node: true */
+/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss, addClass,
+hasClass, manageExternalLinkAll, manageMacy, manageReadMore, updateMacy,
+updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -10,10 +13,11 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 
 	root.runAbout = function () {
 
-		var classList = "classList";
 		var querySelectorAll = "querySelectorAll";
 		var _addEventListener = "addEventListener";
 		var _length = "length";
+
+		var isActiveClass = "is-active";
 
 		var glightboxClass = "glightbox";
 
@@ -80,23 +84,13 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 
 		var macy = document[getElementsByClassName](macyClass)[0] || "";
 
-		var macyIsActiveClass = "is-active";
-
 		var onMacyRender = function () {
-			macy[classList].add(macyIsActiveClass);
+			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
 			manageLazyLoad(dataSrcLazyClass);
 			manageExternalLinkAll();
 			manageGlightbox(macy, glightboxClass);
-			manageReadMore(null, {
-				target: ".dummy",
-				numOfWords: 10,
-				toggle: true,
-				moreLink: "БОЛЬШЕ",
-				lessLink: "МЕНЬШЕ",
-				inline: true,
-				customBlockElement: "p"
-			});
+			manageReadMore(updateMacy);
 		};
 
 		var onMacyResize = function () {
@@ -106,8 +100,8 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 					var i,
 					l;
 					for (i = 0, l = item[_length]; i < l; i += 1) {
-						if (!item[i][classList].contains(anyResizeEventIsBindedClass)) {
-							item[i][classList].add(anyResizeEventIsBindedClass);
+						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
+							addClass(item[i], anyResizeEventIsBindedClass);
 							item[i][_addEventListener]("onresize", updateMacyThrottled, {
 								passive: true
 							});
@@ -141,7 +135,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 
 		var macyItems = [];
 
-		var macyItemIsRenderedClass = "macy__item--is-rendered";
+		var macyItemIsBindedClass = "macy__item--is-binded";
 
 		var addMacyItems = function (macy, callback) {
 			/*!
@@ -167,7 +161,7 @@ manageExternalLinkAll, manageMacy, manageReadMore, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				macyItems[i][classList].add(macyItemIsRenderedClass);
+				addClass(macyItems[i], macyItemIsBindedClass);
 				count++;
 				if (count === macyItems[_length]) {
 					if (callback && "function" === typeof callback) {
