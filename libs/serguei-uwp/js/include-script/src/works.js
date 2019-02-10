@@ -1,19 +1,17 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-addClass, hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+addListener, addListener, getByClass, addClass, hasClass,
+manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 /*!
  * page logic
  */
 (function (root, document) {
 	"use strict";
 
-	var getElementsByClassName = "getElementsByClassName";
-
 	root.runWorks = function () {
 
 		var querySelectorAll = "querySelectorAll";
-		var _addEventListener = "addEventListener";
 		var _length = "length";
 
 		var isActiveClass = "is-active";
@@ -24,7 +22,7 @@ addClass, hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		 * @see {@link https://github.com/englishextra/iframe-lightbox}
 		 */
 		var manageIframeLightbox = function (iframeLightboxLinkClass) {
-			var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
+			var link = getByClass(document, iframeLightboxLinkClass) || "";
 			var initScript = function () {
 				var arrange = function (e) {
 					e.lightbox = new IframeLightbox(e, {
@@ -88,7 +86,7 @@ addClass, hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 		var macyClass = "macy";
 
-		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function () {
 			addClass(macy, isActiveClass);
@@ -107,7 +105,7 @@ addClass, hasClass, manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					for (i = 0, l = item[_length]; i < l; i += 1) {
 						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
 							addClass(item[i], anyResizeEventIsBindedClass);
-							item[i][_addEventListener]("onresize", updateMacyThrottled, {
+							addListener(item[i], "onresize", updateMacyThrottled, {
 								passive: true
 							});
 						}

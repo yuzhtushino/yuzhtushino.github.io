@@ -1,9 +1,9 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, addClass, hasClass, removeClass, Macy, openDeviceBrowser,
-parseLink, progressBar, require, runHome, runWorks, runPictures, runGallery,
-runAbout, throttle, $readMoreJS*/
+isNwjs, loadJsCss, addListener, getByClass, addClass, hasClass, removeClass,
+Macy, openDeviceBrowser, parseLink, progressBar, require, runHome, runWorks,
+runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -36,6 +36,54 @@ runAbout, throttle, $readMoreJS*/
 	prop = method = dummy = properties = methods = null;
 })("undefined" !== typeof window ? window : this);
 /*!
+ * Super-simple wrapper around addEventListener and attachEvent (old IE).
+ * Does not handle differences in the Event-objects.
+ * @see {@link https://github.com/finn-no/eventlistener}
+ */
+(function (root) {
+	"use strict";
+	var wrap = function (standard, fallback) {
+		return function (el, type, listener, useCapture) {
+			if (el[standard]) {
+				el[standard](type, listener, useCapture);
+			} else {
+				if (el[fallback]) {
+					el[fallback]("on" + type, listener);
+				}
+			}
+		};
+	};
+	root.addListener = wrap("addEventListener", "attachEvent");
+	root.removeListener = wrap("removeEventListener", "detachEvent");
+})("undefined" !== typeof window ? window : this);
+/*!
+ * get elements by class name wrapper
+ */
+(function (root, document) {
+	"use strict";
+	var getByClass = function (parent, name) {
+		if (!Element.getElementsByClassName) {
+			var children = (parent || document.body).getElementsByTagName("*"),
+			elements = [],
+			classRE = new RegExp("\\b" + name + "\\b"),
+			child;
+			var i,
+			l;
+			for (i = 0, l = children.length; i < l; i += 1) {
+				child = children[i];
+				if (classRE.test(child.className)) {
+					elements.push(child);
+				}
+			}
+			i = l = null;
+			return elements;
+		} else {
+			return parent ? parent.getElementsByClassName(name) : "";
+		}
+	};
+	root.getByClass = getByClass;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * class list wrapper
  */
 (function (root, document) {
@@ -44,34 +92,34 @@ runAbout, throttle, $readMoreJS*/
 	var hasClass;
 	var addClass;
 	var removeClass;
-	if ('classList' in document.documentElement) {
-		hasClass = function (el, className) {
-			return el[classList].contains(className);
+	if (classList in document.documentElement) {
+		hasClass = function (el, name) {
+			return el[classList].contains(name);
 		};
-		addClass = function (el, className) {
-			el[classList].add(className);
+		addClass = function (el, name) {
+			el[classList].add(name);
 		};
-		removeClass = function (el, className) {
-			el[classList].remove(className);
+		removeClass = function (el, name) {
+			el[classList].remove(name);
 		};
 	} else {
-		hasClass = function (el, className) {
-			return new RegExp('\\b' + className + '\\b').test(el.className);
+		hasClass = function (el, name) {
+			return new RegExp("\\b" + name + "\\b").test(el.className);
 		};
-		addClass = function (el, className) {
-			if (!hasClass(el, className)) {
-				el.className += ' ' + className;
+		addClass = function (el, name) {
+			if (!hasClass(el, name)) {
+				el.className += " " + name;
 			}
 		};
-		removeClass = function (el, className) {
-			el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+		removeClass = function (el, name) {
+			el.className = el.className.replace(new RegExp("\\b" + name + "\\b", "g"), "");
 		};
 	}
-	var toggleClass = function (el, className) {
-		if (hasClass(el, className)) {
-			removeClass(el, className);
+	var toggleClass = function (el, name) {
+		if (hasClass(el, name)) {
+			removeClass(el, name);
 		} else {
-			addClass(el, className);
+			addClass(el, name);
 		}
 	};
 	root.hasClass = hasClass;
@@ -90,7 +138,6 @@ runAbout, throttle, $readMoreJS*/
 		var _this = this;
 		var appendChild = "appendChild";
 		var body = "body";
-		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
 		var setAttribute = "setAttribute";
 		var _length = "length";
@@ -102,7 +149,7 @@ runAbout, throttle, $readMoreJS*/
 		_this.callback = callback || function () {};
 		_this.type = type ? type.toLowerCase() : "";
 		_this.loadStyle = function (file) {
-			var link = document[createElement]("link");
+			var link = document.createElement("link");
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
@@ -116,7 +163,7 @@ runAbout, throttle, $readMoreJS*/
 			(_this.body || _this.head)[appendChild](link);
 		};
 		_this.loadScript = function (i) {
-			var script = document[createElement]("script");
+			var script = document.createElement("script");
 			script.type = "text/javascript";
 			script.async = true;
 			script.src = _this.js[i];
@@ -312,7 +359,6 @@ runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var createElement = "createElement";
 		/*jshint bitwise: false */
 		var parseLink = function (url, full) {
 			var _full = full || "";
@@ -341,12 +387,12 @@ runAbout, throttle, $readMoreJS*/
 					return o || "";
 				};
 				var _isCrossDomain = function () {
-					var c = document[createElement]("a");
+					var c = document.createElement("a");
 					c.href = url;
 					var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
 					return v !== _origin();
 				};
-				var _link = document[createElement]("a");
+				var _link = document.createElement("a");
 				_link.href = url;
 				return {
 					href: _link.href,
@@ -425,7 +471,6 @@ runAbout, throttle, $readMoreJS*/
 	"use strict";
 	var getAttribute = "getAttribute";
 	var getElementsByTagName = "getElementsByTagName";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 		var manageExternalLinkAll = function () {
 			var link = document[getElementsByTagName]("a") || "";
@@ -447,7 +492,7 @@ runAbout, throttle, $readMoreJS*/
 							e.target = "_blank";
 							e.rel = "noopener";
 						} else {
-							e[_addEventListener]("click", handle.bind(null, url));
+							addListener(e, "click", handle.bind(null, url));
 						}
 						addClass(e, externalLinkIsBindedClass);
 					}
@@ -469,7 +514,6 @@ runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var getElementsByClassName = "getElementsByClassName";
 	var isActiveClass = "is-active";
 	root.macyInstance = null;
 	var updateMacy = function (delay) {
@@ -513,7 +557,7 @@ runAbout, throttle, $readMoreJS*/
 			}
 		}
 		opt = null;
-		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macy = getByClass(document, macyClass)[0] || "";
 		if (macy) {
 			try {
 				if (root.macyInstance) {
@@ -529,7 +573,7 @@ runAbout, throttle, $readMoreJS*/
 		}
 	};
 	var manageMacy = function (macyClass, options) {
-		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macy = getByClass(document, macyClass)[0] || "";
 		var handleMacy = function () {
 			if (!hasClass(macy, isActiveClass)) {
 				initMacy(macyClass, options);
@@ -570,8 +614,6 @@ runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var getElementsByClassName = "getElementsByClassName";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 		var manageReadMore = function (callback, options) {
 			var cb = function () {
@@ -594,12 +636,12 @@ runAbout, throttle, $readMoreJS*/
 				}
 			}
 			opt = null;
-			var rmLink = document[getElementsByClassName]("rm-link") || "";
+			var rmLink = getByClass(document, "rm-link") || "";
 			var arrange = function (e) {
 				var rmLinkIsBindedClass = "rm-link--is-binded";
 				if (!hasClass(e, rmLinkIsBindedClass)) {
 					addClass(e, rmLinkIsBindedClass);
-					e[_addEventListener]("click", cb);
+					addListener(e, "click", cb);
 				}
 			};
 			var initScript = function () {
@@ -623,11 +665,10 @@ runAbout, throttle, $readMoreJS*/
 (function (root, document) {
 	"use strict";
 	var docBody = document.body || "";
-	var getElementsByClassName = "getElementsByClassName";
 	var getElementsByTagName = "getElementsByTagName";
 	var setAttribute = "setAttribute";
 	var getButtons = function () {
-		var container = document[getElementsByClassName]("layout-type-buttons")[0] || "";
+		var container = getByClass(document, "layout-type-buttons")[0] || "";
 		return container ? (container[getElementsByTagName]("button") || "") : "";
 	};
 	root.layoutTypeToTabs = function (e) {
@@ -706,10 +747,9 @@ runAbout, throttle, $readMoreJS*/
  */
 (function(root, document){
 	"use strict";
-	var getElementsByClassName = "getElementsByClassName";
 	var isActiveClass = "is-active";
 	var LoadingSpinner = (function () {
-		var uwpLoading = document[getElementsByClassName]("uwp-loading")[0] || "";
+		var uwpLoading = getByClass(document, "uwp-loading")[0] || "";
 		if (!uwpLoading) {
 			return;
 		}
@@ -734,20 +774,12 @@ runAbout, throttle, $readMoreJS*/
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
 
-	var classList = "classList";
-	var createElement = "createElement";
-	var createElementNS = "createElementNS";
-	var defineProperty = "defineProperty";
-	var getOwnPropertyDescriptor = "getOwnPropertyDescriptor";
-	var querySelector = "querySelector";
-	var querySelectorAll = "querySelectorAll";
 	var title = "title";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 
 	var toStringFn = {}.toString;
-	var supportsSvgSmilAnimation = !!document[createElementNS] &&
-		(/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
+	var supportsSvgSmilAnimation = !!document.createElementNS &&
+		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
 
 	if (supportsSvgSmilAnimation && docElem) {
 		addClass(docElem, "svganimate");
@@ -755,13 +787,13 @@ runAbout, throttle, $readMoreJS*/
 
 	var supportsCanvas;
 	supportsCanvas = (function () {
-		var elem = document[createElement]("canvas");
+		var elem = document.createElement("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
 
 	var run = function () {
 
-		if (docElem && docElem[classList]) {
+		if (docElem && docElem.classList) {
 			removeClass(docElem, "no-js");
 			addClass(docElem, "js");
 		}
@@ -841,7 +873,7 @@ runAbout, throttle, $readMoreJS*/
 				orientation: orientation || "",
 				size: size || ""
 			};
-		})(docElem[classList] || "");
+		})(docElem.classList || "");
 
 		var earlyDeviceType = (function (mobile, desktop, opera) {
 			var selector = (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i).test(opera) ||
@@ -1003,12 +1035,12 @@ runAbout, throttle, $readMoreJS*/
 	var supportsPassive = (function () {
 		var support = false;
 		try {
-			var opts = Object[defineProperty] && Object[defineProperty]({}, "passive", {
+			var opts = Object.defineProperty && Object.defineProperty({}, "passive", {
 					get: function () {
 						support = true;
 					}
 				});
-			root[_addEventListener]("test", function () {}, opts);
+			addListener(root, "test", function () {}, opts);
 		} catch (err) {}
 		return support;
 	})();
@@ -1019,20 +1051,20 @@ runAbout, throttle, $readMoreJS*/
 		!root.requestAnimationFrame ||
 		!root.matchMedia ||
 		("undefined" === typeof root.Element && !("dataset" in docElem)) ||
-		!("classList" in document[createElement]("_")) ||
-		document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
-		(root.attachEvent && !root[_addEventListener]) ||
+		!("classList" in document.createElement("_")) ||
+		document.createElementNS && !("classList" in document.createElementNS("http://www.w3.org/2000/svg", "g")) ||
+		(root.attachEvent && !root.addEventListener) ||
 		!("onhashchange" in root) ||
 		!Array.prototype.indexOf ||
 		!root.Promise ||
 		!root.fetch ||
-		!document[querySelectorAll] ||
-		!document[querySelector] ||
+		!document.querySelectorAll ||
+		!document.querySelector ||
 		!Function.prototype.bind ||
-		(Object[defineProperty] &&
-			Object[getOwnPropertyDescriptor] &&
-			Object[getOwnPropertyDescriptor](Element.prototype, "textContent") &&
-			!Object[getOwnPropertyDescriptor](Element.prototype, "textContent").get) ||
+		(Object.defineProperty &&
+			Object.getOwnPropertyDescriptor &&
+			Object.getOwnPropertyDescriptor(Element.prototype, "textContent") &&
+			!Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) ||
 		!("undefined" !== typeof root.localStorage && "undefined" !== typeof root.sessionStorage) ||
 		!root.WeakMap ||
 		!root.MutationObserver;
@@ -1090,7 +1122,7 @@ runAbout, throttle, $readMoreJS*/
 		if (root.requestAnimationFrame) {
 			req = requestAnimationFrame(raf);
 		} else {
-			root[_addEventListener]("load", handle);
+			addListener(root, "load", handle);
 		}
 	};
 

@@ -21,9 +21,9 @@ function _typeof(obj) {
 /*jslint node: true */
 
 /*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, addClass, hasClass, removeClass, Macy, openDeviceBrowser,
-parseLink, progressBar, require, runHome, runWorks, runPictures, runGallery,
-runAbout, throttle, $readMoreJS*/
+isNwjs, loadJsCss, addListener, getByClass, addClass, hasClass, removeClass,
+Macy, openDeviceBrowser, parseLink, progressBar, require, runHome, runWorks,
+runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 
 /*property console, join, split */
 
@@ -67,6 +67,62 @@ runAbout, throttle, $readMoreJS*/
 	prop = method = dummy = properties = methods = null;
 })("undefined" !== typeof window ? window : this);
 /*!
+ * Super-simple wrapper around addEventListener and attachEvent (old IE).
+ * Does not handle differences in the Event-objects.
+ * @see {@link https://github.com/finn-no/eventlistener}
+ */
+
+(function(root) {
+	"use strict";
+
+	var wrap = function wrap(standard, fallback) {
+		return function(el, type, listener, useCapture) {
+			if (el[standard]) {
+				el[standard](type, listener, useCapture);
+			} else {
+				if (el[fallback]) {
+					el[fallback]("on" + type, listener);
+				}
+			}
+		};
+	};
+
+	root.addListener = wrap("addEventListener", "attachEvent");
+	root.removeListener = wrap("removeEventListener", "detachEvent");
+})("undefined" !== typeof window ? window : this);
+/*!
+ * get elements by class name wrapper
+ */
+
+(function(root, document) {
+	"use strict";
+
+	var getByClass = function getByClass(parent, name) {
+		if (!Element.getElementsByClassName) {
+			var children = (parent || document.body).getElementsByTagName("*"),
+				elements = [],
+				classRE = new RegExp("\\b" + name + "\\b"),
+				child;
+			var i, l;
+
+			for (i = 0, l = children.length; i < l; i += 1) {
+				child = children[i];
+
+				if (classRE.test(child.className)) {
+					elements.push(child);
+				}
+			}
+
+			i = l = null;
+			return elements;
+		} else {
+			return parent ? parent.getElementsByClassName(name) : "";
+		}
+	};
+
+	root.getByClass = getByClass;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * class list wrapper
  */
 
@@ -78,42 +134,42 @@ runAbout, throttle, $readMoreJS*/
 	var addClass;
 	var removeClass;
 
-	if ("classList" in document.documentElement) {
-		hasClass = function hasClass(el, className) {
-			return el[classList].contains(className);
+	if (classList in document.documentElement) {
+		hasClass = function hasClass(el, name) {
+			return el[classList].contains(name);
 		};
 
-		addClass = function addClass(el, className) {
-			el[classList].add(className);
+		addClass = function addClass(el, name) {
+			el[classList].add(name);
 		};
 
-		removeClass = function removeClass(el, className) {
-			el[classList].remove(className);
+		removeClass = function removeClass(el, name) {
+			el[classList].remove(name);
 		};
 	} else {
-		hasClass = function hasClass(el, className) {
-			return new RegExp("\\b" + className + "\\b").test(el.className);
+		hasClass = function hasClass(el, name) {
+			return new RegExp("\\b" + name + "\\b").test(el.className);
 		};
 
-		addClass = function addClass(el, className) {
-			if (!hasClass(el, className)) {
-				el.className += " " + className;
+		addClass = function addClass(el, name) {
+			if (!hasClass(el, name)) {
+				el.className += " " + name;
 			}
 		};
 
-		removeClass = function removeClass(el, className) {
+		removeClass = function removeClass(el, name) {
 			el.className = el.className.replace(
-				new RegExp("\\b" + className + "\\b", "g"),
+				new RegExp("\\b" + name + "\\b", "g"),
 				""
 			);
 		};
 	}
 
-	var toggleClass = function toggleClass(el, className) {
-		if (hasClass(el, className)) {
-			removeClass(el, className);
+	var toggleClass = function toggleClass(el, name) {
+		if (hasClass(el, name)) {
+			removeClass(el, name);
 		} else {
-			addClass(el, className);
+			addClass(el, name);
 		}
 	};
 
@@ -136,7 +192,6 @@ runAbout, throttle, $readMoreJS*/
 
 		var appendChild = "appendChild";
 		var body = "body";
-		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
 		var setAttribute = "setAttribute";
 		var _length = "length";
@@ -151,7 +206,7 @@ runAbout, throttle, $readMoreJS*/
 		_this.type = type ? type.toLowerCase() : "";
 
 		_this.loadStyle = function(file) {
-			var link = document[createElement]("link");
+			var link = document.createElement("link");
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
@@ -169,7 +224,7 @@ runAbout, throttle, $readMoreJS*/
 		};
 
 		_this.loadScript = function(i) {
-			var script = document[createElement]("script");
+			var script = document.createElement("script");
 			script.type = "text/javascript";
 			script.async = true;
 			script.src = _this.js[i];
@@ -432,8 +487,6 @@ runAbout, throttle, $readMoreJS*/
 
 (function(root, document) {
 	"use strict";
-
-	var createElement = "createElement";
 	/*jshint bitwise: false */
 
 	var parseLink = function parseLink(url, full) {
@@ -473,7 +526,7 @@ runAbout, throttle, $readMoreJS*/
 			};
 
 			var _isCrossDomain = function _isCrossDomain() {
-				var c = document[createElement]("a");
+				var c = document.createElement("a");
 				c.href = url;
 				var v =
 					c.protocol +
@@ -483,7 +536,7 @@ runAbout, throttle, $readMoreJS*/
 				return v !== _origin();
 			};
 
-			var _link = document[createElement]("a");
+			var _link = document.createElement("a");
 
 			_link.href = url;
 			return {
@@ -589,7 +642,6 @@ runAbout, throttle, $readMoreJS*/
 
 	var getAttribute = "getAttribute";
 	var getElementsByTagName = "getElementsByTagName";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 
 	var manageExternalLinkAll = function manageExternalLinkAll() {
@@ -626,7 +678,7 @@ runAbout, throttle, $readMoreJS*/
 						e.target = "_blank";
 						e.rel = "noopener";
 					} else {
-						e[_addEventListener]("click", handle.bind(null, url));
+						addListener(e, "click", handle.bind(null, url));
 					}
 
 					addClass(e, externalLinkIsBindedClass);
@@ -654,7 +706,6 @@ runAbout, throttle, $readMoreJS*/
 (function(root) {
 	"use strict";
 
-	var getElementsByClassName = "getElementsByClassName";
 	var isActiveClass = "is-active";
 	root.macyInstance = null;
 
@@ -708,7 +759,7 @@ runAbout, throttle, $readMoreJS*/
 		}
 
 		opt = null;
-		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macy = getByClass(document, macyClass)[0] || "";
 
 		if (macy) {
 			try {
@@ -728,7 +779,7 @@ runAbout, throttle, $readMoreJS*/
 	};
 
 	var manageMacy = function manageMacy(macyClass, options) {
-		var macy = document[getElementsByClassName](macyClass)[0] || "";
+		var macy = getByClass(document, macyClass)[0] || "";
 
 		var handleMacy = function handleMacy() {
 			if (!hasClass(macy, isActiveClass)) {
@@ -788,8 +839,6 @@ runAbout, throttle, $readMoreJS*/
 (function(root, document) {
 	"use strict";
 
-	var getElementsByClassName = "getElementsByClassName";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 
 	var manageReadMore = function manageReadMore(callback, options) {
@@ -819,15 +868,14 @@ runAbout, throttle, $readMoreJS*/
 		}
 
 		opt = null;
-		var rmLink = document[getElementsByClassName]("rm-link") || "";
+		var rmLink = getByClass(document, "rm-link") || "";
 
 		var arrange = function arrange(e) {
 			var rmLinkIsBindedClass = "rm-link--is-binded";
 
 			if (!hasClass(e, rmLinkIsBindedClass)) {
 				addClass(e, rmLinkIsBindedClass);
-
-				e[_addEventListener]("click", cb);
+				addListener(e, "click", cb);
 			}
 		};
 
@@ -857,13 +905,11 @@ runAbout, throttle, $readMoreJS*/
 	"use strict";
 
 	var docBody = document.body || "";
-	var getElementsByClassName = "getElementsByClassName";
 	var getElementsByTagName = "getElementsByTagName";
 	var setAttribute = "setAttribute";
 
 	var getButtons = function getButtons() {
-		var container =
-			document[getElementsByClassName]("layout-type-buttons")[0] || "";
+		var container = getByClass(document, "layout-type-buttons")[0] || "";
 		return container ? container[getElementsByTagName]("button") || "" : "";
 	};
 
@@ -958,12 +1004,10 @@ runAbout, throttle, $readMoreJS*/
 (function(root, document) {
 	"use strict";
 
-	var getElementsByClassName = "getElementsByClassName";
 	var isActiveClass = "is-active";
 
 	var LoadingSpinner = (function() {
-		var uwpLoading =
-			document[getElementsByClassName]("uwp-loading")[0] || "";
+		var uwpLoading = getByClass(document, "uwp-loading")[0] || "";
 
 		if (!uwpLoading) {
 			return;
@@ -991,22 +1035,14 @@ runAbout, throttle, $readMoreJS*/
 	var docElem = document.documentElement || "";
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
-	var classList = "classList";
-	var createElement = "createElement";
-	var createElementNS = "createElementNS";
-	var defineProperty = "defineProperty";
-	var getOwnPropertyDescriptor = "getOwnPropertyDescriptor";
-	var querySelector = "querySelector";
-	var querySelectorAll = "querySelectorAll";
 	var title = "title";
-	var _addEventListener = "addEventListener";
 	var _length = "length";
 	var toStringFn = {}.toString;
 	var supportsSvgSmilAnimation =
-		(!!document[createElementNS] &&
+		(!!document.createElementNS &&
 			/SVGAnimate/.test(
 				toStringFn.call(
-					document[createElementNS](
+					document.createElementNS(
 						"http://www.w3.org/2000/svg",
 						"animate"
 					)
@@ -1021,12 +1057,12 @@ runAbout, throttle, $readMoreJS*/
 	var supportsCanvas;
 
 	supportsCanvas = (function() {
-		var elem = document[createElement]("canvas");
+		var elem = document.createElement("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
 
 	var run = function run() {
-		if (docElem && docElem[classList]) {
+		if (docElem && docElem.classList) {
 			removeClass(docElem, "no-js");
 			addClass(docElem, "js");
 		}
@@ -1122,7 +1158,7 @@ runAbout, throttle, $readMoreJS*/
 				orientation: orientation || "",
 				size: size || ""
 			};
-		})(docElem[classList] || "");
+		})(docElem.classList || "");
 
 		var earlyDeviceType = (function(mobile, desktop, opera) {
 			var selector =
@@ -1327,14 +1363,13 @@ runAbout, throttle, $readMoreJS*/
 
 		try {
 			var opts =
-				Object[defineProperty] &&
-				Object[defineProperty]({}, "passive", {
+				Object.defineProperty &&
+				Object.defineProperty({}, "passive", {
 					get: function get() {
 						support = true;
 					}
 				});
-
-			root[_addEventListener]("test", function() {}, opts);
+			addListener(root, "test", function() {}, opts);
 		} catch (err) {}
 
 		return support;
@@ -1347,27 +1382,27 @@ runAbout, throttle, $readMoreJS*/
 			!root.requestAnimationFrame ||
 			!root.matchMedia ||
 			("undefined" === typeof root.Element && !("dataset" in docElem)) ||
-			!("classList" in document[createElement]("_")) ||
-			(document[createElementNS] &&
+			!("classList" in document.createElement("_")) ||
+			(document.createElementNS &&
 				!(
 					"classList" in
-					document[createElementNS]("http://www.w3.org/2000/svg", "g")
+					document.createElementNS("http://www.w3.org/2000/svg", "g")
 				)) ||
-			(root.attachEvent && !root[_addEventListener]) ||
+			(root.attachEvent && !root.addEventListener) ||
 			!("onhashchange" in root) ||
 			!Array.prototype.indexOf ||
 			!root.Promise ||
 			!root.fetch ||
-			!document[querySelectorAll] ||
-			!document[querySelector] ||
+			!document.querySelectorAll ||
+			!document.querySelector ||
 			!Function.prototype.bind ||
-			(Object[defineProperty] &&
-				Object[getOwnPropertyDescriptor] &&
-				Object[getOwnPropertyDescriptor](
+			(Object.defineProperty &&
+				Object.getOwnPropertyDescriptor &&
+				Object.getOwnPropertyDescriptor(
 					Element.prototype,
 					"textContent"
 				) &&
-				!Object[getOwnPropertyDescriptor](
+				!Object.getOwnPropertyDescriptor(
 					Element.prototype,
 					"textContent"
 				).get) ||
@@ -1445,7 +1480,7 @@ runAbout, throttle, $readMoreJS*/
 		if (root.requestAnimationFrame) {
 			req = requestAnimationFrame(raf);
 		} else {
-			root[_addEventListener]("load", handle);
+			addListener(root, "load", handle);
 		}
 	};
 

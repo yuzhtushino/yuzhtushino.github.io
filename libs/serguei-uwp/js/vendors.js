@@ -598,7 +598,7 @@ var LazyLoad = (function() {
 		window.dispatchEvent(event);
 	};
 	/* Auto initialization of one or more instances of lazyload, depending on the
-	  options passed in (plain object or an array) */
+   options passed in (plain object or an array) */
 
 	function autoInitialize(classObj, options) {
 		if (!options) {
@@ -894,7 +894,7 @@ var LazyLoad = (function() {
 		callbackIfSet(settings.callback_set, element);
 	}
 	/* entry.isIntersecting needs fallback because is null on some versions of MS Edge, and
-	 entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
+  entry.intersectionRatio is not enough alone because it could be 0 on some intersecting elements */
 
 	var isIntersecting = function isIntersecting(entry) {
 		return entry.isIntersecting || entry.intersectionRatio > 0;
@@ -1248,8 +1248,9 @@ var LazyLoad = (function() {
 		var targetattr =
 			filetype == "js" ? "src" : filetype == "css" ? "href" : "none";
 		var allsuspects = document.getElementsByTagName(targetelement) || "";
+		var i;
 
-		for (var i = allsuspects.length; i >= 0; i--) {
+		for (i = allsuspects.length; i >= 0; i--) {
 			if (
 				allsuspects[i] &&
 				allsuspects[i].getAttribute(targetattr) != null &&
@@ -1258,22 +1259,30 @@ var LazyLoad = (function() {
 				allsuspects[i].parentNode.removeChild(allsuspects[i]);
 			}
 		}
+
+		i = null;
 	};
 
 	var _extends = function _extends() {
 		var _extends =
 			Object.assign ||
 			function(target) {
-				for (var i = 1; i < arguments.length; i++) {
-					var source = arguments[i];
+				var i;
 
-					for (var key in source) {
+				for (i = 1; i < arguments.length; i++) {
+					var source = arguments[i];
+					var key;
+
+					for (key in source) {
 						if (Object.prototype.hasOwnProperty.call(source, key)) {
 							target[key] = source[key];
 						}
 					}
+
+					key = null;
 				}
 
+				i = null;
 				return target;
 			};
 
@@ -3485,63 +3494,77 @@ function _typeof(obj) {
 		};
 	};
 
-	var callCallback = function (func, data) {
+	var callCallback = function callCallback(func, data) {
 		if (typeof func !== "function") {
 			return;
 		}
+
 		var caller = func.bind(this);
 		caller(data);
 	};
-		var setStyleDisplayBlock = function (a) {
-			if (a) {
-				a[style].display = "block";
-			}
-		};
 
-		var setStyleDisplayNone = function (a) {
-			if (a) {
-				a[style].display = "none";
-			}
-		};
-	var hideImgLightbox = function (callback) {
-		var container = document[getElementsByClassName](containerClass)[0] || "";
-		var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-		var hideContainer = function () {
+	var setStyleDisplayBlock = function setStyleDisplayBlock(a) {
+		if (a) {
+			a[style].display = "block";
+		}
+	};
+
+	var setStyleDisplayNone = function setStyleDisplayNone(a) {
+		if (a) {
+			a[style].display = "none";
+		}
+	};
+
+	var hideImgLightbox = function hideImgLightbox(callback) {
+		var container =
+			document[getElementsByClassName](containerClass)[0] || "";
+		var img = container
+			? container[getElementsByTagName]("img")[0] || ""
+			: "";
+
+		var hideContainer = function hideContainer() {
 			container[classList].remove(fadeInClass);
 			container[classList].add(fadeOutClass);
-			var hideImg = function () {
+
+			var hideImg = function hideImg() {
 				container[classList].remove(animatedClass);
 				container[classList].remove(fadeOutClass);
 				img[classList].remove(animatedClass);
 				img[classList].remove(fadeOutDownClass);
-				img.onload = function () {
+
+				img.onload = function() {
 					container[classList].remove(isLoadedClass);
 				};
+
 				img.src = dummySrc;
 				setStyleDisplayNone(container);
 				callCallback(callback, root);
 			};
-			var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					hideImg();
-				}, 400);
+
+			var timer = setTimeout(function() {
+				clearTimeout(timer);
+				timer = null;
+				hideImg();
+			}, 400);
 		};
+
 		if (container && img) {
 			img[classList].remove(fadeInUpClass);
 			img[classList].add(fadeOutDownClass);
-			var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					hideContainer();
-				}, 400);
+			var timer = setTimeout(function() {
+				clearTimeout(timer);
+				timer = null;
+				hideContainer();
+			}, 400);
 		}
+
 		docElem[classList].remove(imgLightboxOpenClass);
 		docBody[classList].remove(imgLightboxOpenClass);
 	};
 
-	var imgLightbox = function (linkClass, settings) {
+	var imgLightbox = function imgLightbox(linkClass, settings) {
 		var _linkClass = linkClass || "";
+
 		var options = settings || {};
 		var rate = options.rate || 500;
 		var touch = options.touch;
@@ -3550,28 +3573,41 @@ function _typeof(obj) {
 		var onCreated = options.onCreated;
 		var onClosed = options.onClosed;
 		var link = document[getElementsByClassName](_linkClass) || "";
-		var container = document[getElementsByClassName](containerClass)[0] || "";
-		var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
+		var container =
+			document[getElementsByClassName](containerClass)[0] || "";
+		var img = container
+			? container[getElementsByTagName]("img")[0] || ""
+			: "";
+
 		if (!container) {
 			container = document[createElement]("div");
 			container[classList].add(containerClass);
 			var html = [];
 			html.push('<img src="' + dummySrc + '" alt="" />');
-			html.push('<div class="half-circle-spinner"><div class="circle circle-1"></div><div class="circle circle-2"></div></div>');
+			html.push(
+				'<div class="half-circle-spinner"><div class="circle circle-1"></div><div class="circle circle-2"></div></div>'
+			);
 			html.push('<a href="javascript:void(0);" class="btn-close"></a>');
 			container[innerHTML] = html.join("");
 			docBody[appendChild](container);
-			img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-			var btnClose = container ? container[getElementsByClassName](btnCloseClass)[0] || "" : "";
-			var handleImgLightboxContainer = function () {
+			img = container
+				? container[getElementsByTagName]("img")[0] || ""
+				: "";
+			var btnClose = container
+				? container[getElementsByClassName](btnCloseClass)[0] || ""
+				: "";
+
+			var handleImgLightboxContainer = function handleImgLightboxContainer() {
 				hideImgLightbox(onClosed);
 			};
+
 			container[_addEventListener]("click", handleImgLightboxContainer);
+
 			btnClose[_addEventListener]("click", handleImgLightboxContainer);
+
 			if (!docElem[classList].contains(imgLightboxWindowIsBindedClass)) {
 				docElem[classList].add(imgLightboxWindowIsBindedClass);
-
-				root[_addEventListener]("keyup", function(ev) {
+				addListener(root, "keyup", function(ev) {
 					if (27 === (ev.which || ev.keyCode)) {
 						hideImgLightbox(onClosed);
 					}
@@ -3588,39 +3624,49 @@ function _typeof(obj) {
 				return;
 			}
 
-			var handleImgLightboxLink = function (ev) {
+			var handleImgLightboxLink = function handleImgLightboxLink(ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
 				docElem[classList].add(imgLightboxOpenClass);
 				docBody[classList].add(imgLightboxOpenClass);
 				container[classList].remove(isLoadedClass);
+
 				var logic = function logic() {
 					if (onCreated) {
 						callCallback(onCreated, root);
 					}
+
 					container[classList].add(animatedClass);
 					container[classList].add(fadeInClass);
 					img[classList].add(animatedClass);
 					img[classList].add(fadeInUpClass);
-					img.onload = function () {
+
+					img.onload = function() {
 						container[classList].add(isLoadedClass);
+
 						if (onLoaded) {
 							callCallback(onLoaded, root);
 						}
 					};
-					img.onerror = function () {
+
+					img.onerror = function() {
 						if (onError) {
 							callCallback(onError, root);
 						}
 					};
+
 					img.src = hrefString;
 					setStyleDisplayBlock(container);
 				};
+
 				debounce(logic, rate).call();
 			};
+
 			if (!e[classList].contains(imgLightboxLinkIsBindedClass)) {
 				e[classList].add(imgLightboxLinkIsBindedClass);
+
 				e[_addEventListener]("click", handleImgLightboxLink);
+
 				if (isTouch && (touch || dataTouch)) {
 					e[_addEventListener]("touchstart", handleImgLightboxLink);
 				}
@@ -3768,7 +3814,8 @@ function _typeof(obj) {
 
 	IframeLightbox.prototype.create = function() {
 		var _this = this,
-		backdrop = document[createElement]("div");
+			backdrop = document[createElement]("div");
+
 		backdrop[classList].add("backdrop");
 		this.el = document[createElement]("div");
 		this.el[classList].add(containerClass);
@@ -3802,8 +3849,7 @@ function _typeof(obj) {
 
 		if (!docElem[classList].contains(iframeLightboxWindowIsBindedClass)) {
 			docElem[classList].add(iframeLightboxWindowIsBindedClass);
-
-			root[_addEventListener]("keyup", function(ev) {
+			addListener(root, "keyup", function(ev) {
 				if (27 === (ev.which || ev.keyCode)) {
 					_this.close();
 				}
@@ -3888,14 +3934,16 @@ function _typeof(obj) {
 		docBody[classList].add(iframeLightboxOpenClass);
 		this.callCallback(this.onOpened, this);
 	};
-	IframeLightbox.prototype.close = function () {
+
+	IframeLightbox.prototype.close = function() {
 		this.el[classList].remove(isOpenedClass);
 		this.body[classList].remove(isLoadedClass);
 		docElem[classList].remove(iframeLightboxOpenClass);
 		docBody[classList].remove(iframeLightboxOpenClass);
 		this.callCallback(this.onClosed, this);
 	};
-	IframeLightbox.prototype.isOpen = function () {
+
+	IframeLightbox.prototype.isOpen = function() {
 		return this.el[classList].contains(isOpenedClass);
 	};
 

@@ -160,7 +160,7 @@
 			if (!docElem[classList].contains(imgLightboxWindowIsBindedClass)) {
 				docElem[classList].add(imgLightboxWindowIsBindedClass);
 
-				root[_addEventListener]("keyup", function(ev) {
+				addListener(root, "keyup", function(ev) {
 					if (27 === (ev.which || ev.keyCode)) {
 						hideImgLightbox(onClosed);
 					}
