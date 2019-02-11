@@ -1019,7 +1019,7 @@ var LazyLoad = (function() {
  * @author George Raptis | http://georap.gr
  * @see {@link https://github.com/georapbox/ReadMore.js/blob/master/src/readMoreJS.js}
  * changed: rmLink = doc.querySelectorAll('.rm-link');
- * to: rmLink = doc.getElementsByClassName('rm-link') || "";
+ * to: rmLink = doc.querySelectorAll('.rm-link') || "";
  * changed: var target = doc.querySelectorAll(options.target)
  * to: var target = elementsSelector(options.target)
  */

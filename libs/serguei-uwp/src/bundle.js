@@ -62,7 +62,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function (root, document) {
 	"use strict";
 	var getByClass = function (parent, name) {
-		if (!Element.getElementsByClassName) {
+		if (!document.getElementsByClassName) {
 			var children = (parent || document.body).getElementsByTagName("*"),
 			elements = [],
 			classRE = new RegExp("\\b" + name + "\\b"),
@@ -619,33 +619,33 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			var cb = function () {
 				return callback && "function" === typeof callback && callback();
 			};
-			var defaultSettings = {
-				target: ".dummy",
-				numOfWords: 10,
-				toggle: true,
-				moreLink: "БОЛЬШЕ",
-				lessLink: "МЕНЬШЕ",
-				inline: true,
-				customBlockElement: "p"
-			};
-			var settings = options || {};
-			var opt;
-			for (opt in defaultSettings) {
-				if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
-					settings[opt] = defaultSettings[opt];
-				}
-			}
-			opt = null;
-			var rmLink = getByClass(document, "rm-link") || "";
-			var arrange = function (e) {
-				var rmLinkIsBindedClass = "rm-link--is-binded";
-				if (!hasClass(e, rmLinkIsBindedClass)) {
-					addClass(e, rmLinkIsBindedClass);
-					addListener(e, "click", cb);
-				}
-			};
 			var initScript = function () {
+				var defaultSettings = {
+					target: ".dummy",
+					numOfWords: 10,
+					toggle: true,
+					moreLink: "БОЛЬШЕ",
+					lessLink: "МЕНЬШЕ",
+					inline: true,
+					customBlockElement: "p"
+				};
+				var settings = options || {};
+				var opt;
+				for (opt in defaultSettings) {
+					if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
+						settings[opt] = defaultSettings[opt];
+					}
+				}
+				opt = null;
 				$readMoreJS.init(settings);
+				var rmLink = getByClass(document, "rm-link") || "";
+				var arrange = function (e) {
+					var rmLinkIsBindedClass = "rm-link--is-binded";
+					if (!hasClass(e, rmLinkIsBindedClass)) {
+						addClass(e, rmLinkIsBindedClass);
+						addListener(e, "click", cb);
+					}
+				};
 				var i,
 				l;
 				for (i = 0, l = rmLink[_length]; i < l; i += 1) {
@@ -653,7 +653,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				}
 				i = l = null;
 			};
-			if (root.$readMoreJS && rmLink) {
+			if (root.$readMoreJS) {
 				initScript();
 			}
 		};
