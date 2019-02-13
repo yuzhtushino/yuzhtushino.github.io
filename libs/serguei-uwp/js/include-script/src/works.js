@@ -1,8 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-addListener, addListener, getByClass, addClass, hasClass,
-manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+/*global console, addListener, removeListener, addListener, getByClass,
+addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
+manageIframeLightbox, manageMacy, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,74 +11,47 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 
 	root.runWorks = function () {
 
+		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 
 		var isActiveClass = "is-active";
 
-		var iframeLightboxLinkClass = "iframe-lightbox-link";
-
-		/*!
-		 * @see {@link https://github.com/englishextra/iframe-lightbox}
-		 */
-		var manageIframeLightbox = function (iframeLightboxLinkClass) {
-			var link = getByClass(document, iframeLightboxLinkClass) || "";
-			var initScript = function () {
-				var arrange = function (e) {
-					e.lightbox = new IframeLightbox(e, {
-							onLoaded: function () {
-								LoadingSpinner.hide();
-							},
-							onClosed: function () {
-								LoadingSpinner.hide();
-							},
-							onOpened: function () {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-				};
-				var i,
-				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			};
-			if (root.IframeLightbox && link) {
-				initScript();
-			}
-		};
-
-		var dataSrcLazyClass = "data-src-lazy";
-
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-		var manageLazyLoad = function (dataSrcLazyClass) {
-			if (root.LazyLoad) {
-				var lzld;
-				lzld = new LazyLoad({
-						elements_selector: "." + dataSrcLazyClass
-					});
-			}
-		};
-
-		/*!
-		 * @see {@link https://imagesloaded.desandro.com/}
-		 * Triggered after all images have been either loaded or confirmed broken.
-		 */
 		var onImagesLoaded = function (macy) {
-			if (root.imagesLoaded) {
-				var imgLoad;
-				imgLoad = new imagesLoaded(macy);
-				var onAlways = function (instance) {
+			var img = macy[getElementsByTagName]("img") || "";
+			var imgLength = img[_length] || 0;
+			var imgCounter = 0;
+			var onLoad;
+			var onError;
+			var addListeners = function (e) {
+				addListener(e, "load", onLoad, false);
+				addListener(e, "error", onError, false);
+			};
+			var removeListeners = function (e) {
+				removeListener(e, "load", onLoad, false);
+				removeListener(e, "error", onError, false);
+			};
+			onLoad = function () {
+				removeListeners(this);
+				imgCounter++;
+				if (imgCounter === imgLength) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
-					console.log("imagesLoaded: found " + instance.images[_length] + " images");
-				};
-				imgLoad.on("always", onAlways);
+					console.log("onImagesLoaded: loaded " + imgCounter + " images");
+				}
+			};
+			onError = function () {
+				removeListeners(this);
+				console.log("onImagesLoaded: failed to load image: " + this.src);
+			};
+			if (img) {
+				var i,
+				l;
+				for (i = 0, l = img[_length]; i < l; i += 1) {
+					addListeners(img[i]);
+				}
+				i = l = null;
 			}
 		};
 
@@ -91,9 +64,9 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		var onMacyRender = function () {
 			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
-			manageLazyLoad(dataSrcLazyClass);
+			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
-			manageIframeLightbox(iframeLightboxLinkClass);
+			manageIframeLightbox();
 		};
 
 		var onMacyResize = function () {
@@ -169,6 +142,8 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			}
 		];
 
+		var dataSrcImgClass = "data-src-img";
+
 		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function (macy, callback) {
@@ -182,7 +157,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcLazyClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems[_length]) {
 					macy.innerHTML = html.join("");

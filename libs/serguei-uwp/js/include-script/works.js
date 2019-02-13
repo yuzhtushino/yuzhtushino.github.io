@@ -2,9 +2,9 @@
 
 /*jslint node: true */
 
-/*global console, IframeLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-addListener, addListener, getByClass, addClass, hasClass,
-manageExternalLinkAll, manageMacy, updateMacyThrottled*/
+/*global console, addListener, removeListener, addListener, getByClass,
+addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
+manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -13,85 +13,58 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runWorks = function() {
+		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 		var isActiveClass = "is-active";
-		var iframeLightboxLinkClass = "iframe-lightbox-link";
-		/*!
-		 * @see {@link https://github.com/englishextra/iframe-lightbox}
-		 */
-
-		var manageIframeLightbox = function manageIframeLightbox(
-			iframeLightboxLinkClass
-		) {
-			var link = getByClass(document, iframeLightboxLinkClass) || "";
-
-			var initScript = function initScript() {
-				var arrange = function arrange(e) {
-					e.lightbox = new IframeLightbox(e, {
-						onLoaded: function onLoaded() {
-							LoadingSpinner.hide();
-						},
-						onClosed: function onClosed() {
-							LoadingSpinner.hide();
-						},
-						onOpened: function onOpened() {
-							LoadingSpinner.show();
-						},
-						touch: false
-					});
-				};
-
-				var i, l;
-
-				for (i = 0, l = link[_length]; i < l; i += 1) {
-					arrange(link[i]);
-				}
-
-				i = l = null;
-			};
-
-			if (root.IframeLightbox && link) {
-				initScript();
-			}
-		};
-
-		var dataSrcLazyClass = "data-src-lazy";
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-
-		var manageLazyLoad = function manageLazyLoad(dataSrcLazyClass) {
-			if (root.LazyLoad) {
-				var lzld;
-				lzld = new LazyLoad({
-					elements_selector: "." + dataSrcLazyClass
-				});
-			}
-		};
-		/*!
-		 * @see {@link https://imagesloaded.desandro.com/}
-		 * Triggered after all images have been either loaded or confirmed broken.
-		 */
 
 		var onImagesLoaded = function onImagesLoaded(macy) {
-			if (root.imagesLoaded) {
-				var imgLoad;
-				imgLoad = new imagesLoaded(macy);
+			var img = macy[getElementsByTagName]("img") || "";
+			var imgLength = img[_length] || 0;
+			var imgCounter = 0;
+			var onLoad;
+			var onError;
 
-				var onAlways = function onAlways(instance) {
+			var addListeners = function addListeners(e) {
+				addListener(e, "load", onLoad, false);
+				addListener(e, "error", onError, false);
+			};
+
+			var removeListeners = function removeListeners(e) {
+				removeListener(e, "load", onLoad, false);
+				removeListener(e, "error", onError, false);
+			};
+
+			onLoad = function onLoad() {
+				removeListeners(this);
+				imgCounter++;
+
+				if (imgCounter === imgLength) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
 
 					console.log(
-						"imagesLoaded: found " +
-							instance.images[_length] +
-							" images"
+						"onImagesLoaded: loaded " + imgCounter + " images"
 					);
-				};
+				}
+			};
 
-				imgLoad.on("always", onAlways);
+			onError = function onError() {
+				removeListeners(this);
+				console.log(
+					"onImagesLoaded: failed to load image: " + this.src
+				);
+			};
+
+			if (img) {
+				var i, l;
+
+				for (i = 0, l = img[_length]; i < l; i += 1) {
+					addListeners(img[i]);
+				}
+
+				i = l = null;
 			}
 		};
 
@@ -102,9 +75,9 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 		var onMacyRender = function onMacyRender() {
 			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
-			manageLazyLoad(dataSrcLazyClass);
+			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
-			manageIframeLightbox(iframeLightboxLinkClass);
+			manageIframeLightbox();
 		};
 
 		var onMacyResize = function onMacyResize() {
@@ -212,6 +185,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
 			}
 		];
+		var dataSrcImgClass = "data-src-img";
 		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function addMacyItems(macy, callback) {
@@ -233,7 +207,7 @@ manageExternalLinkAll, manageMacy, updateMacyThrottled*/
 						'" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' +
 						transparentPixel +
 						'" class="' +
-						dataSrcLazyClass +
+						dataSrcImgClass +
 						'" data-' +
 						dataSrcImgKeyName +
 						'="' +

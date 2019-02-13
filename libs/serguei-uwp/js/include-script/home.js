@@ -2,10 +2,9 @@
 
 /*jslint node: true */
 
-/*global console, imgLightbox, imagesLoaded, LazyLoad, LoadingSpinner,
-addListener, getByClass, addClass, hasClass, manageExternalLinkAll,
-manageMacy, manageReadMore, renderAC, removeChildren, updateMacy,
-updateMacyThrottled*/
+/*global console, addListener, removeListener, getByClass, addClass, hasClass,
+manageDataSrcImgAll, manageExternalLinkAll, manageImgLightbox, manageMacy,
+manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -15,6 +14,7 @@ updateMacyThrottled*/
 
 	root.runHome = function() {
 		var location = "location";
+		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 		var isActiveClass = "is-active";
@@ -534,72 +534,53 @@ updateMacyThrottled*/
 			}
 		};
 
-		var imgLightboxLinkClass = "img-lightbox-link";
-		/*!
-		 * @see {@link https://github.com/englishextra/img-lightbox}
-		 */
+		var onImagesLoaded = function onImagesLoaded(macy) {
+			var img = macy[getElementsByTagName]("img") || "";
+			var imgLength = img[_length] || 0;
+			var imgCounter = 0;
+			var onLoad;
+			var onError;
 
-		var manageImgLightbox = function manageImgLightbox(
-			imgLightboxLinkClass
-		) {
-			var link = getByClass(document, imgLightboxLinkClass) || "";
-
-			var initScript = function initScript() {
-				imgLightbox(imgLightboxLinkClass, {
-					onLoaded: function onLoaded() {
-						LoadingSpinner.hide();
-					},
-					onClosed: function onClosed() {
-						LoadingSpinner.hide();
-					},
-					onCreated: function onCreated() {
-						LoadingSpinner.show();
-					},
-					touch: false
-				});
+			var addListeners = function addListeners(e) {
+				addListener(e, "load", onLoad, false);
+				addListener(e, "error", onError, false);
 			};
 
-			if (root.imgLightbox && link) {
-				initScript();
-			}
-		};
+			var removeListeners = function removeListeners(e) {
+				removeListener(e, "load", onLoad, false);
+				removeListener(e, "error", onError, false);
+			};
 
-		var dataSrcLazyClass = "data-src-lazy";
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
+			onLoad = function onLoad() {
+				removeListeners(this);
+				imgCounter++;
 
-		var manageLazyLoad = function manageLazyLoad(dataSrcLazyClass) {
-			if (root.LazyLoad) {
-				var lzld;
-				lzld = new LazyLoad({
-					elements_selector: "." + dataSrcLazyClass
-				});
-			}
-		};
-		/*!
-		 * @see {@link https://imagesloaded.desandro.com/}
-		 * Triggered after all images have been either loaded or confirmed broken.
-		 */
-
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			if (root.imagesLoaded) {
-				var imgLoad;
-				imgLoad = new imagesLoaded(macy);
-
-				var onAlways = function onAlways(instance) {
+				if (imgCounter === imgLength) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
 
 					console.log(
-						"imagesLoaded: found " +
-							instance.images[_length] +
-							" images"
+						"onImagesLoaded: loaded " + imgCounter + " images"
 					);
-				};
+				}
+			};
 
-				imgLoad.on("always", onAlways);
+			onError = function onError() {
+				removeListeners(this);
+				console.log(
+					"onImagesLoaded: failed to load image: " + this.src
+				);
+			};
+
+			if (img) {
+				var i, l;
+
+				for (i = 0, l = img[_length]; i < l; i += 1) {
+					addListeners(img[i]);
+				}
+
+				i = l = null;
 			}
 		};
 
@@ -610,10 +591,10 @@ updateMacyThrottled*/
 		var onMacyRender = function onMacyRender() {
 			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
-			manageLazyLoad(dataSrcLazyClass);
+			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
-			manageImgLightbox(imgLightboxLinkClass);
-			manageReadMore(updateMacy);
+			manageImgLightbox();
+			manageReadMore(updateMacyThrottled);
 		};
 
 		var onMacyResize = function onMacyResize() {

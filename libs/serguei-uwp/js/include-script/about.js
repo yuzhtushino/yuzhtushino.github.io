@@ -2,9 +2,9 @@
 
 /*jslint node: true */
 
-/*global console, GLightbox, imagesLoaded, LazyLoad, loadJsCss, addListener,
-getByClass, addClass, hasClass, manageExternalLinkAll, manageMacy,
-manageReadMore, updateMacy, updateMacyThrottled*/
+/*global console, GLightbox, loadJsCss, addListener, removeListener, getByClass,
+addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+manageReadMore, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -13,6 +13,7 @@ manageReadMore, updateMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runAbout = function() {
+		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 		var isActiveClass = "is-active";
@@ -51,42 +52,53 @@ manageReadMore, updateMacy, updateMacyThrottled*/
 			}
 		};
 
-		var dataSrcLazyClass = "data-src-lazy";
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-
-		var manageLazyLoad = function manageLazyLoad(dataSrcLazyClass) {
-			if (root.LazyLoad) {
-				var lzld;
-				lzld = new LazyLoad({
-					elements_selector: "." + dataSrcLazyClass
-				});
-			}
-		};
-		/*!
-		 * @see {@link https://imagesloaded.desandro.com/}
-		 * Triggered after all images have been either loaded or confirmed broken.
-		 */
-
 		var onImagesLoaded = function onImagesLoaded(macy) {
-			if (root.imagesLoaded) {
-				var imgLoad;
-				imgLoad = new imagesLoaded(macy);
+			var img = macy[getElementsByTagName]("img") || "";
+			var imgLength = img[_length] || 0;
+			var imgCounter = 0;
+			var onLoad;
+			var onError;
 
-				var onAlways = function onAlways(instance) {
+			var addListeners = function addListeners(e) {
+				addListener(e, "load", onLoad, false);
+				addListener(e, "error", onError, false);
+			};
+
+			var removeListeners = function removeListeners(e) {
+				removeListener(e, "load", onLoad, false);
+				removeListener(e, "error", onError, false);
+			};
+
+			onLoad = function onLoad() {
+				removeListeners(this);
+				imgCounter++;
+
+				if (imgCounter === imgLength) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
 
 					console.log(
-						"imagesLoaded: found " +
-							instance.images[_length] +
-							" images"
+						"onImagesLoaded: loaded " + imgCounter + " images"
 					);
-				};
+				}
+			};
 
-				imgLoad.on("always", onAlways);
+			onError = function onError() {
+				removeListeners(this);
+				console.log(
+					"onImagesLoaded: failed to load image: " + this.src
+				);
+			};
+
+			if (img) {
+				var i, l;
+
+				for (i = 0, l = img[_length]; i < l; i += 1) {
+					addListeners(img[i]);
+				}
+
+				i = l = null;
 			}
 		};
 
@@ -97,10 +109,10 @@ manageReadMore, updateMacy, updateMacyThrottled*/
 		var onMacyRender = function onMacyRender() {
 			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
-			manageLazyLoad(dataSrcLazyClass);
+			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
 			manageGlightbox(macy, glightboxClass);
-			manageReadMore(updateMacy);
+			manageReadMore(updateMacyThrottled);
 		};
 
 		var onMacyResize = function onMacyResize() {

@@ -2,9 +2,9 @@
 
 /*jslint node: true */
 
-/*global console, imagesLoaded, LazyLoad, lightGallery, loadJsCss, addListener,
-getByClass, addClass, hasClass, manageExternalLinkAll, manageMacy,
-updateMacyThrottled*/
+/*global console, lightGallery, loadJsCss, addListener, removeListener,
+getByClass, addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
+manageMacy, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -13,6 +13,7 @@ updateMacyThrottled*/
 	"use strict";
 
 	root.runGallery = function() {
+		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 		var isActiveClass = "is-active";
@@ -54,42 +55,53 @@ updateMacyThrottled*/
 			}
 		};
 
-		var dataSrcLazyClass = "data-src-lazy";
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-
-		var manageLazyLoad = function manageLazyLoad(dataSrcLazyClass) {
-			if (root.LazyLoad) {
-				var lzld;
-				lzld = new LazyLoad({
-					elements_selector: "." + dataSrcLazyClass
-				});
-			}
-		};
-		/*!
-		 * @see {@link https://imagesloaded.desandro.com/}
-		 * Triggered after all images have been either loaded or confirmed broken.
-		 */
-
 		var onImagesLoaded = function onImagesLoaded(macy) {
-			if (root.imagesLoaded) {
-				var imgLoad;
-				imgLoad = new imagesLoaded(macy);
+			var img = macy[getElementsByTagName]("img") || "";
+			var imgLength = img[_length] || 0;
+			var imgCounter = 0;
+			var onLoad;
+			var onError;
 
-				var onAlways = function onAlways(instance) {
+			var addListeners = function addListeners(e) {
+				addListener(e, "load", onLoad, false);
+				addListener(e, "error", onError, false);
+			};
+
+			var removeListeners = function removeListeners(e) {
+				removeListener(e, "load", onLoad, false);
+				removeListener(e, "error", onError, false);
+			};
+
+			onLoad = function onLoad() {
+				removeListeners(this);
+				imgCounter++;
+
+				if (imgCounter === imgLength) {
 					if (root.updateMacyThrottled) {
 						updateMacyThrottled();
 					}
 
 					console.log(
-						"imagesLoaded: found " +
-							instance.images[_length] +
-							" images"
+						"onImagesLoaded: loaded " + imgCounter + " images"
 					);
-				};
+				}
+			};
 
-				imgLoad.on("always", onAlways);
+			onError = function onError() {
+				removeListeners(this);
+				console.log(
+					"onImagesLoaded: failed to load image: " + this.src
+				);
+			};
+
+			if (img) {
+				var i, l;
+
+				for (i = 0, l = img[_length]; i < l; i += 1) {
+					addListeners(img[i]);
+				}
+
+				i = l = null;
 			}
 		};
 
@@ -100,7 +112,7 @@ updateMacyThrottled*/
 		var onMacyRender = function onMacyRender() {
 			addClass(macy, isActiveClass);
 			onImagesLoaded(macy);
-			manageLazyLoad(dataSrcLazyClass);
+			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
 			manageLightGallery(macy);
 		};
@@ -410,6 +422,7 @@ updateMacyThrottled*/
 					"./libs/serguei-uwp/img/mytushino-gallery/@1x/zhantil_khimkinskij_bul_17.jpg"
 			}
 		];
+		var dataSrcImgClass = "data-src-img";
 		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function addMacyItems(macy, callback) {
@@ -431,7 +444,7 @@ updateMacyThrottled*/
 						'" aria-label="Показать картинку"><img src="' +
 						transparentPixel +
 						'" class="' +
-						dataSrcLazyClass +
+						dataSrcImgClass +
 						'" data-' +
 						dataSrcImgKeyName +
 						'="' +
@@ -461,7 +474,7 @@ updateMacyThrottled*/
       	var img = document.createElement("img");
       	macyItem[appendChild](img);
       	img[setAttribute]("src", transparentPixel);
-      	img[setAttribute]("class", dataSrcLazyClass);
+      	img[setAttribute]("class", dataSrcImgClass);
       	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
       	macy[appendChild](macyItem);
       	count++;

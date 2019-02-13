@@ -1,7 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP, isElectron,
-isNwjs, loadJsCss, addListener, getByClass, addClass, hasClass, removeClass,
+/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP,
+IframeLightbox, imgLightbox, isElectron, isNwjs, loadJsCss, LazyLoad,
+LoadingSpinner, addListener, getByClass, addClass, hasClass, removeClass,
 Macy, openDeviceBrowser, parseLink, progressBar, require, runHome, runWorks,
 runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 /*property console, join, split */
@@ -510,6 +511,168 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	root.manageExternalLinkAll = manageExternalLinkAll;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * manageDataSrcImgAll
+ */
+(function (root, document) {
+	"use strict";
+	var _length = "length";
+	var isActiveClass = "is-active";
+		var dataSrcImgClass = "data-src-img";
+
+		var dataSrcImgIsBindedClass = "data-src-img--is-binded";
+
+		root.lazyLoadDataSrcImgInstance = null;
+
+		/*!
+		 * @see {@link https://github.com/verlok/lazyload}
+		 */
+		var manageDataSrcImgAll = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
+			var images = getByClass(document, dataSrcImgClass) || "";
+			var i = images[_length];
+			while (i--) {
+				if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
+					addClass(images[i], dataSrcImgIsBindedClass);
+					addClass(images[i], isActiveClass);
+					addListener(images[i], "load", cb);
+				}
+			}
+			i = null;
+			if (root.LazyLoad) {
+				if (root.lazyLoadDataSrcImgInstance) {
+					root.lazyLoadDataSrcImgInstance.destroy();
+				}
+				root.lazyLoadDataSrcImgInstance = new LazyLoad({
+						elements_selector: "." + dataSrcImgClass
+					});
+			}
+		};
+	root.manageDataSrcImgAll = manageDataSrcImgAll;
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * manageDataSrcIframeAll
+ */
+(function (root, document) {
+	"use strict";
+	var setAttribute = "setAttribute";
+	var _length = "length";
+	var isActiveClass = "is-active";
+		var dataSrcIframeClass = "data-src-iframe";
+
+		var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
+
+		root.lazyLoadDataSrcIframeInstance = null;
+
+		/*!
+		 * @see {@link https://github.com/verlok/lazyload}
+		 */
+		var manageDataSrcIframeAll = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
+			var iframes = getByClass(document, dataSrcIframeClass) || "";
+			var i = iframes[_length];
+			while (i--) {
+				if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
+					addClass(iframes[i], dataSrcIframeIsBindedClass);
+					addClass(iframes[i], isActiveClass);
+					addListener(iframes[i], "load", cb);
+					iframes[i][setAttribute]("frameborder", "no");
+					iframes[i][setAttribute]("style", "border:none;");
+					iframes[i][setAttribute]("webkitallowfullscreen", "true");
+					iframes[i][setAttribute]("mozallowfullscreen", "true");
+					iframes[i][setAttribute]("scrolling", "no");
+					iframes[i][setAttribute]("allowfullscreen", "true");
+				}
+			}
+			i = null;
+			if (root.LazyLoad) {
+				if (root.lazyLoadDataSrcIframeInstance) {
+					root.lazyLoadDataSrcIframeInstance.destroy();
+				}
+				root.lazyLoadDataSrcIframeInstance = new LazyLoad({
+						elements_selector: "." + dataSrcIframeClass
+					});
+			}
+		};
+	root.manageDataSrcIframeAll = manageDataSrcIframeAll;
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * manageImgLightbox
+ */
+(function (root, document) {
+	"use strict";
+		var imgLightboxLinkClass = "img-lightbox-link";
+
+		/*!
+		 * @see {@link https://github.com/englishextra/img-lightbox}
+		 */
+		var manageImgLightbox = function () {
+			var link = getByClass(document, imgLightboxLinkClass) || "";
+			var initScript = function () {
+				imgLightbox(imgLightboxLinkClass, {
+					onLoaded: function () {
+						LoadingSpinner.hide();
+					},
+					onClosed: function () {
+						LoadingSpinner.hide();
+					},
+					onCreated: function () {
+						LoadingSpinner.show();
+					},
+					touch: false
+				});
+			};
+			if (root.imgLightbox && link) {
+				initScript();
+			}
+		};
+	root.manageImgLightbox = manageImgLightbox;
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * manageIframeLightbox
+ */
+(function (root, document) {
+	"use strict";
+	var _length = "length";
+		var iframeLightboxLinkClass = "iframe-lightbox-link";
+
+		/*!
+		 * @see {@link https://github.com/englishextra/iframe-lightbox}
+		 */
+		var manageIframeLightbox = function () {
+			var link = getByClass(document, iframeLightboxLinkClass) || "";
+			var initScript = function () {
+				var arrange = function (e) {
+					e.lightbox = new IframeLightbox(e, {
+							onLoaded: function () {
+								LoadingSpinner.hide();
+							},
+							onClosed: function () {
+								LoadingSpinner.hide();
+							},
+							onOpened: function () {
+								LoadingSpinner.show();
+							},
+							touch: false
+						});
+				};
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
+				}
+				i = l = null;
+			};
+			if (root.IframeLightbox && link) {
+				initScript();
+			}
+		};
+	root.manageIframeLightbox = manageIframeLightbox;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * Macy
  */
 (function (root) {
@@ -743,7 +906,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	root.revealYandexMap = revealYandexMap;
 })("undefined" !== typeof window ? window : this, document);
 /*!
- * loadingSpinner
+ * LoadingSpinner
  */
 (function(root, document){
 	"use strict";
