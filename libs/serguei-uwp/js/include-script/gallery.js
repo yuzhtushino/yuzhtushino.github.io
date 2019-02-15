@@ -16,7 +16,7 @@ manageMacy, updateMacyThrottled*/
 		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
-		var isActiveClass = "is-active";
+		var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
@@ -107,10 +107,12 @@ manageMacy, updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyClass = "macy";
+		var macyItemIsBindedClass = "macy__item--is-binded";
+		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function onMacyRender() {
-			addClass(macy, isActiveClass);
+			addClass(macy, macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
@@ -423,7 +425,6 @@ manageMacy, updateMacyThrottled*/
 			}
 		];
 		var dataSrcImgClass = "data-src-img";
-		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
@@ -441,7 +442,9 @@ manageMacy, updateMacyThrottled*/
 				html.push(
 					'<a href="' +
 						macyItems[i].href +
-						'" aria-label="Показать картинку"><img src="' +
+						'" class="' +
+						macyItemIsBindedClass +
+						'"  aria-label="Показать картинку"><img src="' +
 						transparentPixel +
 						'" class="' +
 						dataSrcImgClass +

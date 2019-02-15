@@ -16,7 +16,7 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
-		var isActiveClass = "is-active";
+		var macyIsActiveClass = "macy--is-active";
 
 		var onImagesLoaded = function onImagesLoaded(macy) {
 			var img = macy[getElementsByTagName]("img") || "";
@@ -70,10 +70,12 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyClass = "macy";
+		var macyItemIsBindedClass = "macy__item--is-binded";
+		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function onMacyRender() {
-			addClass(macy, isActiveClass);
+			addClass(macy, macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
@@ -186,7 +188,6 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 			}
 		];
 		var dataSrcImgClass = "data-src-img";
-		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
 
 		var addMacyItems = function addMacyItems(macy, callback) {
 			var dataSrcImgKeyName = "src";
@@ -204,7 +205,9 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 				html.push(
 					'<a href="javascript:void(0);" data-src="' +
 						macyItems[i].href +
-						'" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' +
+						'" class="iframe-lightbox-link ' +
+						macyItemIsBindedClass +
+						'" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' +
 						transparentPixel +
 						'" class="' +
 						dataSrcImgClass +

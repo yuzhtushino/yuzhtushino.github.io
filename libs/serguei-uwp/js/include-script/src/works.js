@@ -15,8 +15,6 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 
-		var isActiveClass = "is-active";
-
 		var onImagesLoaded = function (macy) {
 			var img = macy[getElementsByTagName]("img") || "";
 			var imgLength = img[_length] || 0;
@@ -59,10 +57,14 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 		var macyClass = "macy";
 
+		var macyItemIsBindedClass = "macy__item--is-binded";
+
+		var macyIsActiveClass = "macy--is-active";
+
 		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function () {
-			addClass(macy, isActiveClass);
+			addClass(macy, macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
@@ -144,8 +146,6 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 		var dataSrcImgClass = "data-src-img";
 
-		/*var macyItemIsBindedClass = "macy__item--is-binded";*/
-
 		var addMacyItems = function (macy, callback) {
 			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
@@ -157,7 +157,7 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
-				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link ' + macyItemIsBindedClass + '" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems[_length]) {
 					macy.innerHTML = html.join("");

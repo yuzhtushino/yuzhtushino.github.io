@@ -16,7 +16,7 @@ manageReadMore, updateMacyThrottled*/
 		var getElementsByTagName = "getElementsByTagName";
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
-		var isActiveClass = "is-active";
+		var macyIsActiveClass = "macy--is-active";
 		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
@@ -104,10 +104,12 @@ manageReadMore, updateMacyThrottled*/
 
 		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
 		var macyClass = "macy";
+		var macyItemIsBindedClass = "macy__item--is-binded";
+		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function onMacyRender() {
-			addClass(macy, isActiveClass);
+			addClass(macy, macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
@@ -167,7 +169,6 @@ manageReadMore, updateMacyThrottled*/
 		};
 
 		var macyItems = [];
-		var macyItemIsBindedClass = "macy__item--is-binded";
 
 		var addMacyItems = function addMacyItems(macy, callback) {
 			/*!

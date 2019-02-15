@@ -16,8 +16,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 		var querySelectorAll = "querySelectorAll";
 		var _length = "length";
 
-		var isActiveClass = "is-active";
-
 		/*!
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
 		 * @see {@link https://adaptivecards.io/samples/}
@@ -576,10 +574,14 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 
 		var macyClass = "macy";
 
+		var macyItemIsBindedClass = "macy__item--is-binded";
+
+		var macyIsActiveClass = "macy--is-active";
+
 		var macy = getByClass(document, macyClass)[0] || "";
 
 		var onMacyRender = function () {
-			addClass(macy, isActiveClass);
+			addClass(macy, macyIsActiveClass);
 			onImagesLoaded(macy);
 			manageDataSrcImgAll(updateMacyThrottled);
 			manageExternalLinkAll();
@@ -629,8 +631,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 
 		/* var macyItems = [
 		]; */
-
-		var macyItemIsBindedClass = "macy__item--is-binded";
 
 		var addMacyItems = function (macy, callback) {
 			if (root.AdaptiveCards) {

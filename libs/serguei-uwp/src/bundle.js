@@ -677,75 +677,75 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var isActiveClass = "is-active";
-	root.macyInstance = null;
-	var updateMacy = function (delay) {
-		var timeout = delay || 100;
-		var logThis;
-		logThis = function () {
-			console.log("updateMacy");
-		};
-		if (root.macyInstance) {
-			var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					logThis();
-					root.macyInstance.recalculate(true, true);
-				}, timeout);
-		}
-	};
-	var updateMacyThrottled = throttle(updateMacy, 1000);
-	var initMacy = function (macyClass, options) {
-		var defaultSettings = {
-			/* container: ".macy", */
-			trueOrder: false,
-			waitForImages: false,
-			margin: 0,
-			columns: 5,
-			breakAt: {
-				1280: 5,
-				1024: 4,
-				960: 3,
-				640: 2,
-				480: 2,
-				360: 1
+	var macyIsActiveClass = "macy--is-active";
+		root.macyInstance = null;
+		var updateMacy = function (delay) {
+			var timeout = delay || 100;
+			var logThis;
+			logThis = function () {
+				console.log("updateMacy");
+			};
+			if (root.macyInstance) {
+				var timer = setTimeout(function () {
+						clearTimeout(timer);
+						timer = null;
+						logThis();
+						root.macyInstance.recalculate(true, true);
+					}, timeout);
 			}
 		};
-		var settings = options || {};
-		settings.container = "." + macyClass;
-		var opt;
-		for (opt in defaultSettings) {
-			if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
-				settings[opt] = defaultSettings[opt];
-			}
-		}
-		opt = null;
-		var macy = getByClass(document, macyClass)[0] || "";
-		if (macy) {
-			try {
-				if (root.macyInstance) {
-					root.macyInstance.remove();
-					root.macyInstance = null;
+		var updateMacyThrottled = throttle(updateMacy, 1000);
+		var initMacy = function (macyClass, options) {
+			var defaultSettings = {
+				/* container: ".macy", */
+				trueOrder: false,
+				waitForImages: false,
+				margin: 0,
+				columns: 5,
+				breakAt: {
+					1280: 5,
+					1024: 4,
+					960: 3,
+					640: 2,
+					480: 2,
+					360: 1
 				}
-				root.macyInstance = new Macy(settings);
-				/* this will be set later after rendering all macy items */
-				/* addClass(macy, isActiveClass); */
-			} catch (err) {
-				throw new Error("cannot init Macy " + err);
+			};
+			var settings = options || {};
+			settings.container = "." + macyClass;
+			var opt;
+			for (opt in defaultSettings) {
+				if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
+					settings[opt] = defaultSettings[opt];
+				}
 			}
-		}
-	};
-	var manageMacy = function (macyClass, options) {
-		var macy = getByClass(document, macyClass)[0] || "";
-		var handleMacy = function () {
-			if (!hasClass(macy, isActiveClass)) {
-				initMacy(macyClass, options);
+			opt = null;
+			var macy = getByClass(document, macyClass)[0] || "";
+			if (macy) {
+				try {
+					if (root.macyInstance) {
+						root.macyInstance.remove();
+						root.macyInstance = null;
+					}
+					root.macyInstance = new Macy(settings);
+					/* this will be set later after rendering all macy items */
+					/* addClass(macy, macyIsActiveClass); */
+				} catch (err) {
+					throw new Error("cannot init Macy " + err);
+				}
 			}
 		};
-		if (root.Macy && macy) {
-			handleMacy();
-		}
-	};
+		var manageMacy = function (macyClass, options) {
+			var macy = getByClass(document, macyClass)[0] || "";
+			var handleMacy = function () {
+				if (!hasClass(macy, macyIsActiveClass)) {
+					initMacy(macyClass, options);
+				}
+			};
+			if (root.Macy && macy) {
+				handleMacy();
+			}
+		};
 	root.updateMacy = updateMacy;
 	root.updateMacyThrottled = updateMacyThrottled;
 	root.manageMacy = manageMacy;
@@ -1203,7 +1203,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 						support = true;
 					}
 				});
-			addListener(root, "test", function () {}, opts);
+			root.addEventListener("test", function() {}, opts);
 		} catch (err) {}
 		return support;
 	})();
