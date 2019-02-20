@@ -11,13 +11,9 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 	root.runWorks = function () {
 
-		var getElementsByTagName = "getElementsByTagName";
-		var querySelectorAll = "querySelectorAll";
-		var _length = "length";
-
-		var onImagesLoaded = function (macy) {
-			var img = macy[getElementsByTagName]("img") || "";
-			var imgLength = img[_length] || 0;
+					var onImagesLoaded = function (macy) {
+			var img = macy.getElementsByTagName("img") || "";
+			var imgLength = img.length || 0;
 			var imgCounter = 0;
 			var onLoad;
 			var onError;
@@ -46,7 +42,7 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 			if (img) {
 				var i,
 				l;
-				for (i = 0, l = img[_length]; i < l; i += 1) {
+				for (i = 0, l = img.length; i < l; i += 1) {
 					addListeners(img[i]);
 				}
 				i = l = null;
@@ -73,16 +69,14 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 		var onMacyResize = function () {
 			try {
-				var item = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
+				var item = macy ? (macy.children || macy.querySelectorAll("." + macyClass + " > *") || "") : "";
 				if (item) {
 					var i,
 					l;
-					for (i = 0, l = item[_length]; i < l; i += 1) {
+					for (i = 0, l = item.length; i < l; i += 1) {
 						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
 							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(item[i], "onresize", updateMacyThrottled, {
-								passive: true
-							});
+							addListener(item[i], "onresize", updateMacyThrottled, {passive: true});
 						}
 					}
 					i = l = null;
@@ -156,10 +150,10 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 			var count = 0;
 			var i,
 			l;
-			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+			for (i = 0, l = macyItems.length; i < l; i += 1) {
 				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link ' + macyItemIsBindedClass + '" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
-				if (count === macyItems[_length]) {
+				if (count === macyItems.length) {
 					macy.innerHTML = html.join("");
 					if (callback && "function" === typeof callback) {
 						callback();

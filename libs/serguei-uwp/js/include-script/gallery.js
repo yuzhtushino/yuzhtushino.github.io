@@ -13,10 +13,7 @@ manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runGallery = function() {
-		var getElementsByTagName = "getElementsByTagName";
-		var querySelectorAll = "querySelectorAll";
-		var _length = "length";
-		var macyIsActiveClass = "macy--is-active";
+					var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
@@ -56,8 +53,8 @@ manageMacy, updateMacyThrottled*/
 		};
 
 		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy[getElementsByTagName]("img") || "";
-			var imgLength = img[_length] || 0;
+			var img = macy.getElementsByTagName("img") || "";
+			var imgLength = img.length || 0;
 			var imgCounter = 0;
 			var onLoad;
 			var onError;
@@ -97,7 +94,7 @@ manageMacy, updateMacyThrottled*/
 			if (img) {
 				var i, l;
 
-				for (i = 0, l = img[_length]; i < l; i += 1) {
+				for (i = 0, l = img.length; i < l; i += 1) {
 					addListeners(img[i]);
 				}
 
@@ -123,14 +120,14 @@ manageMacy, updateMacyThrottled*/
 			try {
 				var item = macy
 					? macy.children ||
-					  macy[querySelectorAll]("." + macyClass + " > *") ||
+					  macy.querySelectorAll("." + macyClass + " > *") ||
 					  ""
 					: "";
 
 				if (item) {
 					var i, l;
 
-					for (i = 0, l = item[_length]; i < l; i += 1) {
+					for (i = 0, l = item.length; i < l; i += 1) {
 						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
 							addClass(item[i], anyResizeEventIsBindedClass);
 							addListener(
@@ -438,7 +435,7 @@ manageMacy, updateMacyThrottled*/
 			var count = 0;
 			var i, l;
 
-			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+			for (i = 0, l = macyItems.length; i < l; i += 1) {
 				html.push(
 					'<a href="' +
 						macyItems[i].href +
@@ -456,7 +453,7 @@ manageMacy, updateMacyThrottled*/
 				);
 				count++;
 
-				if (count === macyItems[_length]) {
+				if (count === macyItems.length) {
 					macy.innerHTML = html.join("");
 
 					if (callback && "function" === typeof callback) {
@@ -469,19 +466,19 @@ manageMacy, updateMacyThrottled*/
 			/* var count = 0;
       var i,
       l;
-      for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+      for (i = 0, l = macyItems.length; i < l; i += 1) {
       	var macyItem = document.createElement("a");
       	addClass(macyItem, macyItemIsBindedClass);
-      	macyItem[setAttribute]("href", macyItems[i].href);
-      	macyItem[setAttribute]("aria-label", "Показать картинку");
+      	macyItem.setAttribute("href", macyItems[i].href);
+      	macyItem.setAttribute("aria-label", "Показать картинку");
       	var img = document.createElement("img");
-      	macyItem[appendChild](img);
-      	img[setAttribute]("src", transparentPixel);
-      	img[setAttribute]("class", dataSrcImgClass);
-      	img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macy[appendChild](macyItem);
+      	macyItem.appendChild(img);
+      	img.setAttribute("src", transparentPixel);
+      	img.setAttribute("class", dataSrcImgClass);
+      	img.setAttribute("data-" + dataSrcImgKeyName, macyItems[i].src);
+      	macy.appendChild(macyItem);
       	count++;
-      	if (count === macyItems[_length]) {
+      	if (count === macyItems.length) {
       		if (callback && "function" === typeof callback) {
       			callback();
       		}

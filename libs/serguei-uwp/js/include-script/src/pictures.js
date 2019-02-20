@@ -11,11 +11,7 @@ updateMacyThrottled*/
 
 	root.runPictures = function () {
 
-		var getElementsByTagName = "getElementsByTagName";
-		var querySelectorAll = "querySelectorAll";
-		var _length = "length";
-
-		var glightboxClass = "glightbox";
+					var glightboxClass = "glightbox";
 
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
@@ -43,8 +39,8 @@ updateMacyThrottled*/
 		};
 
 		var onImagesLoaded = function (macy) {
-			var img = macy[getElementsByTagName]("img") || "";
-			var imgLength = img[_length] || 0;
+			var img = macy.getElementsByTagName("img") || "";
+			var imgLength = img.length || 0;
 			var imgCounter = 0;
 			var onLoad;
 			var onError;
@@ -73,7 +69,7 @@ updateMacyThrottled*/
 			if (img) {
 				var i,
 				l;
-				for (i = 0, l = img[_length]; i < l; i += 1) {
+				for (i = 0, l = img.length; i < l; i += 1) {
 					addListeners(img[i]);
 				}
 				i = l = null;
@@ -100,16 +96,14 @@ updateMacyThrottled*/
 
 		var onMacyResize = function () {
 			try {
-				var item = macy ? (macy.children || macy[querySelectorAll]("." + macyClass + " > *") || "") : "";
+				var item = macy ? (macy.children || macy.querySelectorAll("." + macyClass + " > *") || "") : "";
 				if (item) {
 					var i,
 					l;
-					for (i = 0, l = item[_length]; i < l; i += 1) {
+					for (i = 0, l = item.length; i < l; i += 1) {
 						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
 							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(item[i], "onresize", updateMacyThrottled, {
-								passive: true
-							});
+							addListener(item[i], "onresize", updateMacyThrottled, {passive: true});
 						}
 					}
 					i = l = null;
@@ -225,10 +219,10 @@ updateMacyThrottled*/
 			var count = 0;
 			var i,
 			l;
-			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+			for (i = 0, l = macyItems.length; i < l; i += 1) {
 				html.push('<a href="' + macyItems[i].href + '" class="' + glightboxClass + ' ' + macyItemIsBindedClass + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
-				if (count === macyItems[_length]) {
+				if (count === macyItems.length) {
 					macy.innerHTML = html.join("");
 					if (callback && "function" === typeof callback) {
 						callback();
@@ -239,20 +233,20 @@ updateMacyThrottled*/
 			/* var count = 0;
 			var i,
 			l;
-			for (i = 0, l = macyItems[_length]; i < l; i += 1) {
+			for (i = 0, l = macyItems.length; i < l; i += 1) {
 				var macyItem = document.createElement("a");
 				addClass(macyItem, macyItemIsBindedClass);
-				macyItem[setAttribute]("href", macyItems[i].href);
-				macyItem[setAttribute]("class", glightboxClass);
-				macyItem[setAttribute]("aria-label", "Показать картинку");
+				macyItem.setAttribute("href", macyItems[i].href);
+				macyItem.setAttribute("class", glightboxClass);
+				macyItem.setAttribute("aria-label", "Показать картинку");
 				var img = document.createElement("img");
-				macyItem[appendChild](img);
-				img[setAttribute]("src", transparentPixel);
-				img[setAttribute]("class", dataSrcImgClass);
-				img[setAttribute]("data-" + dataSrcImgKeyName, macyItems[i].src);
-				macy[appendChild](macyItem);
+				macyItem.appendChild(img);
+				img.setAttribute("src", transparentPixel);
+				img.setAttribute("class", dataSrcImgClass);
+				img.setAttribute("data-" + dataSrcImgKeyName, macyItems[i].src);
+				macy.appendChild(macyItem);
 				count++;
-				if (count === macyItems[_length]) {
+				if (count === macyItems.length) {
 					if (callback && "function" === typeof callback) {
 						callback();
 					}

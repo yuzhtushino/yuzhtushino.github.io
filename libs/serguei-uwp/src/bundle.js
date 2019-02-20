@@ -89,19 +89,18 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var classList = "classList";
 	var hasClass;
 	var addClass;
 	var removeClass;
-	if (classList in document.documentElement) {
+	if ("classList" in document.documentElement) {
 		hasClass = function (el, name) {
-			return el[classList].contains(name);
+			return el.classList.contains(name);
 		};
 		addClass = function (el, name) {
-			el[classList].add(name);
+			el.classList.add(name);
 		};
 		removeClass = function (el, name) {
-			el[classList].remove(name);
+			el.classList.remove(name);
 		};
 	} else {
 		hasClass = function (el, name) {
@@ -137,16 +136,11 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	"use strict";
 	var loadJsCss = function (files, callback, type) {
 		var _this = this;
-		var appendChild = "appendChild";
-		var body = "body";
-		var getElementsByTagName = "getElementsByTagName";
-		var setAttribute = "setAttribute";
-		var _length = "length";
 		_this.files = files;
 		_this.js = [];
-		_this.head = document[getElementsByTagName]("head")[0] || "";
-		_this.body = document[body] || "";
-		_this.ref = document[getElementsByTagName]("script")[0] || "";
+		_this.head = document.getElementsByTagName("head")[0] || "";
+		_this.body = document.body || "";
+		_this.ref = document.getElementsByTagName("script")[0] || "";
 		_this.callback = callback || function () {};
 		_this.type = type ? type.toLowerCase() : "";
 		_this.loadStyle = function (file) {
@@ -159,9 +153,9 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				this.onload = null;
 				this.media = "all";
 			};
-			link[setAttribute]("property", "stylesheet");
-			/* _this.head[appendChild](link); */
-			(_this.body || _this.head)[appendChild](link);
+			link.setAttribute("property", "stylesheet");
+			/* _this.head.appendChild(link); */
+			(_this.body || _this.head).appendChild(link);
 		};
 		_this.loadScript = function (i) {
 			var script = document.createElement("script");
@@ -169,7 +163,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			script.async = true;
 			script.src = _this.js[i];
 			var loadNextScript = function () {
-				if (++i < _this.js[_length]) {
+				if (++i < _this.js.length) {
 					_this.loadScript(i);
 				} else {
 					_this.callback();
@@ -178,17 +172,17 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			script.onload = function () {
 				loadNextScript();
 			};
-			_this.head[appendChild](script);
-			/* if (_this.ref[parentNode]) {
-				_this.ref[parentNode][insertBefore](script, _this.ref);
+			_this.head.appendChild(script);
+			/* if (_this.ref.parentNode) {
+				_this.ref.parentNode[insertBefore](script, _this.ref);
 			} else {
-				(_this.body || _this.head)[appendChild](script);
+				(_this.body || _this.head).appendChild(script);
 			} */
-			(_this.body || _this.head)[appendChild](script);
+			(_this.body || _this.head).appendChild(script);
 		};
 		var i,
 		l;
-		for (i = 0, l = _this.files[_length]; i < l; i += 1) {
+		for (i = 0, l = _this.files.length; i < l; i += 1) {
 			if ((/\.js$|\.js\?/).test(_this.files[i]) || _this.type === "js") {
 				_this.js.push(_this.files[i]);
 			}
@@ -197,7 +191,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		}
 		i = l = null;
-		if (_this.js[_length] > 0) {
+		if (_this.js.length > 0) {
 			_this.loadScript(0);
 		} else {
 			_this.callback();
@@ -300,7 +294,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 					if ("undefined" !== typeof require("nw.gui")) {
 						return true;
 					}
-				} catch (e) {
+				} catch (err) {
 					return false;
 				}
 			}
@@ -470,11 +464,8 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var getAttribute = "getAttribute";
-	var getElementsByTagName = "getElementsByTagName";
-	var _length = "length";
 		var manageExternalLinkAll = function () {
-			var link = document[getElementsByTagName]("a") || "";
+			var link = document.getElementsByTagName("a") || "";
 			var handle = function (url, ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
@@ -486,7 +477,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			var arrange = function (e) {
 				var externalLinkIsBindedClass = "external-link--is-binded";
 				if (!hasClass(e, externalLinkIsBindedClass)) {
-					var url = e[getAttribute]("href") || "";
+					var url = e.getAttribute("href") || "";
 					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
 						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 						if ("undefined" !== typeof getHTTP && getHTTP()) {
@@ -502,7 +493,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			if (link) {
 				var i,
 				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
+				for (i = 0, l = link.length; i < l; i += 1) {
 					arrange(link[i]);
 				}
 				i = l = null;
@@ -515,7 +506,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var _length = "length";
 	var isActiveClass = "is-active";
 		var dataSrcImgClass = "data-src-img";
 
@@ -531,7 +521,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				return callback && "function" === typeof callback && callback();
 			};
 			var images = getByClass(document, dataSrcImgClass) || "";
-			var i = images[_length];
+			var i = images.length;
 			while (i--) {
 				if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
 					addClass(images[i], dataSrcImgIsBindedClass);
@@ -556,8 +546,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var setAttribute = "setAttribute";
-	var _length = "length";
 	var isActiveClass = "is-active";
 		var dataSrcIframeClass = "data-src-iframe";
 
@@ -573,18 +561,18 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				return callback && "function" === typeof callback && callback();
 			};
 			var iframes = getByClass(document, dataSrcIframeClass) || "";
-			var i = iframes[_length];
+			var i = iframes.length;
 			while (i--) {
 				if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
 					addClass(iframes[i], dataSrcIframeIsBindedClass);
 					addClass(iframes[i], isActiveClass);
 					addListener(iframes[i], "load", cb);
-					iframes[i][setAttribute]("frameborder", "no");
-					iframes[i][setAttribute]("style", "border:none;");
-					iframes[i][setAttribute]("webkitallowfullscreen", "true");
-					iframes[i][setAttribute]("mozallowfullscreen", "true");
-					iframes[i][setAttribute]("scrolling", "no");
-					iframes[i][setAttribute]("allowfullscreen", "true");
+					iframes[i].setAttribute("frameborder", "no");
+					iframes[i].setAttribute("style", "border:none;");
+					iframes[i].setAttribute("webkitallowfullscreen", "true");
+					iframes[i].setAttribute("mozallowfullscreen", "true");
+					iframes[i].setAttribute("scrolling", "no");
+					iframes[i].setAttribute("allowfullscreen", "true");
 				}
 			}
 			i = null;
@@ -636,7 +624,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var _length = "length";
 		var iframeLightboxLinkClass = "iframe-lightbox-link";
 
 		/*!
@@ -661,7 +648,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				};
 				var i,
 				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
+				for (i = 0, l = link.length; i < l; i += 1) {
 					arrange(link[i]);
 				}
 				i = l = null;
@@ -737,13 +724,10 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		};
 		var manageMacy = function (macyClass, options) {
 			var macy = getByClass(document, macyClass)[0] || "";
-			var handleMacy = function () {
+			if (root.Macy && macy) {
 				if (!hasClass(macy, macyIsActiveClass)) {
 					initMacy(macyClass, options);
 				}
-			};
-			if (root.Macy && macy) {
-				handleMacy();
 			}
 		};
 	root.updateMacy = updateMacy;
@@ -755,7 +739,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var appendChild = "appendChild";
 	var renderAC = function (acGrid, cardObj, renderOptions, onExecute, callback) {
 		if (root.AdaptiveCards && acGrid) {
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -763,7 +746,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			adaptiveCard.onExecuteAction = onExecute;
 			adaptiveCard.parse(cardObj);
 			var renderedCard = adaptiveCard.render();
-			acGrid[appendChild](renderedCard);
+			acGrid.appendChild(renderedCard);
 			if (callback && "function" === typeof callback) {
 				callback();
 			}
@@ -777,7 +760,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var _length = "length";
 		var manageReadMore = function (callback, options) {
 			var cb = function () {
 				return callback && "function" === typeof callback && callback();
@@ -811,7 +793,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 				};
 				var i,
 				l;
-				for (i = 0, l = rmLink[_length]; i < l; i += 1) {
+				for (i = 0, l = rmLink.length; i < l; i += 1) {
 					arrange(rmLink[i]);
 				}
 				i = l = null;
@@ -828,11 +810,9 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function (root, document) {
 	"use strict";
 	var docBody = document.body || "";
-	var getElementsByTagName = "getElementsByTagName";
-	var setAttribute = "setAttribute";
 	var getButtons = function () {
 		var container = getByClass(document, "layout-type-buttons")[0] || "";
-		return container ? (container[getElementsByTagName]("button") || "") : "";
+		return container ? (container.getElementsByTagName("button") || "") : "";
 	};
 	root.layoutTypeToTabs = function (e) {
 		var evt = root.event || e;
@@ -841,7 +821,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return (el.disabled = false);
 		});
 		evt.target.disabled = true;
-		docBody[setAttribute]("data-layout-type", "tabs");
+		docBody.setAttribute("data-layout-type", "tabs");
 	};
 	root.layoutTypeToOverlay = function (e) {
 		var evt = root.event || e;
@@ -850,7 +830,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return (el.disabled = false);
 		});
 		evt.target.disabled = true;
-		docBody[setAttribute]("data-layout-type", "overlay");
+		docBody.setAttribute("data-layout-type", "overlay");
 	};
 	root.layoutTypeToDockedMinimized = function (e) {
 		var evt = root.event || e;
@@ -859,7 +839,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return (el.disabled = false);
 		});
 		evt.target.disabled = true;
-		docBody[setAttribute]("data-layout-type", "docked-minimized");
+		docBody.setAttribute("data-layout-type", "docked-minimized");
 	};
 	root.layoutTypeToDocked = function (e) {
 		var evt = root.event || e;
@@ -868,7 +848,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return (el.disabled = false);
 		});
 		evt.target.disabled = true;
-		docBody[setAttribute]("data-layout-type", "docked");
+		docBody.setAttribute("data-layout-type", "docked");
 	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
@@ -890,16 +870,14 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var dataset = "dataset";
-	var parentNode = "parentNode";
 	var isActiveClass = "is-active";
 	var revealYandexMap = function (_this) {
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
-			yandexMap.src = yandexMap[dataset].src;
+			yandexMap.src = yandexMap.dataset.src;
 			addClass(yandexMap, isActiveClass);
-			if (_this[parentNode][parentNode] !== null) {
-				_this[parentNode][parentNode].removeChild(_this[parentNode]);
+			if (_this.parentNode.parentNode !== null) {
+				_this.parentNode.parentNode.removeChild(_this.parentNode);
 			}
 		}
 	};
@@ -937,9 +915,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
 
-	var title = "title";
-	var _length = "length";
-
 	var toStringFn = {}.toString;
 	var supportsSvgSmilAnimation = !!document.createElementNS &&
 		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
@@ -948,11 +923,10 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		addClass(docElem, "svganimate");
 	}
 
-	var supportsCanvas;
-	supportsCanvas = (function () {
+	/* var supportsCanvas = (function () {
 		var elem = document.createElement("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
-	})();
+	})(); */
 
 	var run = function () {
 
@@ -964,24 +938,24 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var earlyDeviceFormfactor = (function (selectors) {
 			var orientation;
 			var size;
-			var f = function (a) {
-				var b = a.split(" ");
+			var f = function (e) {
+				var b = e.split(" ");
 				if (selectors) {
 					var c;
-					for (c = 0; c < b[_length]; c += 1) {
-						a = b[c];
-						selectors.add(a);
+					for (c = 0; c < b.length; c += 1) {
+						e = b[c];
+						selectors.add(e);
 					}
 					c = null;
 				}
 			};
-			var g = function (a) {
-				var b = a.split(" ");
+			var g = function (e) {
+				var b = e.split(" ");
 				if (selectors) {
 					var c;
-					for (c = 0; c < b[_length]; c += 1) {
-						a = b[c];
-						selectors.remove(a);
+					for (c = 0; c < b.length; c += 1) {
+						e = b[c];
+						selectors.remove(e);
 					}
 					c = null;
 				}
@@ -1093,8 +1067,8 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		var hashBang = "#/";
 
 		var onPageLoad = function () {
-			if (document[title]) {
-				document[title] = document[title] + userBrowser;
+			if (document.title) {
+				document.title = document.title + userBrowser;
 			}
 			var hashName = root.location.hash ? root.location.hash.split(hashBang)[1] : "";
 			var routes = [{
@@ -1119,7 +1093,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			];
 			var i,
 			l;
-			for (i = 0, l = routes[_length]; i < l; i += 1) {
+			for (i = 0, l = routes.length; i < l; i += 1) {
 				if (hashName === routes[i].hash) {
 					if ("function" === typeof routes[i].fn) {
 						/* routes[i].fn.call(root); */
@@ -1183,7 +1157,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 
 			var i,
 			l;
-			for (i = 0, l = mqHandlers[_length]; i < l; i += 1) {
+			for (i = 0, l = mqHandlers.length; i < l; i += 1) {
 				if ("function" === typeof mqHandlers[i].fn) {
 					addMqHandler(mqHandlers[i].val, mqHandlers[i].fn);
 				}
