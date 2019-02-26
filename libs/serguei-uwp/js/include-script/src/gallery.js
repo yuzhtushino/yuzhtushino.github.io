@@ -1,8 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global console, lightGallery, loadJsCss, addListener, removeListener,
-getByClass, addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
-manageMacy, updateMacyThrottled*/
+/*global addClass, addListener, console, getByClass, hasClass, lightGallery,
+loadJsCss, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+removeListener, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,7 +11,7 @@ manageMacy, updateMacyThrottled*/
 
 	root.runGallery = function () {
 
-					/*!
+		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
 		root.handleLightGallery = null;

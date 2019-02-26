@@ -1,10 +1,11 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global AdaptiveCards, console, debounce, doesFontExist, getHTTP,
-IframeLightbox, imgLightbox, isElectron, isNwjs, loadJsCss, LazyLoad,
-LoadingSpinner, addListener, getByClass, addClass, hasClass, removeClass,
-Macy, openDeviceBrowser, parseLink, progressBar, require, runHome, runWorks,
-runPictures, runGallery, runAbout, throttle, $readMoreJS*/
+/*global $readMoreJS, AdaptiveCards, addClass, addListener, console, debounce,
+doesFontExist, getByClass, getHumanDate, hasClass, IframeLightbox,
+imgLightbox, isNodejs, isElectron, isNwjs, LazyLoad, loadDeferred,
+LoadingSpinner, loadJsCss, Macy, needsPolyfills, openDeviceBrowser, parseLink,
+progressBar, removeClass, require, runAbout, runGallery, runHome, runPictures,
+runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -37,6 +38,93 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	prop = method = dummy = properties = methods = null;
 })("undefined" !== typeof window ? window : this);
 /*!
+ * supportsPassive
+ */
+(function (root) {
+	"use strict";
+	root.supportsPassive = (function () {
+		var support = false;
+		try {
+			var opts = Object.defineProperty && Object.defineProperty({}, "passive", {
+					get: function () {
+						support = true;
+					}
+				});
+			root.addEventListener("test", function() {}, opts);
+		} catch (err) {}
+		return support;
+	})();
+})("undefined" !== typeof window ? window : this);
+/*!
+ * supportsSvgSmilAnimation
+ */
+(function (root, document) {
+	"use strict";
+	var toStringFn = {}.toString;
+	root.supportsSvgSmilAnimation = !!document.createElementNS &&
+		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * supportsCanvas
+ */
+(function (root, document) {
+	"use strict";
+	root.supportsCanvas = (function () {
+		var elem = document.createElement("canvas");
+		return !!(elem.getContext && elem.getContext("2d"));
+	})();
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * needsPolyfills
+ */
+(function (root, document) {
+	"use strict";
+	root.needsPolyfills = (function () {
+		return !String.prototype.startsWith ||
+		!supportsPassive ||
+		!root.requestAnimationFrame ||
+		!root.matchMedia ||
+		("undefined" === typeof root.Element && !("dataset" in document.documentElement)) ||
+		!("classList" in document.createElement("_")) ||
+		document.createElementNS && !("classList" in document.createElementNS("http://www.w3.org/2000/svg", "g")) ||
+		(root.attachEvent && !root.addEventListener) ||
+		!("onhashchange" in root) ||
+		!Array.prototype.indexOf ||
+		!root.Promise ||
+		!root.fetch ||
+		!document.querySelectorAll ||
+		!document.querySelector ||
+		!Function.prototype.bind ||
+		(Object.defineProperty &&
+			Object.getOwnPropertyDescriptor &&
+			Object.getOwnPropertyDescriptor(Element.prototype, "textContent") &&
+			!Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) ||
+		!("undefined" !== typeof root.localStorage && "undefined" !== typeof root.sessionStorage) ||
+		!root.WeakMap ||
+		!root.MutationObserver;
+	})();
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * getHumanDate
+ */
+(function (root) {
+	"use strict";
+	root.getHumanDate = (function () {
+		var newDate = (new Date());
+		var newDay = newDate.getDate();
+		var newYear = newDate.getFullYear();
+		var newMonth = newDate.getMonth();
+		(newMonth += 1);
+		if (10 > newDay) {
+			newDay = "0" + newDay;
+		}
+		if (10 > newMonth) {
+			newMonth = "0" + newMonth;
+		}
+		return newYear + "-" + newMonth + "-" + newDay;
+	})();
+})("undefined" !== typeof window ? window : this);
+/*!
  * Super-simple wrapper around addEventListener and attachEvent (old IE).
  * Does not handle differences in the Event-objects.
  * @see {@link https://github.com/finn-no/eventlistener}
@@ -62,7 +150,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var getByClass = function (parent, name) {
+	root.getByClass = function (parent, name) {
 		if (!document.getElementsByClassName) {
 			var children = (parent || document.body).getElementsByTagName("*"),
 			elements = [],
@@ -82,7 +170,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			return parent ? parent.getElementsByClassName(name) : "";
 		}
 	};
-	root.getByClass = getByClass;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * class list wrapper
@@ -115,18 +202,256 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			el.className = el.className.replace(new RegExp("\\b" + name + "\\b", "g"), "");
 		};
 	}
-	var toggleClass = function (el, name) {
+	root.hasClass = hasClass;
+	root.addClass = addClass;
+	root.removeClass = removeClass;
+	root.toggleClass = function (el, name) {
 		if (hasClass(el, name)) {
 			removeClass(el, name);
 		} else {
 			addClass(el, name);
 		}
 	};
-	root.hasClass = hasClass;
-	root.addClass = addClass;
-	root.removeClass = removeClass;
-	root.toggleClass = toggleClass;
 })("undefined" !== typeof window ? window : this, document);
+/*!
+ * parseLink
+ */
+(function (root, document) {
+	"use strict";
+	/*jshint bitwise: false */
+	root.parseLink = function (url, full) {
+		var _full = full || "";
+		return (function () {
+			var _replace = function (s) {
+				return s.replace(/^(#|\?)/, "").replace(/\:$/, "");
+			};
+			var _location = location || "";
+			var _protocol = function (protocol) {
+				switch (protocol) {
+				case "http:":
+					return _full ? ":" + 80 : 80;
+				case "https:":
+					return _full ? ":" + 443 : 443;
+				default:
+					return _full ? ":" + _location.port : _location.port;
+				}
+			};
+			var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
+			var _locationHref = root.location || "";
+			var _origin = function () {
+				var o = _locationHref.protocol +
+					"//" +
+					_locationHref.hostname +
+					(_locationHref.port ? ":" + _locationHref.port : "");
+				return o || "";
+			};
+			var _isCrossDomain = function () {
+				var c = document.createElement("a");
+				c.href = url;
+				var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
+				return v !== _origin();
+			};
+			var _link = document.createElement("a");
+			_link.href = url;
+			return {
+				href: _link.href,
+				origin: _origin(),
+				host: _link.host || _location.host,
+				port: ("0" === _link.port || "" === _link.port) ?
+				_protocol(_link.protocol) :
+				(_full ? _link.port : _replace(_link.port)),
+				hash: _full ? _link.hash : _replace(_link.hash),
+				hostname: _link.hostname || _location.hostname,
+				pathname: _link.pathname.charAt(0) !== "/" ?
+				(_full ? "/" + _link.pathname : _link.pathname) :
+				(_full ? _link.pathname : _link.pathname.slice(1)),
+				protocol: !_link.protocol ||
+				":" === _link.protocol ?
+				(_full ? _location.protocol : _replace(_location.protocol)) :
+				(_full ? _link.protocol : _replace(_link.protocol)),
+				search: _full ? _link.search : _replace(_link.search),
+				query: _full ? _link.search : _replace(_link.search),
+				isAbsolute: _isAbsolute,
+				isRelative: !_isAbsolute,
+				isCrossDomain: _isCrossDomain(),
+				hasHTTP: (/^(http|https):\/\//i).test(url) ? true : false
+			};
+		})();
+	};
+	/*jshint bitwise: true */
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * getHTTP
+ */
+(function (root) {
+	"use strict";
+	var getHTTP = function (force) {
+		var any = force || "";
+		var locProtocol = root.location.protocol || "";
+		return "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : any ? "http" : "";
+	};
+	root.getHTTP = getHTTP;
+	root.forcedHTTP = getHTTP(true);
+})("undefined" !== typeof window ? window : this);
+/*!
+ * throttle
+ */
+(function (root) {
+	"use strict";
+	root.throttle = function (func, wait) {
+		var ctx;
+		var args;
+		var rtn;
+		var timeoutID;
+		var last = 0;
+		function call() {
+			timeoutID = 0;
+			last = +new Date();
+			rtn = func.apply(ctx, args);
+			ctx = null;
+			args = null;
+		}
+		return function throttled() {
+			ctx = this;
+			args = arguments;
+			var delta = new Date() - last;
+			if (!timeoutID) {
+				if (delta >= wait) {
+					call();
+				} else {
+					timeoutID = setTimeout(call, wait - delta);
+				}
+			}
+			return rtn;
+		};
+	};
+})("undefined" !== typeof window ? window : this);
+/*!
+ * debounce
+ */
+(function (root) {
+	"use strict";
+	root.debounce = function (func, wait) {
+		var timeout;
+		var args;
+		var context;
+		var timestamp;
+		return function () {
+			context = this;
+			args = [].slice.call(arguments, 0);
+			timestamp = new Date();
+			var later = function () {
+				var last = (new Date()) - timestamp;
+				if (last < wait) {
+					timeout = setTimeout(later, wait - last);
+				} else {
+					timeout = null;
+					func.apply(context, args);
+				}
+			};
+			if (!timeout) {
+				timeout = setTimeout(later, wait);
+			}
+		};
+	};
+})("undefined" !== typeof window ? window : this);
+/*!
+ * isNodejs isElectron isNwjs;
+ */
+(function (root) {
+	"use strict";
+	root.isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
+	root.isElectron = (function () {
+		if (typeof root !== "undefined" &&
+			typeof root.process === "object" &&
+			root.process.type === "renderer") {
+			return true;
+		}
+		if (typeof root !== "undefined" &&
+			typeof root.process !== "undefined" &&
+			typeof root.process.versions === "object" &&
+			!!root.process.versions.electron) {
+			return true;
+		}
+		if (typeof navigator === "object" &&
+			typeof navigator.userAgent === "string" &&
+			navigator.userAgent.indexOf("Electron") >= 0) {
+			return true;
+		}
+		return false;
+	})();
+	root.isNwjs = (function () {
+		if ("undefined" !== typeof isNodejs && isNodejs) {
+			try {
+				if ("undefined" !== typeof require("nw.gui")) {
+					return true;
+				}
+			} catch (err) {
+				return false;
+			}
+		}
+		return false;
+	})();
+})("undefined" !== typeof window ? window : this);
+/*!
+ * openDeviceBrowser
+ */
+(function (root) {
+	"use strict";
+	root.openDeviceBrowser = function (url) {
+		var onElectron = function () {
+			var es = isElectron ? require("electron").shell : "";
+			return es ? es.openExternal(url) : "";
+		};
+		var onNwjs = function () {
+			var ns = isNwjs ? require("nw.gui").Shell : "";
+			return ns ? ns.openExternal(url) : "";
+		};
+		var onLocal = function () {
+			return root.open(url, "_system", "scrollbars=1,location=no");
+		};
+		if (isElectron) {
+			onElectron();
+		} else if (isNwjs) {
+			onNwjs();
+		} else {
+			var locProtocol = root.location.protocol || "";
+			var hasHTTP = locProtocol ? "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : "" : "";
+			if (hasHTTP) {
+				return true;
+			} else {
+				onLocal();
+			}
+		}
+	};
+})("undefined" !== typeof window ? window : this);
+/*!
+ * setVisible
+ */
+(function (root) {
+	"use strict";
+	root.setVisible = function (e) {
+		if (e) {
+			e.style.visibility = "visible";
+			e.style.opacity = 1;
+		}
+	};
+})("undefined" !== typeof window ? window : this);
+/*!
+ * removeElement
+ */
+(function (root) {
+	"use strict";
+	root.removeElement = function (e) {
+		if (e) {
+			if ("undefined" !== typeof e.remove) {
+				return e.remove();
+			} else {
+				return e.parentNode && e.parentNode.removeChild(e);
+			}
+		}
+	};
+})("undefined" !== typeof window ? window : this);
 /*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
@@ -134,7 +459,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root, document) {
 	"use strict";
-	var loadJsCss = function (files, callback, type) {
+	root.loadJsCss = function (files, callback, type) {
 		var _this = this;
 		_this.files = files;
 		_this.js = [];
@@ -197,467 +522,210 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			_this.callback();
 		}
 	};
-	root.loadJsCss = loadJsCss;
 })("undefined" !== typeof window ? window : this, document);
 /*!
- * throttle
+ * loadDeferred
  */
 (function (root) {
 	"use strict";
-		var throttle = function (func, wait) {
-			var ctx;
-			var args;
-			var rtn;
-			var timeoutID;
-			var last = 0;
-			function call() {
-				timeoutID = 0;
-				last = +new Date();
-				rtn = func.apply(ctx, args);
-				ctx = null;
-				args = null;
-			}
-			return function throttled() {
-				ctx = this;
-				args = arguments;
-				var delta = new Date() - last;
-				if (!timeoutID) {
-					if (delta >= wait) {
-						call();
-					} else {
-						timeoutID = setTimeout(call, wait - delta);
-					}
-				}
-				return rtn;
-			};
+	root.loadDeferred = function (urlArray, callback) {
+		var timer;
+		var handle = function () {
+			clearTimeout(timer);
+			timer = null;
+			var load;
+			load = new loadJsCss(urlArray, callback);
 		};
-	root.throttle = throttle;
-})("undefined" !== typeof window ? window : this);
-/*!
- * debounce
- */
-(function (root) {
-	"use strict";
-		var debounce = function (func, wait) {
-			var timeout;
-			var args;
-			var context;
-			var timestamp;
-			return function () {
-				context = this;
-				args = [].slice.call(arguments, 0);
-				timestamp = new Date();
-				var later = function () {
-					var last = (new Date()) - timestamp;
-					if (last < wait) {
-						timeout = setTimeout(later, wait - last);
-					} else {
-						timeout = null;
-						func.apply(context, args);
-					}
-				};
-				if (!timeout) {
-					timeout = setTimeout(later, wait);
-				}
-			};
+		var req;
+		var raf = function () {
+			cancelAnimationFrame(req);
+			timer = setTimeout(handle, 0);
 		};
-	root.debounce = debounce;
-})("undefined" !== typeof window ? window : this);
-/*!
- * isNodejs isElectron isNwjs;
- */
-(function (root) {
-	"use strict";
-		var isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
-		var isElectron = (function () {
-			if (typeof root !== "undefined" &&
-				typeof root.process === "object" &&
-				root.process.type === "renderer") {
-				return true;
-			}
-			if (typeof root !== "undefined" &&
-				typeof root.process !== "undefined" &&
-				typeof root.process.versions === "object" &&
-				!!root.process.versions.electron) {
-				return true;
-			}
-			if (typeof navigator === "object" &&
-				typeof navigator.userAgent === "string" &&
-				navigator.userAgent.indexOf("Electron") >= 0) {
-				return true;
-			}
-			return false;
-		})();
-		var isNwjs = (function () {
-			if ("undefined" !== typeof isNodejs && isNodejs) {
-				try {
-					if ("undefined" !== typeof require("nw.gui")) {
-						return true;
-					}
-				} catch (err) {
-					return false;
-				}
-			}
-			return false;
-		})();
-	root.isNodejs = isNodejs;
-	root.isElectron = isElectron;
-	root.isNwjs = isNwjs;
-})("undefined" !== typeof window ? window : this);
-/*!
- * openDeviceBrowser
- */
-(function (root) {
-	"use strict";
-	var openDeviceBrowser = function (url) {
-		var onElectron = function () {
-			var es = isElectron ? require("electron").shell : "";
-			return es ? es.openExternal(url) : "";
-		};
-		var onNwjs = function () {
-			var ns = isNwjs ? require("nw.gui").Shell : "";
-			return ns ? ns.openExternal(url) : "";
-		};
-		var onLocal = function () {
-			return root.open(url, "_system", "scrollbars=1,location=no");
-		};
-		if (isElectron) {
-			onElectron();
-		} else if (isNwjs) {
-			onNwjs();
+		if (root.requestAnimationFrame) {
+			req = requestAnimationFrame(raf);
 		} else {
-			var locProtocol = root.location.protocol || "",
-			hasHTTP = locProtocol ? "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : "" : "";
-			if (hasHTTP) {
-				return true;
-			} else {
-				onLocal();
-			}
+			addListener(root, "load", handle);
 		}
 	};
-	root.openDeviceBrowser = openDeviceBrowser;
 })("undefined" !== typeof window ? window : this);
-/*!
- * getHTTP
- */
-(function (root) {
-	"use strict";
-	var getHTTP = function (force) {
-		var any = force || "";
-		var locProtocol = root.location.protocol || "";
-		return "http:" === locProtocol ? "http" : "https:" === locProtocol ? "https" : any ? "http" : "";
-	};
-	root.getHTTP = getHTTP;
-})("undefined" !== typeof window ? window : this);
-/*!
- * parseLink
- */
-(function (root, document) {
-	"use strict";
-		/*jshint bitwise: false */
-		var parseLink = function (url, full) {
-			var _full = full || "";
-			return (function () {
-				var _replace = function (s) {
-					return s.replace(/^(#|\?)/, "").replace(/\:$/, "");
-				};
-				var _location = location || "";
-				var _protocol = function (protocol) {
-					switch (protocol) {
-					case "http:":
-						return _full ? ":" + 80 : 80;
-					case "https:":
-						return _full ? ":" + 443 : 443;
-					default:
-						return _full ? ":" + _location.port : _location.port;
-					}
-				};
-				var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
-				var _locationHref = root.location || "";
-				var _origin = function () {
-					var o = _locationHref.protocol +
-						"//" +
-						_locationHref.hostname +
-						(_locationHref.port ? ":" + _locationHref.port : "");
-					return o || "";
-				};
-				var _isCrossDomain = function () {
-					var c = document.createElement("a");
-					c.href = url;
-					var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
-					return v !== _origin();
-				};
-				var _link = document.createElement("a");
-				_link.href = url;
-				return {
-					href: _link.href,
-					origin: _origin(),
-					host: _link.host || _location.host,
-					port: ("0" === _link.port || "" === _link.port) ?
-						_protocol(_link.protocol) :
-						(_full ? _link.port : _replace(_link.port)),
-					hash: _full ? _link.hash : _replace(_link.hash),
-					hostname: _link.hostname || _location.hostname,
-					pathname: _link.pathname.charAt(0) !== "/" ?
-						(_full ? "/" + _link.pathname : _link.pathname) :
-						(_full ? _link.pathname : _link.pathname.slice(1)),
-					protocol: !_link.protocol ||
-						":" === _link.protocol ?
-						(_full ? _location.protocol : _replace(_location.protocol)) :
-						(_full ? _link.protocol : _replace(_link.protocol)),
-					search: _full ? _link.search : _replace(_link.search),
-					query: _full ? _link.search : _replace(_link.search),
-					isAbsolute: _isAbsolute,
-					isRelative: !_isAbsolute,
-					isCrossDomain: _isCrossDomain(),
-					hasHTTP: (/^(http|https):\/\//i).test(url) ? true : false
-				};
-			})();
-		};
-		/*jshint bitwise: true */
-	root.parseLink = parseLink;
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * scroll2Top
- */
-(function (root, document) {
-	"use strict";
-	var docElem = document.documentElement || "";
-		var scroll2Top = function (scrollTargetY, speed, easing) {
-			var scrollY = root.scrollY || docElem.scrollTop;
-			var posY = scrollTargetY || 0;
-			var rate = speed || 2000;
-			var soothing = easing || "easeOutSine";
-			var currentTime = 0;
-			var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
-			var easingEquations = {
-				easeOutSine: function (pos) {
-					return Math.sin(pos * (Math.PI / 2));
-				},
-				easeInOutSine: function (pos) {
-					return (-0.5 * (Math.cos(Math.PI * pos) - 1));
-				},
-				easeInOutQuint: function (pos) {
-					if ((pos /= 0.5) < 1) {
-						return 0.5 * Math.pow(pos, 5);
-					}
-					return 0.5 * (Math.pow((pos - 2), 5) + 2);
-				}
-			};
-			function tick() {
-				currentTime += 1 / 60;
-				var p = currentTime / time;
-				var t = easingEquations[soothing](p);
-				if (p < 1) {
-					requestAnimationFrame(tick);
-					root.scrollTo(0, scrollY + ((posY - scrollY) * t));
-				} else {
-					root.scrollTo(0, posY);
-				}
-			}
-			tick();
-		};
-	root.scroll2Top = scroll2Top;
-})("undefined" !== typeof window ? window : this, document);
 /*!
  * manageExternalLinkAll
  */
 (function (root, document) {
 	"use strict";
-		var manageExternalLinkAll = function () {
-			var link = document.getElementsByTagName("a") || "";
-			var handle = function (url, ev) {
-				ev.stopPropagation();
-				ev.preventDefault();
-				var logic = function () {
-					openDeviceBrowser(url);
-				};
-				debounce(logic, 200).call(root);
+	root.manageExternalLinkAll = function () {
+		var link = document.getElementsByTagName("a") || "";
+		var handle = function (url, ev) {
+			ev.stopPropagation();
+			ev.preventDefault();
+			var logic = function () {
+				openDeviceBrowser(url);
 			};
-			var arrange = function (e) {
-				var externalLinkIsBindedClass = "external-link--is-binded";
-				if (!hasClass(e, externalLinkIsBindedClass)) {
-					var url = e.getAttribute("href") || "";
-					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
-						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
-						if ("undefined" !== typeof getHTTP && getHTTP()) {
-							e.target = "_blank";
-							e.rel = "noopener";
-						} else {
-							addListener(e, "click", handle.bind(null, url));
-						}
-						addClass(e, externalLinkIsBindedClass);
+			debounce(logic, 200).call(root);
+		};
+		var arrange = function (e) {
+			var externalLinkIsBindedClass = "external-link--is-binded";
+			if (!hasClass(e, externalLinkIsBindedClass)) {
+				var url = e.getAttribute("href") || "";
+				if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
+					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+					if (root.getHTTP && root.getHTTP()) {
+						e.target = "_blank";
+						e.rel = "noopener";
+					} else {
+						addListener(e, "click", handle.bind(null, url));
 					}
+					addClass(e, externalLinkIsBindedClass);
 				}
-			};
-			if (link) {
-				var i,
-				l;
-				for (i = 0, l = link.length; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
 			}
 		};
-	root.manageExternalLinkAll = manageExternalLinkAll;
+		if (link) {
+			var i,
+			l;
+			for (i = 0, l = link.length; i < l; i += 1) {
+				arrange(link[i]);
+			}
+			i = l = null;
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * manageDataSrcImgAll
+ * @see {@link https://github.com/verlok/lazyload}
  */
 (function (root, document) {
 	"use strict";
 	var isActiveClass = "is-active";
-		var dataSrcImgClass = "data-src-img";
-
-		var dataSrcImgIsBindedClass = "data-src-img--is-binded";
-
-		root.lazyLoadDataSrcImgInstance = null;
-
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-		var manageDataSrcImgAll = function (callback) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
-			};
-			var images = getByClass(document, dataSrcImgClass) || "";
-			var i = images.length;
-			while (i--) {
-				if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
-					addClass(images[i], dataSrcImgIsBindedClass);
-					addClass(images[i], isActiveClass);
-					addListener(images[i], "load", cb);
-				}
-			}
-			i = null;
-			if (root.LazyLoad) {
-				if (root.lazyLoadDataSrcImgInstance) {
-					root.lazyLoadDataSrcImgInstance.destroy();
-				}
-				root.lazyLoadDataSrcImgInstance = new LazyLoad({
-						elements_selector: "." + dataSrcImgClass
-					});
-			}
+	var dataSrcImgClass = "data-src-img";
+	var dataSrcImgIsBindedClass = "data-src-img--is-binded";
+	root.lazyLoadDataSrcImgInstance = null;
+	root.manageDataSrcImgAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
 		};
-	root.manageDataSrcImgAll = manageDataSrcImgAll;
+		var images = getByClass(document, dataSrcImgClass) || "";
+		var i = images.length;
+		while (i--) {
+			if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
+				addClass(images[i], dataSrcImgIsBindedClass);
+				addClass(images[i], isActiveClass);
+				addListener(images[i], "load", cb);
+			}
+		}
+		i = null;
+		if (root.LazyLoad) {
+			if (root.lazyLoadDataSrcImgInstance) {
+				root.lazyLoadDataSrcImgInstance.destroy();
+			}
+			root.lazyLoadDataSrcImgInstance = new LazyLoad({
+					elements_selector: "." + dataSrcImgClass
+				});
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * manageDataSrcIframeAll
+ * @see {@link https://github.com/verlok/lazyload}
  */
 (function (root, document) {
 	"use strict";
 	var isActiveClass = "is-active";
-		var dataSrcIframeClass = "data-src-iframe";
-
-		var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
-
-		root.lazyLoadDataSrcIframeInstance = null;
-
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-		var manageDataSrcIframeAll = function (callback) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
-			};
-			var iframes = getByClass(document, dataSrcIframeClass) || "";
-			var i = iframes.length;
-			while (i--) {
-				if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
-					addClass(iframes[i], dataSrcIframeIsBindedClass);
-					addClass(iframes[i], isActiveClass);
-					addListener(iframes[i], "load", cb);
-					iframes[i].setAttribute("frameborder", "no");
-					iframes[i].setAttribute("style", "border:none;");
-					iframes[i].setAttribute("webkitallowfullscreen", "true");
-					iframes[i].setAttribute("mozallowfullscreen", "true");
-					iframes[i].setAttribute("scrolling", "no");
-					iframes[i].setAttribute("allowfullscreen", "true");
-				}
-			}
-			i = null;
-			if (root.LazyLoad) {
-				if (root.lazyLoadDataSrcIframeInstance) {
-					root.lazyLoadDataSrcIframeInstance.destroy();
-				}
-				root.lazyLoadDataSrcIframeInstance = new LazyLoad({
-						elements_selector: "." + dataSrcIframeClass
-					});
-			}
+	var dataSrcIframeClass = "data-src-iframe";
+	var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
+	root.lazyLoadDataSrcIframeInstance = null;
+	root.manageDataSrcIframeAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
 		};
-	root.manageDataSrcIframeAll = manageDataSrcIframeAll;
+		var iframes = getByClass(document, dataSrcIframeClass) || "";
+		var i = iframes.length;
+		while (i--) {
+			if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
+				addClass(iframes[i], dataSrcIframeIsBindedClass);
+				addClass(iframes[i], isActiveClass);
+				addListener(iframes[i], "load", cb);
+				iframes[i].setAttribute("frameborder", "no");
+				iframes[i].setAttribute("style", "border:none;");
+				iframes[i].setAttribute("webkitallowfullscreen", "true");
+				iframes[i].setAttribute("mozallowfullscreen", "true");
+				iframes[i].setAttribute("scrolling", "no");
+				iframes[i].setAttribute("allowfullscreen", "true");
+			}
+		}
+		i = null;
+		if (root.LazyLoad) {
+			if (root.lazyLoadDataSrcIframeInstance) {
+				root.lazyLoadDataSrcIframeInstance.destroy();
+			}
+			root.lazyLoadDataSrcIframeInstance = new LazyLoad({
+					elements_selector: "." + dataSrcIframeClass
+				});
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * manageImgLightbox
+ * @see {@link https://github.com/englishextra/img-lightbox}
  */
 (function (root, document) {
 	"use strict";
-		var imgLightboxLinkClass = "img-lightbox-link";
-
-		/*!
-		 * @see {@link https://github.com/englishextra/img-lightbox}
-		 */
-		var manageImgLightbox = function () {
-			var link = getByClass(document, imgLightboxLinkClass) || "";
-			var initScript = function () {
-				imgLightbox(imgLightboxLinkClass, {
-					onLoaded: function () {
-						LoadingSpinner.hide();
-					},
-					onClosed: function () {
-						LoadingSpinner.hide();
-					},
-					onCreated: function () {
-						LoadingSpinner.show();
-					},
-					touch: false
-				});
-			};
-			if (root.imgLightbox && link) {
-				initScript();
-			}
+	var imgLightboxLinkClass = "img-lightbox-link";
+	root.manageImgLightbox = function () {
+		var link = getByClass(document, imgLightboxLinkClass) || "";
+		var initScript = function () {
+			imgLightbox(imgLightboxLinkClass, {
+				onLoaded: function () {
+					LoadingSpinner.hide();
+				},
+				onClosed: function () {
+					LoadingSpinner.hide();
+				},
+				onCreated: function () {
+					LoadingSpinner.show();
+				},
+				touch: false
+			});
 		};
-	root.manageImgLightbox = manageImgLightbox;
+		if (root.imgLightbox && link) {
+			initScript();
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * manageIframeLightbox
+ * @see {@link https://github.com/englishextra/iframe-lightbox}
  */
 (function (root, document) {
 	"use strict";
-		var iframeLightboxLinkClass = "iframe-lightbox-link";
-
-		/*!
-		 * @see {@link https://github.com/englishextra/iframe-lightbox}
-		 */
-		var manageIframeLightbox = function () {
-			var link = getByClass(document, iframeLightboxLinkClass) || "";
-			var initScript = function () {
-				var arrange = function (e) {
-					e.lightbox = new IframeLightbox(e, {
-							onLoaded: function () {
-								LoadingSpinner.hide();
-							},
-							onClosed: function () {
-								LoadingSpinner.hide();
-							},
-							onOpened: function () {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-				};
-				var i,
-				l;
-				for (i = 0, l = link.length; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
+	var iframeLightboxLinkClass = "iframe-lightbox-link";
+	root.manageIframeLightbox = function () {
+		var link = getByClass(document, iframeLightboxLinkClass) || "";
+		var initScript = function () {
+			var arrange = function (e) {
+				e.lightbox = new IframeLightbox(e, {
+						onLoaded: function () {
+							LoadingSpinner.hide();
+						},
+						onClosed: function () {
+							LoadingSpinner.hide();
+						},
+						onOpened: function () {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
 			};
-			if (root.IframeLightbox && link) {
-				initScript();
+			var i,
+			l;
+			for (i = 0, l = link.length; i < l; i += 1) {
+				arrange(link[i]);
 			}
+			i = l = null;
 		};
-	root.manageIframeLightbox = manageIframeLightbox;
+		if (root.IframeLightbox && link) {
+			initScript();
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * Macy
@@ -665,71 +733,71 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 (function (root) {
 	"use strict";
 	var macyIsActiveClass = "macy--is-active";
-		root.macyInstance = null;
-		var updateMacy = function (delay) {
-			var timeout = delay || 100;
-			var logThis;
-			logThis = function () {
-				console.log("updateMacy");
-			};
-			if (root.macyInstance) {
-				var timer = setTimeout(function () {
-						clearTimeout(timer);
-						timer = null;
-						logThis();
-						root.macyInstance.recalculate(true, true);
-					}, timeout);
+	root.macyInstance = null;
+	var updateMacy = function (delay) {
+		var timeout = delay || 100;
+		var logThis;
+		logThis = function () {
+			console.log("updateMacy");
+		};
+		if (root.macyInstance) {
+			var timer = setTimeout(function () {
+					clearTimeout(timer);
+					timer = null;
+					logThis();
+					root.macyInstance.recalculate(true, true);
+				}, timeout);
+		}
+	};
+	var updateMacyThrottled = throttle(updateMacy, 1000);
+	var initMacy = function (macyClass, options) {
+		var defaultSettings = {
+			/* container: ".macy", */
+			trueOrder: false,
+			waitForImages: false,
+			margin: 0,
+			columns: 5,
+			breakAt: {
+				1280: 5,
+				1024: 4,
+				960: 3,
+				640: 2,
+				480: 2,
+				360: 1
 			}
 		};
-		var updateMacyThrottled = throttle(updateMacy, 1000);
-		var initMacy = function (macyClass, options) {
-			var defaultSettings = {
-				/* container: ".macy", */
-				trueOrder: false,
-				waitForImages: false,
-				margin: 0,
-				columns: 5,
-				breakAt: {
-					1280: 5,
-					1024: 4,
-					960: 3,
-					640: 2,
-					480: 2,
-					360: 1
-				}
-			};
-			var settings = options || {};
-			settings.container = "." + macyClass;
-			var opt;
-			for (opt in defaultSettings) {
-				if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
-					settings[opt] = defaultSettings[opt];
-				}
+		var settings = options || {};
+		settings.container = "." + macyClass;
+		var opt;
+		for (opt in defaultSettings) {
+			if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
+				settings[opt] = defaultSettings[opt];
 			}
-			opt = null;
-			var macy = getByClass(document, macyClass)[0] || "";
-			if (macy) {
-				try {
-					if (root.macyInstance) {
-						root.macyInstance.remove();
-						root.macyInstance = null;
-					}
-					root.macyInstance = new Macy(settings);
-					/* this will be set later after rendering all macy items */
-					/* addClass(macy, macyIsActiveClass); */
-				} catch (err) {
-					throw new Error("cannot init Macy " + err);
+		}
+		opt = null;
+		var macy = getByClass(document, macyClass)[0] || "";
+		if (macy) {
+			try {
+				if (root.macyInstance) {
+					root.macyInstance.remove();
+					root.macyInstance = null;
 				}
+				root.macyInstance = new Macy(settings);
+				/* this will be set later after rendering all macy items */
+				/* addClass(macy, macyIsActiveClass); */
+			} catch (err) {
+				throw new Error("cannot init Macy " + err);
 			}
-		};
-		var manageMacy = function (macyClass, options) {
-			var macy = getByClass(document, macyClass)[0] || "";
-			if (root.Macy && macy) {
-				if (!hasClass(macy, macyIsActiveClass)) {
-					initMacy(macyClass, options);
-				}
+		}
+	};
+	var manageMacy = function (macyClass, options) {
+		var macy = getByClass(document, macyClass)[0] || "";
+		if (root.Macy && macy) {
+			if (!hasClass(macy, macyIsActiveClass)) {
+				initMacy(macyClass, options);
 			}
-		};
+		}
+	};
 	root.updateMacy = updateMacy;
 	root.updateMacyThrottled = updateMacyThrottled;
 	root.manageMacy = manageMacy;
@@ -739,7 +807,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
  */
 (function (root) {
 	"use strict";
-	var renderAC = function (acGrid, cardObj, renderOptions, onExecute, callback) {
+	root.renderAC = function (acGrid, cardObj, renderOptions, onExecute, callback) {
 		if (root.AdaptiveCards && acGrid) {
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 			adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(renderOptions);
@@ -753,56 +821,54 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			adaptiveCard = renderedCard = null;
 		}
 	};
-	root.renderAC = renderAC;
 })("undefined" !== typeof window ? window : this);
 /*!
  * manageReadMore
  */
 (function (root, document) {
 	"use strict";
-		var manageReadMore = function (callback, options) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
-			};
-			var initScript = function () {
-				var defaultSettings = {
-					target: ".dummy",
-					numOfWords: 10,
-					toggle: true,
-					moreLink: "БОЛЬШЕ",
-					lessLink: "МЕНЬШЕ",
-					inline: true,
-					customBlockElement: "p"
-				};
-				var settings = options || {};
-				var opt;
-				for (opt in defaultSettings) {
-					if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
-						settings[opt] = defaultSettings[opt];
-					}
-				}
-				opt = null;
-				$readMoreJS.init(settings);
-				var rmLink = getByClass(document, "rm-link") || "";
-				var arrange = function (e) {
-					var rmLinkIsBindedClass = "rm-link--is-binded";
-					if (!hasClass(e, rmLinkIsBindedClass)) {
-						addClass(e, rmLinkIsBindedClass);
-						addListener(e, "click", cb);
-					}
-				};
-				var i,
-				l;
-				for (i = 0, l = rmLink.length; i < l; i += 1) {
-					arrange(rmLink[i]);
-				}
-				i = l = null;
-			};
-			if (root.$readMoreJS) {
-				initScript();
-			}
+	root.manageReadMore = function (callback, options) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
 		};
-	root.manageReadMore = manageReadMore;
+		var initScript = function () {
+			var defaultSettings = {
+				target: ".dummy",
+				numOfWords: 10,
+				toggle: true,
+				moreLink: "БОЛЬШЕ",
+				lessLink: "МЕНЬШЕ",
+				inline: true,
+				customBlockElement: "p"
+			};
+			var settings = options || {};
+			var opt;
+			for (opt in defaultSettings) {
+				if (defaultSettings.hasOwnProperty(opt) && !settings.hasOwnProperty(opt)) {
+					settings[opt] = defaultSettings[opt];
+				}
+			}
+			opt = null;
+			$readMoreJS.init(settings);
+			var rmLink = getByClass(document, "rm-link") || "";
+			var arrange = function (e) {
+				var rmLinkIsBindedClass = "rm-link--is-binded";
+				if (!hasClass(e, rmLinkIsBindedClass)) {
+					addClass(e, rmLinkIsBindedClass);
+					addListener(e, "click", cb);
+				}
+			};
+			var i,
+			l;
+			for (i = 0, l = rmLink.length; i < l; i += 1) {
+				arrange(rmLink[i]);
+			}
+			i = l = null;
+		};
+		if (root.$readMoreJS) {
+			initScript();
+		}
+	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * UWP layout
@@ -852,26 +918,12 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	};
 })("undefined" !== typeof window ? window : this, document);
 /*!
- * removeChildren
- */
-(function(root){
-	"use strict";
-		var removeChildren = function (e) {
-			if (e && e.firstChild) {
-				for (; e.firstChild; ) {
-					e.removeChild(e.firstChild);
-				}
-			}
-		};
-	root.removeChildren = removeChildren;
-})("undefined" !== typeof window ? window : this);
-/*!
  * revealYandexMap
  */
 (function (root, document) {
 	"use strict";
 	var isActiveClass = "is-active";
-	var revealYandexMap = function (_this) {
+	root.revealYandexMap = function (_this) {
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
 		if (yandexMap) {
 			yandexMap.src = yandexMap.dataset.src;
@@ -881,15 +933,14 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		}
 	};
-	root.revealYandexMap = revealYandexMap;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * LoadingSpinner
  */
-(function(root, document){
+(function (root, document) {
 	"use strict";
 	var isActiveClass = "is-active";
-	var LoadingSpinner = (function () {
+	root.LoadingSpinner = (function () {
 		var uwpLoading = getByClass(document, "uwp-loading")[0] || "";
 		if (!uwpLoading) {
 			return;
@@ -903,7 +954,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			}
 		};
 	})();
-	root.LoadingSpinner = LoadingSpinner;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * app logic
@@ -915,18 +965,9 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
 
-	var toStringFn = {}.toString;
-	var supportsSvgSmilAnimation = !!document.createElementNS &&
-		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
-
 	if (supportsSvgSmilAnimation && docElem) {
 		addClass(docElem, "svganimate");
 	}
-
-	/* var supportsCanvas = (function () {
-		var elem = document.createElement("canvas");
-		return !!(elem.getContext && elem.getContext("2d"));
-	})(); */
 
 	var run = function () {
 
@@ -1038,21 +1079,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			addClass(docElem, selector);
 			return selector;
 		})("touch");
-
-		var getHumanDate = (function () {
-			var newDate = (new Date());
-			var newDay = newDate.getDate();
-			var newYear = newDate.getFullYear();
-			var newMonth = newDate.getMonth();
-			(newMonth += 1);
-			if (10 > newDay) {
-				newDay = "0" + newDay;
-			}
-			if (10 > newMonth) {
-				newMonth = "0" + newMonth;
-			}
-			return newYear + "-" + newMonth + "-" + newDay;
-		})();
 
 		var userBrowser = " [" +
 			(getHumanDate ? getHumanDate : "") +
@@ -1169,44 +1195,6 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 
 	var scripts = ["./libs/serguei-uwp/css/bundle.min.css"];
 
-	var supportsPassive = (function () {
-		var support = false;
-		try {
-			var opts = Object.defineProperty && Object.defineProperty({}, "passive", {
-					get: function () {
-						support = true;
-					}
-				});
-			root.addEventListener("test", function() {}, opts);
-		} catch (err) {}
-		return support;
-	})();
-
-	var needsPolyfills = (function () {
-		return !String.prototype.startsWith ||
-		!supportsPassive ||
-		!root.requestAnimationFrame ||
-		!root.matchMedia ||
-		("undefined" === typeof root.Element && !("dataset" in docElem)) ||
-		!("classList" in document.createElement("_")) ||
-		document.createElementNS && !("classList" in document.createElementNS("http://www.w3.org/2000/svg", "g")) ||
-		(root.attachEvent && !root.addEventListener) ||
-		!("onhashchange" in root) ||
-		!Array.prototype.indexOf ||
-		!root.Promise ||
-		!root.fetch ||
-		!document.querySelectorAll ||
-		!document.querySelector ||
-		!Function.prototype.bind ||
-		(Object.defineProperty &&
-			Object.getOwnPropertyDescriptor &&
-			Object.getOwnPropertyDescriptor(Element.prototype, "textContent") &&
-			!Object.getOwnPropertyDescriptor(Element.prototype, "textContent").get) ||
-		!("undefined" !== typeof root.localStorage && "undefined" !== typeof root.sessionStorage) ||
-		!root.WeakMap ||
-		!root.MutationObserver;
-	})();
-
 	if (needsPolyfills) {
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
@@ -1215,9 +1203,7 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 		"./libs/serguei-uwp/js/vendors.min.js",
 		"./libs/serguei-uwp/js/pages.min.js");
 
-	var bodyFontFamily = "Roboto";
-
-	var onFontsLoaded = function () {
+	var loadOnFontsReady = function (bodyFontFamily, useCheck) {
 		var slot;
 		var init = function () {
 			clearInterval(slot);
@@ -1228,43 +1214,23 @@ runPictures, runGallery, runAbout, throttle, $readMoreJS*/
 			var load;
 			load = new loadJsCss(scripts, run);
 		};
-		var check;
-		check = function () {
+		var check = function () {
 			if (doesFontExist(bodyFontFamily)) {
 				init();
 			}
 		};
-		/* if (supportsCanvas) {
+		if (useCheck && supportsCanvas) {
 			slot = setInterval(check, 100);
 		} else {
 			slot = null;
 			init();
-		} */
-		init();
-	};
-
-	var loadDeferred = function (urlArray, callback) {
-		var timer;
-		var handle = function () {
-			clearTimeout(timer);
-			timer = null;
-			var load;
-			load = new loadJsCss(urlArray, callback);
-		};
-		var req;
-		var raf = function () {
-			cancelAnimationFrame(req);
-			timer = setTimeout(handle, 0);
-		};
-		if (root.requestAnimationFrame) {
-			req = requestAnimationFrame(raf);
-		} else {
-			addListener(root, "load", handle);
 		}
 	};
+
+	var bodyFontFamily = "Roboto";
 
 	loadDeferred([
 			"./libs/serguei-uwp/css/vendors.min.css",
 			"./libs/serguei-uwp/css/pages.min.css"
-		], onFontsLoaded);
+		], loadOnFontsReady.bind(null, bodyFontFamily, null));
 })("undefined" !== typeof window ? window : this, document);

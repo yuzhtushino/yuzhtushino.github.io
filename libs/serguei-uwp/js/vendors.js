@@ -2371,15 +2371,15 @@ function _typeof(obj) {
 		caller(data);
 	};
 
-	var setStyleDisplayBlock = function setStyleDisplayBlock(a) {
-		if (a) {
-			a.style.display = "block";
+	var setDisplayBlock = function (e) {
+		if (e) {
+			e.style.display = "block";
 		}
 	};
 
-	var setStyleDisplayNone = function setStyleDisplayNone(a) {
-		if (a) {
-			a.style.display = "none";
+	var setDisplayNone = function (e) {
+		if (e) {
+			e.style.display = "none";
 		}
 	};
 
@@ -2405,7 +2405,7 @@ function _typeof(obj) {
 				};
 
 				img.src = dummySrc;
-				setStyleDisplayNone(container);
+				setDisplayNone(container);
 				callCallback(callback, root);
 			};
 
@@ -2524,7 +2524,7 @@ function _typeof(obj) {
 					};
 
 					img.src = hrefString;
-					setStyleDisplayBlock(container);
+					setDisplayBlock(container);
 				};
 
 				debounce(logic, rate).call();

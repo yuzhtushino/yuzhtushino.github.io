@@ -13,7 +13,6 @@ manageReadMore, updateMacyThrottled*/
 	"use strict";
 
 	root.runAbout = function() {
-					var macyIsActiveClass = "macy--is-active";
 		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}

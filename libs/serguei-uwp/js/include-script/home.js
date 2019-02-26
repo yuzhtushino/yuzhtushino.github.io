@@ -13,7 +13,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 	"use strict";
 
 	root.runHome = function() {
-						var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
 		 * @see {@link https://adaptivecards.io/samples/}
@@ -494,7 +493,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
     	renderACDiploma4,
     	renderACContacts
     ]; */
-
 		var renderACOptions = {};
 		var macyItems = [];
 

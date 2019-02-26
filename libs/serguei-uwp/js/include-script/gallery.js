@@ -13,11 +13,9 @@ manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runGallery = function() {
-					var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
-
 		root.handleLightGallery = null;
 
 		var manageLightGallery = function manageLightGallery(macy) {

@@ -13,8 +13,6 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runWorks = function() {
-					var macyIsActiveClass = "macy--is-active";
-
 		var onImagesLoaded = function onImagesLoaded(macy) {
 			var img = macy.getElementsByTagName("img") || "";
 			var imgLength = img.length || 0;

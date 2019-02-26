@@ -1,8 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global console, addListener, removeListener, addListener, getByClass,
-addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
-manageIframeLightbox, manageMacy, updateMacyThrottled*/
+/*global addClass, addListener, console, getByClass, hasClass,
+manageDataSrcImgAll, manageExternalLinkAll, manageIframeLightbox, manageMacy,
+removeListener, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,7 +11,7 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 
 	root.runWorks = function () {
 
-					var onImagesLoaded = function (macy) {
+		var onImagesLoaded = function (macy) {
 			var img = macy.getElementsByTagName("img") || "";
 			var imgLength = img.length || 0;
 			var imgCounter = 0;

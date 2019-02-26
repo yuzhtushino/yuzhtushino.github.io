@@ -1,8 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global console, GLightbox, loadJsCss, addListener, removeListener, getByClass,
-addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
-updateMacyThrottled*/
+/*global addClass, addListener, console, getByClass, GLightbox, hasClass,
+loadJsCss, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+removeListener, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,7 +11,7 @@ updateMacyThrottled*/
 
 	root.runPictures = function () {
 
-					var glightboxClass = "glightbox";
+		var glightboxClass = "glightbox";
 
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}

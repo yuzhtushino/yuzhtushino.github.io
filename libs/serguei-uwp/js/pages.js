@@ -13,7 +13,6 @@ manageReadMore, updateMacyThrottled*/
 	"use strict";
 
 	root.runAbout = function() {
-					var macyIsActiveClass = "macy--is-active";
 		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
@@ -230,11 +229,9 @@ manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runGallery = function() {
-					var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
-
 		root.handleLightGallery = null;
 
 		var manageLightGallery = function manageLightGallery(macy) {
@@ -729,7 +726,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 	"use strict";
 
 	root.runHome = function() {
-						var macyIsActiveClass = "macy--is-active";
 		/*!
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
 		 * @see {@link https://adaptivecards.io/samples/}
@@ -1210,7 +1206,6 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
     	renderACDiploma4,
     	renderACContacts
     ]; */
-
 		var renderACOptions = {};
 		var macyItems = [];
 
@@ -1433,7 +1428,6 @@ updateMacyThrottled*/
 	"use strict";
 
 	root.runPictures = function() {
-					var macyIsActiveClass = "macy--is-active";
 		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
@@ -1824,8 +1818,6 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runWorks = function() {
-					var macyIsActiveClass = "macy--is-active";
-
 		var onImagesLoaded = function onImagesLoaded(macy) {
 			var img = macy.getElementsByTagName("img") || "";
 			var imgLength = img.length || 0;

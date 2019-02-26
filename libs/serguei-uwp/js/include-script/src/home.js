@@ -1,8 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global console, addListener, removeListener, getByClass, addClass, hasClass,
+/*global addClass, addListener, console, getByClass, hasClass,
 manageDataSrcImgAll, manageExternalLinkAll, manageImgLightbox, manageMacy,
-manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
+manageReadMore, removeChildren, removeListener, renderAC, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -11,7 +11,7 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 
 	root.runHome = function () {
 
-						/*!
+		/*!
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
 		 * @see {@link https://adaptivecards.io/samples/}
 		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1984}
