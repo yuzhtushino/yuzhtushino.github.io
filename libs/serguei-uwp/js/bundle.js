@@ -555,15 +555,15 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	"use strict";
 	root.manageExternalLinkAll = function () {
 		var link = document.getElementsByTagName("a") || "";
-		var handle = function (url, ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			var logic = function () {
-				openDeviceBrowser(url);
-			};
-			debounce(logic, 200).call(root);
-		};
 		var arrange = function (e) {
+			var handleLink = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
+				};
+				debounce(logic, 200).call(root);
+			};
 			var externalLinkIsBindedClass = "external-link--is-binded";
 			if (!hasClass(e, externalLinkIsBindedClass)) {
 				var url = e.getAttribute("href") || "";
@@ -573,7 +573,7 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 						e.target = "_blank";
 						e.rel = "noopener";
 					} else {
-						addListener(e, "click", handle.bind(null, url));
+						addListener(e, "click", handleLink.bind(null, url));
 					}
 					addClass(e, externalLinkIsBindedClass);
 				}
@@ -965,16 +965,14 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
 
-	if (supportsSvgSmilAnimation && docElem) {
+	if (supportsSvgSmilAnimation) {
 		addClass(docElem, "svganimate");
 	}
 
 	var run = function () {
 
-		if (docElem && docElem.classList) {
-			removeClass(docElem, "no-js");
-			addClass(docElem, "js");
-		}
+		removeClass(docElem, "no-js");
+		addClass(docElem, "js");
 
 		var earlyDeviceFormfactor = (function (selectors) {
 			var orientation;
@@ -1152,40 +1150,40 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 
 		var switchLayoutType = function () {
 
-			var addMqHandler = function (mqString, callback) {
-				var handle = function (x) {
+			var arrange = function (mqString, callback) {
+				var handleMq = function (x) {
 					if (x.matches) {
 						if (callback && "function" === typeof callback) {
 							callback();
 						}
 					}
 				};
-				var mq = root.matchMedia(mqString);
-				handle(mq);
-				mq.addListener(handle);
+				var mqList = root.matchMedia(mqString);
+				handleMq(mqList);
+				mqList.addListener(handleMq);
 			};
 
-			var mqCallback = function (attrName, layoutType) {
+			var onMatch = function (attrName, layoutType) {
 				docBody.setAttribute(attrName, layoutType);
 			};
 
-			var mqHandlers = [{
+			var mqItems = [{
 					val: "(max-width: 639px)",
-					fn: mqCallback.bind(null, "data-layout-type", "overlay")
+					fn: onMatch.bind(null, "data-layout-type", "overlay")
 				}, {
 					val: "(min-width: 640px) and (max-width: 1023px)",
-					fn: mqCallback.bind(null, "data-layout-type", "tabs")
+					fn: onMatch.bind(null, "data-layout-type", "tabs")
 				}, {
 					val: "(min-width: 1024px)",
-					fn: mqCallback.bind(null, "data-layout-type", "docked-minimized")
+					fn: onMatch.bind(null, "data-layout-type", "docked-minimized")
 				}
 			];
 
 			var i,
 			l;
-			for (i = 0, l = mqHandlers.length; i < l; i += 1) {
-				if ("function" === typeof mqHandlers[i].fn) {
-					addMqHandler(mqHandlers[i].val, mqHandlers[i].fn);
+			for (i = 0, l = mqItems.length; i < l; i += 1) {
+				if ("function" === typeof mqItems[i].fn) {
+					arrange(mqItems[i].val, mqItems[i].fn);
 				}
 			}
 			i = l = null;
