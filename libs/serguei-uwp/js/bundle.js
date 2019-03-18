@@ -1,17 +1,17 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global $readMoreJS, AdaptiveCards, addClass, addListener, console, debounce,
-doesFontExist, getByClass, getHumanDate, hasClass, IframeLightbox,
-imgLightbox, isNodejs, isElectron, isNwjs, LazyLoad, loadDeferred,
-LoadingSpinner, loadJsCss, Macy, needsPolyfills, openDeviceBrowser, parseLink,
-progressBar, removeClass, require, runAbout, runGallery, runHome, runPictures,
-runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
+doesFontExist, getByClass, getHumanDate, IframeLightbox, imgLightbox,
+isNodejs, isElectron, isNwjs, LazyLoad, loadDeferred, LoadingSpinner,
+loadJsCss, Macy, needsPolyfills, openDeviceBrowser, parseLink, progressBar,
+removeClass, require, runAbout, runGallery, runHome, runPictures, runWorks,
+supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
  * @see {@link https://github.com/paulmillr/console-polyfill}
  */
-(function(root){
+(function (root, document) {
 	"use strict";
 	if (!root.console) {
 		root.console = {};
@@ -36,12 +36,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		}
 	}
 	prop = method = dummy = properties = methods = null;
-})("undefined" !== typeof window ? window : this);
-/*!
- * supportsPassive
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * supportsPassive
+	 */
 	root.supportsPassive = (function () {
 		var support = false;
 		try {
@@ -54,31 +52,27 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		} catch (err) {}
 		return support;
 	})();
-})("undefined" !== typeof window ? window : this);
-/*!
- * supportsSvgSmilAnimation
- */
-(function (root, document) {
-	"use strict";
-	var toStringFn = {}.toString;
-	root.supportsSvgSmilAnimation = !!document.createElementNS &&
+
+	/*!
+	 * supportsSvgSmilAnimation
+	 */
+	root.supportsSvgSmilAnimation = (function () {
+		var toStringFn = {}.toString;
+		return !!document.createElementNS &&
 		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * supportsCanvas
- */
-(function (root, document) {
-	"use strict";
+	})();
+
+	/*!
+	 * supportsCanvas
+	 */
 	root.supportsCanvas = (function () {
 		var elem = document.createElement("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * needsPolyfills
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * needsPolyfills
+	 */
 	root.needsPolyfills = (function () {
 		return !String.prototype.startsWith ||
 		!supportsPassive ||
@@ -103,12 +97,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		!root.WeakMap ||
 		!root.MutationObserver;
 	})();
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * getHumanDate
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * getHumanDate
+	 */
 	root.getHumanDate = (function () {
 		var newDate = (new Date());
 		var newDay = newDate.getDate();
@@ -123,15 +115,13 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		}
 		return newYear + "-" + newMonth + "-" + newDay;
 	})();
-})("undefined" !== typeof window ? window : this);
-/*!
- * Super-simple wrapper around addEventListener and attachEvent (old IE).
- * Does not handle differences in the Event-objects.
- * @see {@link https://github.com/finn-no/eventlistener}
- */
-(function (root) {
-	"use strict";
-	var wrap = function (standard, fallback) {
+
+	/*!
+	 * Super-simple wrapper around addEventListener and attachEvent (old IE).
+	 * Does not handle differences in the Event-objects.
+	 * @see {@link https://github.com/finn-no/eventlistener}
+	 */
+	var wrapListener = function (standard, fallback) {
 		return function (el, type, listener, useCapture) {
 			if (el[standard]) {
 				el[standard](type, listener, useCapture);
@@ -142,14 +132,12 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		};
 	};
-	root.addListener = wrap("addEventListener", "attachEvent");
-	root.removeListener = wrap("removeEventListener", "detachEvent");
-})("undefined" !== typeof window ? window : this);
-/*!
- * get elements by class name wrapper
- */
-(function (root, document) {
-	"use strict";
+	root.addListener = wrapListener("addEventListener", "attachEvent");
+	root.removeListener = wrapListener("removeEventListener", "detachEvent");
+
+	/*!
+	 * get elements by class name wrapper
+	 */
 	root.getByClass = function (parent, name) {
 		if (!document.getElementsByClassName) {
 			var children = (parent || document.body).getElementsByTagName("*"),
@@ -170,12 +158,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			return parent ? parent.getElementsByClassName(name) : "";
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * class list wrapper
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * class list wrapper
+	 */
 	var hasClass;
 	var addClass;
 	var removeClass;
@@ -212,12 +198,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			addClass(el, name);
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * parseLink
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * parseLink
+	 */
 	/*jshint bitwise: false */
 	root.parseLink = function (url, full) {
 		var _full = full || "";
@@ -279,12 +263,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		})();
 	};
 	/*jshint bitwise: true */
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * getHTTP
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * getHTTP
+	 */
 	var getHTTP = function (force) {
 		var any = force || "";
 		var locProtocol = root.location.protocol || "";
@@ -292,12 +274,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	};
 	root.getHTTP = getHTTP;
 	root.forcedHTTP = getHTTP(true);
-})("undefined" !== typeof window ? window : this);
-/*!
- * throttle
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * throttle
+	 */
 	root.throttle = function (func, wait) {
 		var ctx;
 		var args;
@@ -325,12 +305,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			return rtn;
 		};
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * debounce
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * debounce
+	 */
 	root.debounce = function (func, wait) {
 		var timeout;
 		var args;
@@ -354,12 +332,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		};
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * isNodejs isElectron isNwjs;
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * isNodejs isElectron isNwjs;
+	 */
 	root.isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
 	root.isElectron = (function () {
 		if (typeof root !== "undefined" &&
@@ -392,12 +368,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 		}
 		return false;
 	})();
-})("undefined" !== typeof window ? window : this);
-/*!
- * openDeviceBrowser
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * openDeviceBrowser
+	 */
 	root.openDeviceBrowser = function (url) {
 		var onElectron = function () {
 			var es = isElectron ? require("electron").shell : "";
@@ -424,24 +398,20 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		}
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * setVisible
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * setVisible
+	 */
 	root.setVisible = function (e) {
 		if (e) {
 			e.style.visibility = "visible";
 			e.style.opacity = 1;
 		}
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * removeElement
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * removeElement
+	 */
 	root.removeElement = function (e) {
 		if (e) {
 			if ("undefined" !== typeof e.remove) {
@@ -451,14 +421,12 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		}
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * modified loadExt
- * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
- * passes jshint
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * modified loadExt
+	 * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
+	 * passes jshint
+	 */
 	root.loadJsCss = function (files, callback, type) {
 		var _this = this;
 		_this.files = files;
@@ -522,12 +490,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			_this.callback();
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * loadDeferred
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * loadDeferred
+	 */
 	root.loadDeferred = function (urlArray, callback) {
 		var timer;
 		var handle = function () {
@@ -547,12 +513,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			addListener(root, "load", handle);
 		}
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * manageExternalLinkAll
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * manageExternalLinkAll
+	 */
 	root.manageExternalLinkAll = function () {
 		var link = document.getElementsByTagName("a") || "";
 		var arrange = function (e) {
@@ -588,21 +552,19 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			i = l = null;
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * manageDataSrcImgAll
- * @see {@link https://github.com/verlok/lazyload}
- */
-(function (root, document) {
-	"use strict";
-	var isActiveClass = "is-active";
-	var dataSrcImgClass = "data-src-img";
-	var dataSrcImgIsBindedClass = "data-src-img--is-binded";
+
+	/*!
+	 * manageDataSrcImgAll
+	 * @see {@link https://github.com/verlok/lazyload}
+	 */
 	root.lazyLoadDataSrcImgInstance = null;
 	root.manageDataSrcImgAll = function (callback) {
 		var cb = function () {
 			return callback && "function" === typeof callback && callback();
 		};
+		var isActiveClass = "is-active";
+		var dataSrcImgClass = "data-src-img";
+		var dataSrcImgIsBindedClass = "data-src-img--is-binded";
 		var images = getByClass(document, dataSrcImgClass) || "";
 		var i = images.length;
 		while (i--) {
@@ -622,21 +584,19 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 				});
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * manageDataSrcIframeAll
- * @see {@link https://github.com/verlok/lazyload}
- */
-(function (root, document) {
-	"use strict";
-	var isActiveClass = "is-active";
-	var dataSrcIframeClass = "data-src-iframe";
-	var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
+
+	/*!
+	 * manageDataSrcIframeAll
+	 * @see {@link https://github.com/verlok/lazyload}
+	 */
 	root.lazyLoadDataSrcIframeInstance = null;
 	root.manageDataSrcIframeAll = function (callback) {
 		var cb = function () {
 			return callback && "function" === typeof callback && callback();
 		};
+		var isActiveClass = "is-active";
+		var dataSrcIframeClass = "data-src-iframe";
+		var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
 		var iframes = getByClass(document, dataSrcIframeClass) || "";
 		var i = iframes.length;
 		while (i--) {
@@ -662,15 +622,13 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 				});
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * manageImgLightbox
- * @see {@link https://github.com/englishextra/img-lightbox}
- */
-(function (root, document) {
-	"use strict";
-	var imgLightboxLinkClass = "img-lightbox-link";
+
+	/*!
+	 * manageImgLightbox
+	 * @see {@link https://github.com/englishextra/img-lightbox}
+	 */
 	root.manageImgLightbox = function () {
+		var imgLightboxLinkClass = "img-lightbox-link";
 		var link = getByClass(document, imgLightboxLinkClass) || "";
 		var initScript = function () {
 			imgLightbox(imgLightboxLinkClass, {
@@ -690,15 +648,13 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			initScript();
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * manageIframeLightbox
- * @see {@link https://github.com/englishextra/iframe-lightbox}
- */
-(function (root, document) {
-	"use strict";
-	var iframeLightboxLinkClass = "iframe-lightbox-link";
+
+	/*!
+	 * manageIframeLightbox
+	 * @see {@link https://github.com/englishextra/iframe-lightbox}
+	 */
 	root.manageIframeLightbox = function () {
+		var iframeLightboxLinkClass = "iframe-lightbox-link";
 		var link = getByClass(document, iframeLightboxLinkClass) || "";
 		var initScript = function () {
 			var arrange = function (e) {
@@ -726,13 +682,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			initScript();
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * Macy
- */
-(function (root) {
-	"use strict";
-	var macyIsActiveClass = "macy--is-active";
+
+	/*!
+	 * Macy
+	 */
 	root.macyInstance = null;
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
@@ -792,6 +745,7 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	};
 	var manageMacy = function (macyClass, options) {
 		var macy = getByClass(document, macyClass)[0] || "";
+		var macyIsActiveClass = "macy--is-active";
 		if (root.Macy && macy) {
 			if (!hasClass(macy, macyIsActiveClass)) {
 				initMacy(macyClass, options);
@@ -801,12 +755,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	root.updateMacy = updateMacy;
 	root.updateMacyThrottled = updateMacyThrottled;
 	root.manageMacy = manageMacy;
-})("undefined" !== typeof window ? window : this);
-/*!
- * renderAC
- */
-(function (root) {
-	"use strict";
+
+	/*!
+	 * renderAC
+	 */
 	root.renderAC = function (acGrid, cardObj, renderOptions, onExecute, callback) {
 		if (root.AdaptiveCards && acGrid) {
 			var adaptiveCard = new AdaptiveCards.AdaptiveCard();
@@ -821,12 +773,10 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			adaptiveCard = renderedCard = null;
 		}
 	};
-})("undefined" !== typeof window ? window : this);
-/*!
- * manageReadMore
- */
-(function (root, document) {
-	"use strict";
+
+	/*!
+	 * manageReadMore
+	 */
 	root.manageReadMore = function (callback, options) {
 		var cb = function () {
 			return callback && "function" === typeof callback && callback();
@@ -869,62 +819,60 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			initScript();
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * UWP layout
- */
-(function (root, document) {
-	"use strict";
-	var docBody = document.body || "";
-	var getButtons = function () {
+
+	/*!
+	 * UWP layout
+	 */
+	var setUWPBody = function (attrName, attrValue) {
+		document.body.setAttribute(attrName, attrValue);
+	};
+	var getUWPButtons = function () {
 		var container = getByClass(document, "layout-type-buttons")[0] || "";
 		return container ? (container.getElementsByTagName("button") || "") : "";
 	};
 	root.layoutTypeToTabs = function (e) {
-		var evt = root.event || e;
-		evt.preventDefault();
-		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+		var ev = root.event || e;
+		ev.preventDefault();
+		Array.prototype.slice.call(getUWPButtons()).forEach(function (el) {
 			return (el.disabled = false);
 		});
-		evt.target.disabled = true;
-		docBody.setAttribute("data-layout-type", "tabs");
+		ev.target.disabled = true;
+		setUWPBody("data-layout-type", "tabs");
 	};
 	root.layoutTypeToOverlay = function (e) {
-		var evt = root.event || e;
-		evt.preventDefault();
-		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+		var ev = root.event || e;
+		ev.preventDefault();
+		Array.prototype.slice.call(getUWPButtons()).forEach(function (el) {
 			return (el.disabled = false);
 		});
-		evt.target.disabled = true;
-		docBody.setAttribute("data-layout-type", "overlay");
+		ev.target.disabled = true;
+		setUWPBody("data-layout-type", "overlay");
 	};
 	root.layoutTypeToDockedMinimized = function (e) {
-		var evt = root.event || e;
-		evt.preventDefault();
-		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+		var ev = root.event || e;
+		ev.preventDefault();
+		Array.prototype.slice.call(getUWPButtons()).forEach(function (el) {
 			return (el.disabled = false);
 		});
-		evt.target.disabled = true;
-		docBody.setAttribute("data-layout-type", "docked-minimized");
+		ev.target.disabled = true;
+		setUWPBody("data-layout-type", "docked-minimized");
 	};
 	root.layoutTypeToDocked = function (e) {
-		var evt = root.event || e;
-		evt.preventDefault();
-		Array.prototype.slice.call(getButtons()).forEach(function (el) {
+		var ev = root.event || e;
+		ev.preventDefault();
+		Array.prototype.slice.call(getUWPButtons()).forEach(function (el) {
 			return (el.disabled = false);
 		});
-		evt.target.disabled = true;
-		docBody.setAttribute("data-layout-type", "docked");
+		ev.target.disabled = true;
+		setUWPBody("data-layout-type", "docked");
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * revealYandexMap
- */
-(function (root, document) {
-	"use strict";
-	var isActiveClass = "is-active";
+
+	/*!
+	 * revealYandexMap
+	 */
 	root.revealYandexMap = function (_this) {
 		var yandexMap = document.getElementsByClassName("yandex-map-iframe")[0] || "";
+		var isActiveClass = "is-active";
 		if (yandexMap) {
 			yandexMap.src = yandexMap.dataset.src;
 			addClass(yandexMap, isActiveClass);
@@ -933,15 +881,13 @@ runWorks, supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		}
 	};
-})("undefined" !== typeof window ? window : this, document);
-/*!
- * LoadingSpinner
- */
-(function (root, document) {
-	"use strict";
-	var isActiveClass = "is-active";
+
+	/*!
+	 * LoadingSpinner
+	 */
 	root.LoadingSpinner = (function () {
 		var uwpLoading = getByClass(document, "uwp-loading")[0] || "";
+		var isActiveClass = "is-active";
 		if (!uwpLoading) {
 			return;
 		}
