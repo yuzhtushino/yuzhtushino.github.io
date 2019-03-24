@@ -1,8 +1,9 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global addClass, addListener, console, getByClass, hasClass, lightGallery,
-loadJsCss, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
-removeListener, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+getByClass, lightGallery, loadJsCss, macyClass, macyIsActiveClass,
+macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+onMacyImagesLoaded, updateMacyThrottled*/
 /*!
  * page logic
  */
@@ -15,105 +16,33 @@ removeListener, updateMacyThrottled*/
 		 * @see {@link https://sachinchoolur.github.io/lightgallery.js/docs/api.html}
 		 */
 		root.handleLightGallery = null;
-		var manageLightGallery = function (macy) {
+		var manageLightGallery = function (containerClass) {
+			var container = getByClass(document, containerClass)[0] || "";
 			var initScript = function () {
 				if (root.handleLightGallery) {
 					root.handleLightGallery.destroy(true);
 					root.handleLightGallery = null;
 				}
-				if (macy) {
-					root.handleLightGallery = lightGallery(macy, {
-							autoplay: false,
-							autoplayControls: false,
-							hash: false,
-							share: false
-						});
-				}
+				root.handleLightGallery = lightGallery(container, {
+						autoplay: false,
+						autoplayControls: false,
+						hash: false,
+						share: false
+					});
 			};
-			if (!root.lightGallery) {
-				var load;
-				load = new loadJsCss(["./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
-							"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
-							"./cdn/lightgallery.js/1.1.1/js/lightgallery.plugins.fixed.min.js"], initScript);
-			} else {
-				initScript();
+			if (container) {
+				if (!root.lightGallery) {
+					var load;
+					load = new loadJsCss(["./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
+								"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
+								"./cdn/lightgallery.js/1.1.1/js/lightgallery.plugins.fixed.min.js"], initScript);
+				} else {
+					initScript();
+				}
 			}
 		};
-
-		var onImagesLoaded = function (macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-			var addListeners = function (e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-			var removeListeners = function (e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-			onLoad = function () {
-				removeListeners(this);
-				imgCounter++;
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-					console.log("onImagesLoaded: loaded " + imgCounter + " images");
-				}
-			};
-			onError = function () {
-				removeListeners(this);
-				console.log("onImagesLoaded: failed to load image: " + this.src);
-			};
-			if (img) {
-				var i,
-				l;
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-				i = l = null;
-			}
-		};
-
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-
-		var macyClass = "macy";
-
-		var macyItemIsBindedClass = "macy__item--is-binded";
-
-		var macyIsActiveClass = "macy--is-active";
 
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function () {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageLightGallery(macy);
-		};
-
-		var onMacyResize = function () {
-			try {
-				var item = macy ? (macy.children || macy.querySelectorAll("." + macyClass + " > *") || "") : "";
-				if (item) {
-					var i,
-					l;
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(item[i], "onresize", updateMacyThrottled, {passive: true});
-						}
-					}
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function () {
 			manageMacy(macyClass, {
@@ -130,8 +59,12 @@ removeListener, updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageLightGallery(macyClass);
 		};
 
 		var macyItems = [{
@@ -263,14 +196,8 @@ removeListener, updateMacyThrottled*/
 			}
 		];
 
-		var dataSrcImgClass = "data-src-img";
-
 		var addMacyItems = function (macy, callback) {
-			var dataSrcImgKeyName = "src";
 			var transparentPixel = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/*!
-			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-			 */
 			var html = [];
 			var count = 0;
 			var i,
@@ -286,32 +213,9 @@ removeListener, updateMacyThrottled*/
 				}
 			}
 			i = l = null;
-			/* var count = 0;
-			var i,
-			l;
-			for (i = 0, l = macyItems.length; i < l; i += 1) {
-				var macyItem = document.createElement("a");
-				addClass(macyItem, macyItemIsBindedClass);
-				macyItem.setAttribute("href", macyItems[i].href);
-				macyItem.setAttribute("aria-label", "Показать картинку");
-				var img = document.createElement("img");
-				macyItem.appendChild(img);
-				img.setAttribute("src", transparentPixel);
-				img.setAttribute("class", dataSrcImgClass);
-				img.setAttribute("data-" + dataSrcImgKeyName, macyItems[i].src);
-				macy.appendChild(macyItem);
-				count++;
-				if (count === macyItems.length) {
-					if (callback && "function" === typeof callback) {
-						callback();
-					}
-				}
-			}
-			i = l = null; */
 		};
 
 		if (macy) {
-
 			addMacyItems(macy, onMacyManage);
 		}
 

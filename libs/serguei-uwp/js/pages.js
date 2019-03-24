@@ -2,9 +2,10 @@
 
 /*jslint node: true */
 
-/*global console, GLightbox, loadJsCss, addListener, removeListener, getByClass,
-addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
-manageReadMore, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, getByClass, GLightbox, loadJsCss,
+macyClass, macyIsActiveClass, macyItemIsBindedClass, manageDataSrcImgAll,
+manageExternalLinkAll, manageMacy, manageReadMore, onMacyImagesLoaded,
+updateMacyThrottled*/
 
 /*!
  * page logic
@@ -13,137 +14,43 @@ manageReadMore, updateMacyThrottled*/
 	"use strict";
 
 	root.runAbout = function() {
-		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
-
+		var glightboxClass = "glightbox";
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macy, glightboxClass) {
+		var manageGlightbox = function manageGlightbox(linkClass) {
+			var link = getByClass(document, linkClass)[0] || "";
+
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
 					root.handleGLightbox = null;
 				}
 
-				if (macy) {
-					root.handleGLightbox = new GLightbox({
-						selector: glightboxClass
-					});
-				}
+				root.handleGLightbox = new GLightbox({
+					selector: linkClass
+				});
 			};
 
-			if (!root.GLightbox) {
-				var load;
-				load = new loadJsCss(
-					[
-						"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-						"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
-					],
-					initScript
-				);
-			} else {
-				initScript();
-			}
-		};
-
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-
-			var addListeners = function addListeners(e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-
-			var removeListeners = function removeListeners(e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-
-			onLoad = function onLoad() {
-				removeListeners(this);
-				imgCounter++;
-
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-
-					console.log(
-						"onImagesLoaded: loaded " + imgCounter + " images"
+			if (link) {
+				if (!root.GLightbox) {
+					var load;
+					load = new loadJsCss(
+						[
+							"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+						],
+						initScript
 					);
+				} else {
+					initScript();
 				}
-			};
-
-			onError = function onError() {
-				removeListeners(this);
-				console.log(
-					"onImagesLoaded: failed to load image: " + this.src
-				);
-			};
-
-			if (img) {
-				var i, l;
-
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-
-				i = l = null;
 			}
 		};
 
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyClass = "macy";
-		var macyItemIsBindedClass = "macy__item--is-binded";
-		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function onMacyRender() {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageGlightbox(macy, glightboxClass);
-			manageReadMore(updateMacyThrottled);
-		};
-
-		var onMacyResize = function onMacyResize() {
-			try {
-				var item = macy
-					? macy.children ||
-					  macy.querySelectorAll("." + macyClass + " > *") ||
-					  ""
-					: "";
-
-				if (item) {
-					var i, l;
-
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(
-								item[i],
-								"onresize",
-								updateMacyThrottled,
-								{
-									passive: true
-								}
-							);
-						}
-					}
-
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
@@ -160,32 +67,18 @@ manageReadMore, updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageGlightbox(glightboxClass);
+			manageReadMore(updateMacyThrottled);
 		};
 
 		var macyItems = [];
 
 		var addMacyItems = function addMacyItems(macy, callback) {
-			/*!
-			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-			 */
-
-			/* var html = [];
-      var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems.length; i < l; i += 1) {
-      	html.push(macyItems[i]);
-      	count++;
-      	if (count === macyItems.length) {
-      		macy.innerHTML = html.join("");
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
 			macyItems = getByClass(document, "col") || "";
 			var count = 0;
 			var i, l;
@@ -218,9 +111,10 @@ manageReadMore, updateMacyThrottled*/
 
 /*jslint node: true */
 
-/*global console, lightGallery, loadJsCss, addListener, removeListener,
-getByClass, addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
-manageMacy, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+getByClass, lightGallery, loadJsCss, macyClass, macyIsActiveClass,
+macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+onMacyImagesLoaded, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -234,133 +128,41 @@ manageMacy, updateMacyThrottled*/
 		 */
 		root.handleLightGallery = null;
 
-		var manageLightGallery = function manageLightGallery(macy) {
+		var manageLightGallery = function manageLightGallery(containerClass) {
+			var container = getByClass(document, containerClass)[0] || "";
+
 			var initScript = function initScript() {
 				if (root.handleLightGallery) {
 					root.handleLightGallery.destroy(true);
 					root.handleLightGallery = null;
 				}
 
-				if (macy) {
-					root.handleLightGallery = lightGallery(macy, {
-						autoplay: false,
-						autoplayControls: false,
-						hash: false,
-						share: false
-					});
-				}
+				root.handleLightGallery = lightGallery(container, {
+					autoplay: false,
+					autoplayControls: false,
+					hash: false,
+					share: false
+				});
 			};
 
-			if (!root.lightGallery) {
-				var load;
-				load = new loadJsCss(
-					[
-						"./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
-						"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
-						"./cdn/lightgallery.js/1.1.1/js/lightgallery.plugins.fixed.min.js"
-					],
-					initScript
-				);
-			} else {
-				initScript();
-			}
-		};
-
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-
-			var addListeners = function addListeners(e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-
-			var removeListeners = function removeListeners(e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-
-			onLoad = function onLoad() {
-				removeListeners(this);
-				imgCounter++;
-
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-
-					console.log(
-						"onImagesLoaded: loaded " + imgCounter + " images"
+			if (container) {
+				if (!root.lightGallery) {
+					var load;
+					load = new loadJsCss(
+						[
+							"./cdn/lightgallery.js/1.1.1/css/lightgallery.fixed.min.css",
+							"./cdn/lightgallery.js/1.1.1/js/lightgallery.fixed.min.js",
+							"./cdn/lightgallery.js/1.1.1/js/lightgallery.plugins.fixed.min.js"
+						],
+						initScript
 					);
+				} else {
+					initScript();
 				}
-			};
-
-			onError = function onError() {
-				removeListeners(this);
-				console.log(
-					"onImagesLoaded: failed to load image: " + this.src
-				);
-			};
-
-			if (img) {
-				var i, l;
-
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-
-				i = l = null;
 			}
 		};
 
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyClass = "macy";
-		var macyItemIsBindedClass = "macy__item--is-binded";
-		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function onMacyRender() {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageLightGallery(macy);
-		};
-
-		var onMacyResize = function onMacyResize() {
-			try {
-				var item = macy
-					? macy.children ||
-					  macy.querySelectorAll("." + macyClass + " > *") ||
-					  ""
-					: "";
-
-				if (item) {
-					var i, l;
-
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(
-								item[i],
-								"onresize",
-								updateMacyThrottled,
-								{
-									passive: true
-								}
-							);
-						}
-					}
-
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
@@ -377,8 +179,12 @@ manageMacy, updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageLightGallery(macyClass);
 		};
 
 		var macyItems = [
@@ -635,16 +441,10 @@ manageMacy, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/mytushino-gallery/@1x/zhantil_khimkinskij_bul_17.jpg"
 			}
 		];
-		var dataSrcImgClass = "data-src-img";
 
 		var addMacyItems = function addMacyItems(macy, callback) {
-			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/*!
-			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-			 */
-
 			var html = [];
 			var count = 0;
 			var i, l;
@@ -677,28 +477,6 @@ manageMacy, updateMacyThrottled*/
 			}
 
 			i = l = null;
-			/* var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems.length; i < l; i += 1) {
-      	var macyItem = document.createElement("a");
-      	addClass(macyItem, macyItemIsBindedClass);
-      	macyItem.setAttribute("href", macyItems[i].href);
-      	macyItem.setAttribute("aria-label", "Показать картинку");
-      	var img = document.createElement("img");
-      	macyItem.appendChild(img);
-      	img.setAttribute("src", transparentPixel);
-      	img.setAttribute("class", dataSrcImgClass);
-      	img.setAttribute("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macy.appendChild(macyItem);
-      	count++;
-      	if (count === macyItems.length) {
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
 		};
 
 		if (macy) {
@@ -715,9 +493,10 @@ manageMacy, updateMacyThrottled*/
 
 /*jslint node: true */
 
-/*global console, addListener, removeListener, getByClass, addClass, hasClass,
-manageDataSrcImgAll, manageExternalLinkAll, manageImgLightbox, manageMacy,
-manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, getByClass, macyClass, macyIsActiveClass,
+macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll,
+manageImgLightbox, manageMacy, manageReadMore, onMacyImagesLoaded,
+removeChildren, renderAC, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -730,6 +509,15 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/render-a-card}
 		 * @see {@link https://adaptivecards.io/samples/}
 		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1984}
+		 */
+
+		/*!
+		 * to change default style
+		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config}
+		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config#adaptivecardconfig}
+		 * @see {@link https://github.com/Microsoft/AdaptiveCards/pull/905}
+		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
+		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
 		 */
 
 		/* var renderACVCard = {
@@ -1145,18 +933,8 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
     			]
     		}
     	]
-    }; */
-
-		/*!
-		 * to change default style
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config}
-		 * @see {@link https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config#adaptivecardconfig}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/pull/905}
-		 * @see {@link https://github.com/Microsoft/AdaptiveCards/issues/1929}
-		 * @see {@link https://material.io/tools/color/#!/?view.left=0&view.right=0&secondary.color=BDBDBD&primary.color=F06292}
-		 */
-
-		/* var renderACOptions = {
+    };
+    	var renderACOptions = {
     	"fontFamily": "Roboto, Segoe UI, Segoe MDL2 Assets, Helvetica Neue, sans-serif",
     	"containerStyles": {
     		"default": {
@@ -1193,9 +971,8 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
     			"backgroundColor": "#ffffff"
     		}
     	}
-    }; */
-
-		/* var macyItems = [
+    };
+    	var macyItems = [
     	renderACVCard,
     	renderACIntro,
     	renderACBackground,
@@ -1205,138 +982,51 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
     	renderACDiploma3,
     	renderACDiploma4,
     	renderACContacts
-    ]; */
-		var renderACOptions = {};
-		var macyItems = [];
-
-		var onExecuteAC = function onExecuteAC(action) {
-			if (action.url) {
-				root.location.href = action.url;
-			}
-		};
-
-		var manageAC = function manageAC(macy, callback) {
-			if (root.renderAC) {
-				var count = 0;
-				var i, l;
-
-				for (i = 0, l = macyItems.length; i < l; i += 1) {
-					renderAC(
-						macy,
-						macyItems[i],
-						renderACOptions,
-						onExecuteAC,
-						null
-					);
-					count++;
-
-					if (count === macyItems.length) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
-					}
-				}
-
-				i = l = null;
-			}
-		};
-
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-
-			var addListeners = function addListeners(e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-
-			var removeListeners = function removeListeners(e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-
-			onLoad = function onLoad() {
-				removeListeners(this);
-				imgCounter++;
-
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-
-					console.log(
-						"onImagesLoaded: loaded " + imgCounter + " images"
-					);
-				}
-			};
-
-			onError = function onError() {
-				removeListeners(this);
-				console.log(
-					"onImagesLoaded: failed to load image: " + this.src
-				);
-			};
-
-			if (img) {
-				var i, l;
-
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-
-				i = l = null;
-			}
-		};
-
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyClass = "macy";
-		var macyItemIsBindedClass = "macy__item--is-binded";
-		var macyIsActiveClass = "macy--is-active";
+    ];
+    	var manageAC = function (macyItems, callback) {
+    		var onExecuteAC = function (action) {
+    		if (action.url) {
+    			root.location.href = action.url;
+    		}
+    	};
+    		if (root.renderAC) {
+    		var count = 0;
+    		var i,
+    		l;
+    		for (i = 0, l = macyItems.length; i < l; i += 1) {
+    			renderAC(macy, macyItems[i], renderACOptions, onExecuteAC, null);
+    			count++;
+    			if (count === macyItems.length) {
+    				if (callback && "function" === typeof callback) {
+    					callback();
+    				}
+    			}
+    		}
+    		i = l = null;
+    	}
+    };
+    	var addMacyItems = function (macy, callback) {
+    	if (root.AdaptiveCards) {
+    		removeChildren(macy);
+    		manageAC(macyItems, callback);
+    	} else {
+    		macyItems = getByClass(document, "col") || "";
+    		var count = 0;
+    		var i,
+    		l;
+    		for (i = 0, l = macyItems.length; i < l; i += 1) {
+    			addClass(macyItems[i], macyItemIsBindedClass);
+    			count++;
+    			if (count === macyItems.length) {
+    				if (callback && "function" === typeof callback) {
+    					callback();
+    				}
+    			}
+    		}
+    		i = l = null;
+    	}
+    }; */
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function onMacyRender() {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageImgLightbox();
-			manageReadMore(updateMacyThrottled);
-		};
-
-		var onMacyResize = function onMacyResize() {
-			try {
-				var item = macy
-					? macy.children ||
-					  macy.querySelectorAll("." + macyClass + " > *") ||
-					  ""
-					: "";
-
-				if (item) {
-					var i, l;
-
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(
-								item[i],
-								"onresize",
-								updateMacyThrottled,
-								{
-									passive: true
-								}
-							);
-						}
-					}
-
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
@@ -1353,54 +1043,34 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageImgLightbox();
+			manageReadMore(updateMacyThrottled);
 		};
-		/* var macyItems = [
-    ]; */
+
+		var macyItems = [];
 
 		var addMacyItems = function addMacyItems(macy, callback) {
-			if (root.AdaptiveCards) {
-				/* macy.innerHTML = ""; */
-				removeChildren(macy);
-				manageAC(macy, callback);
-			} else {
-				/*!
-				 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-				 */
+			macyItems = getByClass(document, "col") || "";
+			var count = 0;
+			var i, l;
 
-				/* var html = [];
-        var count = 0;
-        var i,
-        l;
-        for (i = 0, l = macyItems.length; i < l; i += 1) {
-        	html.push(macyItems[i]);
-        	count++;
-        	if (count === macyItems.length) {
-        		macy.innerHTML = html.join("");
-        		if (callback && "function" === typeof callback) {
-        			callback();
-        		}
-        	}
-        }
-        i = l = null; */
-				macyItems = getByClass(document, "col") || "";
-				var count = 0;
-				var i, l;
+			for (i = 0, l = macyItems.length; i < l; i += 1) {
+				addClass(macyItems[i], macyItemIsBindedClass);
+				count++;
 
-				for (i = 0, l = macyItems.length; i < l; i += 1) {
-					addClass(macyItems[i], macyItemIsBindedClass);
-					count++;
-
-					if (count === macyItems.length) {
-						if (callback && "function" === typeof callback) {
-							callback();
-						}
+				if (count === macyItems.length) {
+					if (callback && "function" === typeof callback) {
+						callback();
 					}
 				}
-
-				i = l = null;
 			}
+
+			i = l = null;
 		};
 
 		if (macy) {
@@ -1417,9 +1087,10 @@ manageReadMore, renderAC, removeChildren, updateMacyThrottled*/
 
 /*jslint node: true */
 
-/*global console, GLightbox, loadJsCss, addListener, removeListener, getByClass,
-addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
-updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+getByClass, GLightbox, loadJsCss, macyClass, macyIsActiveClass,
+macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
+onMacyImagesLoaded, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -1428,136 +1099,43 @@ updateMacyThrottled*/
 	"use strict";
 
 	root.runPictures = function() {
-		var glightboxClass = "glightbox";
 		/*!
 		 * @see {@link https://glightbox.mcstudios.com.mx/#options}
 		 */
-
+		var glightboxClass = "glightbox";
 		root.handleGLightbox = null;
 
-		var manageGlightbox = function manageGlightbox(macy, glightboxClass) {
+		var manageGlightbox = function manageGlightbox(linkClass) {
+			var link = getByClass(document, linkClass)[0] || "";
+
 			var initScript = function initScript() {
 				if (root.handleGLightbox) {
 					root.handleGLightbox.destroy();
 					root.handleGLightbox = null;
 				}
 
-				if (macy) {
-					root.handleGLightbox = new GLightbox({
-						selector: glightboxClass
-					});
-				}
+				root.handleGLightbox = new GLightbox({
+					selector: linkClass
+				});
 			};
 
-			if (!root.GLightbox) {
-				var load;
-				load = new loadJsCss(
-					[
-						"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
-						"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
-					],
-					initScript
-				);
-			} else {
-				initScript();
-			}
-		};
-
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-
-			var addListeners = function addListeners(e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-
-			var removeListeners = function removeListeners(e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-
-			onLoad = function onLoad() {
-				removeListeners(this);
-				imgCounter++;
-
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-
-					console.log(
-						"onImagesLoaded: loaded " + imgCounter + " images"
+			if (link) {
+				if (!root.GLightbox) {
+					var load;
+					load = new loadJsCss(
+						[
+							"./cdn/glightbox/1.0.8/css/glightbox.fixed.min.css",
+							"./cdn/glightbox/1.0.8/js/glightbox.fixed.min.js"
+						],
+						initScript
 					);
+				} else {
+					initScript();
 				}
-			};
-
-			onError = function onError() {
-				removeListeners(this);
-				console.log(
-					"onImagesLoaded: failed to load image: " + this.src
-				);
-			};
-
-			if (img) {
-				var i, l;
-
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-
-				i = l = null;
 			}
 		};
 
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyClass = "macy";
-		var macyItemIsBindedClass = "macy__item--is-binded";
-		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function onMacyRender() {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageGlightbox(macy, glightboxClass);
-		};
-
-		var onMacyResize = function onMacyResize() {
-			try {
-				var item = macy
-					? macy.children ||
-					  macy.querySelectorAll("." + macyClass + " > *") ||
-					  ""
-					: "";
-
-				if (item) {
-					var i, l;
-
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(
-								item[i],
-								"onresize",
-								updateMacyThrottled,
-								{
-									passive: true
-								}
-							);
-						}
-					}
-
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
@@ -1574,8 +1152,12 @@ updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageGlightbox(glightboxClass);
 		};
 
 		var macyItems = [
@@ -1724,16 +1306,10 @@ updateMacyThrottled*/
 					"./libs/serguei-uwp/img/serguei-pictures/@2x/36229259776_09b4755088_z.jpg"
 			}
 		];
-		var dataSrcImgClass = "data-src-img";
 
 		var addMacyItems = function addMacyItems(macy, callback) {
-			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/*!
-			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-			 */
-
 			var html = [];
 			var count = 0;
 			var i, l;
@@ -1768,29 +1344,6 @@ updateMacyThrottled*/
 			}
 
 			i = l = null;
-			/* var count = 0;
-      var i,
-      l;
-      for (i = 0, l = macyItems.length; i < l; i += 1) {
-      	var macyItem = document.createElement("a");
-      	addClass(macyItem, macyItemIsBindedClass);
-      	macyItem.setAttribute("href", macyItems[i].href);
-      	macyItem.setAttribute("class", glightboxClass);
-      	macyItem.setAttribute("aria-label", "Показать картинку");
-      	var img = document.createElement("img");
-      	macyItem.appendChild(img);
-      	img.setAttribute("src", transparentPixel);
-      	img.setAttribute("class", dataSrcImgClass);
-      	img.setAttribute("data-" + dataSrcImgKeyName, macyItems[i].src);
-      	macy.appendChild(macyItem);
-      	count++;
-      	if (count === macyItems.length) {
-      		if (callback && "function" === typeof callback) {
-      			callback();
-      		}
-      	}
-      }
-      i = l = null; */
 		};
 
 		if (macy) {
@@ -1807,9 +1360,10 @@ updateMacyThrottled*/
 
 /*jslint node: true */
 
-/*global console, addListener, removeListener, addListener, getByClass,
-addClass, hasClass, manageDataSrcImgAll, manageExternalLinkAll,
-manageIframeLightbox, manageMacy, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+getByClass, macyClass, macyIsActiveClass, macyItemIsBindedClass,
+manageDataSrcImgAll, manageExternalLinkAll, manageIframeLightbox, manageMacy,
+onMacyImagesLoaded, updateMacyThrottled*/
 
 /*!
  * page logic
@@ -1818,101 +1372,7 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 	"use strict";
 
 	root.runWorks = function() {
-		var onImagesLoaded = function onImagesLoaded(macy) {
-			var img = macy.getElementsByTagName("img") || "";
-			var imgLength = img.length || 0;
-			var imgCounter = 0;
-			var onLoad;
-			var onError;
-
-			var addListeners = function addListeners(e) {
-				addListener(e, "load", onLoad, false);
-				addListener(e, "error", onError, false);
-			};
-
-			var removeListeners = function removeListeners(e) {
-				removeListener(e, "load", onLoad, false);
-				removeListener(e, "error", onError, false);
-			};
-
-			onLoad = function onLoad() {
-				removeListeners(this);
-				imgCounter++;
-
-				if (imgCounter === imgLength) {
-					if (root.updateMacyThrottled) {
-						updateMacyThrottled();
-					}
-
-					console.log(
-						"onImagesLoaded: loaded " + imgCounter + " images"
-					);
-				}
-			};
-
-			onError = function onError() {
-				removeListeners(this);
-				console.log(
-					"onImagesLoaded: failed to load image: " + this.src
-				);
-			};
-
-			if (img) {
-				var i, l;
-
-				for (i = 0, l = img.length; i < l; i += 1) {
-					addListeners(img[i]);
-				}
-
-				i = l = null;
-			}
-		};
-
-		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
-		var macyClass = "macy";
-		var macyItemIsBindedClass = "macy__item--is-binded";
-		var macyIsActiveClass = "macy--is-active";
 		var macy = getByClass(document, macyClass)[0] || "";
-
-		var onMacyRender = function onMacyRender() {
-			addClass(macy, macyIsActiveClass);
-			onImagesLoaded(macy);
-			manageDataSrcImgAll(updateMacyThrottled);
-			manageExternalLinkAll();
-			manageIframeLightbox();
-		};
-
-		var onMacyResize = function onMacyResize() {
-			try {
-				var item = macy
-					? macy.children ||
-					  macy.querySelectorAll("." + macyClass + " > *") ||
-					  ""
-					: "";
-
-				if (item) {
-					var i, l;
-
-					for (i = 0, l = item.length; i < l; i += 1) {
-						if (!hasClass(item[i], anyResizeEventIsBindedClass)) {
-							addClass(item[i], anyResizeEventIsBindedClass);
-							addListener(
-								item[i],
-								"onresize",
-								updateMacyThrottled,
-								{
-									passive: true
-								}
-							);
-						}
-					}
-
-					i = l = null;
-				}
-			} catch (err) {
-				throw new Error("cannot onMacyResize " + err);
-			}
-		};
 
 		var onMacyManage = function onMacyManage() {
 			manageMacy(macyClass, {
@@ -1929,8 +1389,12 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 					360: 1
 				}
 			});
-			onMacyRender();
-			onMacyResize();
+			addClass(macy, macyIsActiveClass);
+			onMacyImagesLoaded(macy, updateMacyThrottled);
+			manageMacyItemAll(macy);
+			manageDataSrcImgAll(updateMacyThrottled);
+			manageExternalLinkAll();
+			manageIframeLightbox();
 		};
 
 		var macyItems = [
@@ -1987,16 +1451,10 @@ manageIframeLightbox, manageMacy, updateMacyThrottled*/
 					"./libs/serguei-uwp/img/works-screenshots/@1x/noushevr.github.io.jpg"
 			}
 		];
-		var dataSrcImgClass = "data-src-img";
 
 		var addMacyItems = function addMacyItems(macy, callback) {
-			var dataSrcImgKeyName = "src";
 			var transparentPixel =
 				"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201%201%27%2F%3E";
-			/*!
-			 * @see {@link https://stackoverflow.com/questions/18393981/append-vs-html-vs-innerhtml-performance}
-			 */
-
 			var html = [];
 			var count = 0;
 			var i, l;

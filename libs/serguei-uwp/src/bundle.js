@@ -1,11 +1,13 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global $readMoreJS, AdaptiveCards, addClass, addListener, console, debounce,
-doesFontExist, getByClass, getHumanDate, IframeLightbox, imgLightbox,
-isNodejs, isElectron, isNwjs, LazyLoad, loadDeferred, LoadingSpinner,
-loadJsCss, Macy, needsPolyfills, openDeviceBrowser, parseLink, progressBar,
-removeClass, require, runAbout, runGallery, runHome, runPictures, runWorks,
-supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
+/*global $readMoreJS, AdaptiveCards, addClass, addListener, console,
+dataSrcIframeClass, dataSrcImgClass, debounce, doesFontExist, getByClass,
+getHumanDate, IframeLightbox, imgLightbox, isNodejs, isElectron, isNwjs,
+LazyLoad, loadDeferred, LoadingSpinner, loadJsCss, Macy, macyClass,
+macyIsActiveClass, needsPolyfills, openDeviceBrowser, parseLink, progressBar,
+removeClass, removeListener, require, runAbout, runGallery, runHome,
+runPictures, runWorks, supportsCanvas, supportsPassive,
+supportsSvgSmilAnimation, throttle*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -557,13 +559,16 @@ supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	 * manageDataSrcImgAll
 	 * @see {@link https://github.com/verlok/lazyload}
 	 */
+	root.dataSrcImgClass = "data-src-img";
+
+	root.dataSrcImgKeyName = "src";
+
 	root.lazyLoadDataSrcImgInstance = null;
 	root.manageDataSrcImgAll = function (callback) {
 		var cb = function () {
 			return callback && "function" === typeof callback && callback();
 		};
 		var isActiveClass = "is-active";
-		var dataSrcImgClass = "data-src-img";
 		var dataSrcImgIsBindedClass = "data-src-img--is-binded";
 		var images = getByClass(document, dataSrcImgClass) || "";
 		var i = images.length;
@@ -589,13 +594,16 @@ supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	 * manageDataSrcIframeAll
 	 * @see {@link https://github.com/verlok/lazyload}
 	 */
+	root.dataSrcIframeClass = "data-src-iframe";
+
+	root.dataSrcIframeKeyName = "src";
+
 	root.lazyLoadDataSrcIframeInstance = null;
 	root.manageDataSrcIframeAll = function (callback) {
 		var cb = function () {
 			return callback && "function" === typeof callback && callback();
 		};
 		var isActiveClass = "is-active";
-		var dataSrcIframeClass = "data-src-iframe";
 		var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
 		var iframes = getByClass(document, dataSrcIframeClass) || "";
 		var i = iframes.length;
@@ -686,7 +694,14 @@ supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 	/*!
 	 * Macy
 	 */
+	root.macyClass = "macy";
+
+	root.macyItemIsBindedClass = "macy__item--is-binded";
+
+	root.macyIsActiveClass = "macy--is-active";
+
 	root.macyInstance = null;
+
 	var updateMacy = function (delay) {
 		var timeout = delay || 100;
 		var logThis;
@@ -702,7 +717,9 @@ supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 				}, timeout);
 		}
 	};
+
 	var updateMacyThrottled = throttle(updateMacy, 1000);
+
 	var initMacy = function (macyClass, options) {
 		var defaultSettings = {
 			/* container: ".macy", */
@@ -743,18 +760,78 @@ supportsCanvas, supportsPassive, supportsSvgSmilAnimation, throttle*/
 			}
 		}
 	};
+
 	var manageMacy = function (macyClass, options) {
 		var macy = getByClass(document, macyClass)[0] || "";
-		var macyIsActiveClass = "macy--is-active";
 		if (root.Macy && macy) {
 			if (!hasClass(macy, macyIsActiveClass)) {
 				initMacy(macyClass, options);
 			}
 		}
 	};
+
 	root.updateMacy = updateMacy;
 	root.updateMacyThrottled = updateMacyThrottled;
 	root.manageMacy = manageMacy;
+
+	root.onMacyImagesLoaded = function (macy, callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var img = macy.getElementsByTagName("img") || "";
+		var imgLength = img.length || 0;
+		var imgCounter = 0;
+		var onLoad;
+		var onError;
+		var addListeners = function (e) {
+			addListener(e, "load", onLoad, false);
+			addListener(e, "error", onError, false);
+		};
+		var removeListeners = function (e) {
+			removeListener(e, "load", onLoad, false);
+			removeListener(e, "error", onError, false);
+		};
+		onLoad = function () {
+			removeListeners(this);
+			imgCounter++;
+			if (imgCounter === imgLength) {
+				cb();
+				console.log("onMacyImagesLoaded: loaded " + imgCounter + " images");
+			}
+		};
+		onError = function () {
+			removeListeners(this);
+			console.log("onMacyImagesLoaded: failed to load image: " + this.src);
+		};
+		if (img) {
+			var i,
+			l;
+			for (i = 0, l = img.length; i < l; i += 1) {
+				addListeners(img[i]);
+			}
+			i = l = null;
+		}
+	};
+
+	root.manageMacyItemAll = function (macy) {
+		try {
+			var macyItems = macy ? (macy.children || macy.querySelectorAll("." + macyClass + " > *") || "") : "";
+			var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
+			if (macyItems) {
+				var i,
+				l;
+				for (i = 0, l = macyItems.length; i < l; i += 1) {
+					if (!hasClass(macyItems[i], anyResizeEventIsBindedClass)) {
+						addClass(macyItems[i], anyResizeEventIsBindedClass);
+						addListener(macyItems[i], "onresize", updateMacyThrottled, {passive: true});
+					}
+				}
+				i = l = null;
+			}
+		} catch (err) {
+			throw new Error("cannot manageMacyItemAll " + err);
+		}
+	};
 
 	/*!
 	 * renderAC
