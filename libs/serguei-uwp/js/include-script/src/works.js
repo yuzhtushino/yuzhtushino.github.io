@@ -1,6 +1,6 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+/*global addClass, manageMacyItemAll, dataSrcImgClass,
 getByClass, macyClass, macyIsActiveClass, macyItemIsBindedClass,
 manageDataSrcImgAll, manageExternalLinkAll, manageIframeLightbox, manageMacy,
 onMacyImagesLoaded, updateMacyThrottled*/
@@ -77,7 +77,7 @@ onMacyImagesLoaded, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems.length; i < l; i += 1) {
-				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link ' + macyItemIsBindedClass + '" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				html.push('<a href="javascript:void(0);" data-src="' + macyItems[i].href + '" class="iframe-lightbox-link ' + macyItemIsBindedClass + '" data-padding-bottom="56.25%" data-scrolling="true" aria-label="Ссылка"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-src="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems.length) {
 					macy.innerHTML = html.join("");

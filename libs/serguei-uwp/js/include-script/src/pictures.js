@@ -1,6 +1,6 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
+/*global addClass, manageMacyItemAll, dataSrcImgClass,
 getByClass, GLightbox, loadJsCss, macyClass, macyIsActiveClass,
 macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll, manageMacy,
 onMacyImagesLoaded, updateMacyThrottled*/
@@ -147,7 +147,7 @@ onMacyImagesLoaded, updateMacyThrottled*/
 			var i,
 			l;
 			for (i = 0, l = macyItems.length; i < l; i += 1) {
-				html.push('<a href="' + macyItems[i].href + '" class="' + glightboxClass + ' ' + macyItemIsBindedClass + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-' + dataSrcImgKeyName + '="' + macyItems[i].src + '" alt="" /></a>\n');
+				html.push('<a href="' + macyItems[i].href + '" class="' + glightboxClass + ' ' + macyItemIsBindedClass + '" aria-label="Показать картинку"><img src="' + transparentPixel + '" class="' + dataSrcImgClass + '" data-src="' + macyItems[i].src + '" alt="" /></a>\n');
 				count++;
 				if (count === macyItems.length) {
 					macy.innerHTML = html.join("");

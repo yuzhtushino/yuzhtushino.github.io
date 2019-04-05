@@ -562,8 +562,6 @@ supportsSvgSmilAnimation, throttle*/
 	 */
 	root.dataSrcImgClass = "data-src-img";
 
-	root.dataSrcImgKeyName = "src";
-
 	root.lazyLoadDataSrcImgInstance = null;
 	root.manageDataSrcImgAll = function (callback) {
 		var cb = function () {
@@ -596,8 +594,6 @@ supportsSvgSmilAnimation, throttle*/
 	 * @see {@link https://github.com/verlok/lazyload}
 	 */
 	root.dataSrcIframeClass = "data-src-iframe";
-
-	root.dataSrcIframeKeyName = "src";
 
 	root.lazyLoadDataSrcIframeInstance = null;
 	root.manageDataSrcIframeAll = function (callback) {
