@@ -659,8 +659,7 @@ supportsSvgSmilAnimation, throttle*/
 	 * @see {@link https://github.com/englishextra/iframe-lightbox}
 	 */
 	root.manageIframeLightbox = function () {
-		var iframeLightboxLinkClass = "iframe-lightbox-link";
-		var link = getByClass(document, iframeLightboxLinkClass) || "";
+		var link = getByClass(document, "iframe-lightbox-link") || "";
 		var initScript = function () {
 			var arrange = function (e) {
 				e.lightbox = new IframeLightbox(e, {
