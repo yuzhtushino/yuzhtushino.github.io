@@ -124,7 +124,7 @@ supportsSvgSmilAnimation, throttle*/
 	 * Does not handle differences in the Event-objects.
 	 * @see {@link https://github.com/finn-no/eventlistener}
 	 */
-	var wrapListener = function (standard, fallback) {
+	var setListener = function (standard, fallback) {
 		return function (el, type, listener, useCapture) {
 			if (el[standard]) {
 				el[standard](type, listener, useCapture);
@@ -135,8 +135,8 @@ supportsSvgSmilAnimation, throttle*/
 			}
 		};
 	};
-	root.addListener = wrapListener("addEventListener", "attachEvent");
-	root.removeListener = wrapListener("removeEventListener", "detachEvent");
+	root.addListener = setListener("addEventListener", "attachEvent");
+	root.removeListener = setListener("removeEventListener", "detachEvent");
 
 	/*!
 	 * get elements by class name wrapper
@@ -422,98 +422,6 @@ supportsSvgSmilAnimation, throttle*/
 			} else {
 				return e.parentNode && e.parentNode.removeChild(e);
 			}
-		}
-	};
-
-	/*!
-	 * modified loadExt
-	 * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
-	 * passes jshint
-	 */
-	root.loadJsCss = function (files, callback, type) {
-		var _this = this;
-		_this.files = files;
-		_this.js = [];
-		_this.head = document.getElementsByTagName("head")[0] || "";
-		_this.body = document.body || "";
-		_this.ref = document.getElementsByTagName("script")[0] || "";
-		_this.callback = callback || function () {};
-		_this.type = type ? type.toLowerCase() : "";
-		_this.loadStyle = function (file) {
-			var link = document.createElement("link");
-			link.rel = "stylesheet";
-			link.type = "text/css";
-			link.href = file;
-			link.media = "only x";
-			link.onload = function () {
-				this.onload = null;
-				this.media = "all";
-			};
-			link.setAttribute("property", "stylesheet");
-			/* _this.head.appendChild(link); */
-			(_this.body || _this.head).appendChild(link);
-		};
-		_this.loadScript = function (i) {
-			var script = document.createElement("script");
-			script.type = "text/javascript";
-			script.async = true;
-			script.src = _this.js[i];
-			var loadNextScript = function () {
-				if (++i < _this.js.length) {
-					_this.loadScript(i);
-				} else {
-					_this.callback();
-				}
-			};
-			script.onload = function () {
-				loadNextScript();
-			};
-			_this.head.appendChild(script);
-			/* if (_this.ref.parentNode) {
-				_this.ref.parentNode[insertBefore](script, _this.ref);
-			} else {
-				(_this.body || _this.head).appendChild(script);
-			} */
-			(_this.body || _this.head).appendChild(script);
-		};
-		var i,
-		l;
-		for (i = 0, l = _this.files.length; i < l; i += 1) {
-			if ((/\.js$|\.js\?/).test(_this.files[i]) || _this.type === "js") {
-				_this.js.push(_this.files[i]);
-			}
-			if ((/\.css$|\.css\?|\/css\?/).test(_this.files[i]) || _this.type === "css") {
-				_this.loadStyle(_this.files[i]);
-			}
-		}
-		i = l = null;
-		if (_this.js.length > 0) {
-			_this.loadScript(0);
-		} else {
-			_this.callback();
-		}
-	};
-
-	/*!
-	 * loadDeferred
-	 */
-	root.loadDeferred = function (urlArray, callback) {
-		var timer;
-		var handle = function () {
-			clearTimeout(timer);
-			timer = null;
-			var load;
-			load = new loadJsCss(urlArray, callback);
-		};
-		var req;
-		var raf = function () {
-			cancelAnimationFrame(req);
-			timer = setTimeout(handle, 0);
-		};
-		if (root.requestAnimationFrame) {
-			req = requestAnimationFrame(raf);
-		} else {
-			addListener(root, "load", handle);
 		}
 	};
 
@@ -973,6 +881,98 @@ supportsSvgSmilAnimation, throttle*/
 			}
 		};
 	})();
+
+	/*!
+	 * modified loadExt
+	 * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
+	 * passes jshint
+	 */
+	root.loadJsCss = function (files, callback, type) {
+		var _this = this;
+		_this.files = files;
+		_this.js = [];
+		_this.head = document.getElementsByTagName("head")[0] || "";
+		_this.body = document.body || "";
+		_this.ref = document.getElementsByTagName("script")[0] || "";
+		_this.callback = callback || function () {};
+		_this.type = type ? type.toLowerCase() : "";
+		_this.loadStyle = function (file) {
+			var link = document.createElement("link");
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			link.href = file;
+			link.media = "only x";
+			link.onload = function () {
+				this.onload = null;
+				this.media = "all";
+			};
+			link.setAttribute("property", "stylesheet");
+			/* _this.head.appendChild(link); */
+			(_this.body || _this.head).appendChild(link);
+		};
+		_this.loadScript = function (i) {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.async = true;
+			script.src = _this.js[i];
+			var loadNextScript = function () {
+				if (++i < _this.js.length) {
+					_this.loadScript(i);
+				} else {
+					_this.callback();
+				}
+			};
+			script.onload = function () {
+				loadNextScript();
+			};
+			_this.head.appendChild(script);
+			/* if (_this.ref.parentNode) {
+				_this.ref.parentNode[insertBefore](script, _this.ref);
+			} else {
+				(_this.body || _this.head).appendChild(script);
+			} */
+			(_this.body || _this.head).appendChild(script);
+		};
+		var i,
+		l;
+		for (i = 0, l = _this.files.length; i < l; i += 1) {
+			if ((/\.js$|\.js\?/).test(_this.files[i]) || _this.type === "js") {
+				_this.js.push(_this.files[i]);
+			}
+			if ((/\.css$|\.css\?|\/css\?/).test(_this.files[i]) || _this.type === "css") {
+				_this.loadStyle(_this.files[i]);
+			}
+		}
+		i = l = null;
+		if (_this.js.length > 0) {
+			_this.loadScript(0);
+		} else {
+			_this.callback();
+		}
+	};
+
+	/*!
+	 * loadDeferred
+	 */
+	root.loadDeferred = function (urlArray, callback) {
+		var timer;
+		var handle = function () {
+			clearTimeout(timer);
+			timer = null;
+			var load;
+			load = new loadJsCss(urlArray, callback);
+		};
+		var req;
+		var raf = function () {
+			cancelAnimationFrame(req);
+			timer = setTimeout(handle, 0);
+		};
+		if (root.requestAnimationFrame) {
+			req = requestAnimationFrame(raf);
+		} else {
+			addListener(root, "load", handle);
+		}
+	};
 
 	/*!
 	 * early utility classes

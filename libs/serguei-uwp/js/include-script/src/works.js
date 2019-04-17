@@ -1,9 +1,9 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global addClass, manageMacyItemAll, dataSrcImgClass,
-getByClass, macyClass, macyIsActiveClass, macyItemIsBindedClass,
-manageDataSrcImgAll, manageExternalLinkAll, manageIframeLightbox, manageMacy,
-onMacyImagesLoaded, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, getByClass, macyClass,
+macyIsActiveClass, macyItemIsBindedClass, manageDataSrcImgAll,
+manageExternalLinkAll, manageIframeLightbox, manageMacy, onMacyImagesLoaded,
+updateMacyThrottled*/
 /*!
  * page logic
  */
