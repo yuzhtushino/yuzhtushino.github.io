@@ -4,9 +4,11 @@
 	"companyName": "yuzhtushino.github.io",
 	"version": "0.1.0",
 	"description": "A Portfolio Web App",
-	"keywords": ["spa",
-	"pwa",
-	"webapp"],
+	"keywords": [
+		"spa",
+		"pwa",
+		"webapp"
+	],
 	"main": "main.js",
 	"window": {
 		"icon": "favicon-32x32.png"

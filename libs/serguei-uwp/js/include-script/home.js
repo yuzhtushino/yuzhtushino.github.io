@@ -5,7 +5,7 @@
 /*global addClass, manageMacyItemAll, getByClass, macyClass, macyIsActiveClass,
 macyItemIsBindedClass, manageDataSrcImgAll, manageExternalLinkAll,
 manageImgLightbox, manageMacy, manageReadMore, onMacyImagesLoaded,
-removeChildren, renderAC, updateMacyThrottled*/
+updateMacyThrottled*/
 
 /*!
  * page logic

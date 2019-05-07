@@ -2,10 +2,10 @@
 
 /*jslint node: true */
 
-/*global addClass, manageMacyItemAll, dataSrcImgClass, dataSrcImgKeyName,
-getByClass, macyClass, macyIsActiveClass, macyItemIsBindedClass,
-manageDataSrcImgAll, manageExternalLinkAll, manageIframeLightbox, manageMacy,
-onMacyImagesLoaded, updateMacyThrottled*/
+/*global addClass, manageMacyItemAll, dataSrcImgClass, getByClass, macyClass,
+macyIsActiveClass, macyItemIsBindedClass, manageDataSrcImgAll,
+manageExternalLinkAll, manageIframeLightbox, manageMacy, onMacyImagesLoaded,
+updateMacyThrottled*/
 
 /*!
  * page logic
@@ -111,9 +111,7 @@ onMacyImagesLoaded, updateMacyThrottled*/
 						transparentPixel +
 						'" class="' +
 						dataSrcImgClass +
-						'" data-' +
-						dataSrcImgKeyName +
-						'="' +
+						'" data-src="' +
 						macyItems[i].src +
 						'" alt="" /></a>\n'
 				);

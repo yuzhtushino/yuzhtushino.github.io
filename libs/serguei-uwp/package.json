@@ -2,9 +2,11 @@
 	"name": "serguei-uwp-dev",
 	"version": "1.0.0",
 	"description": "Developing UWP-like SPA/PWA",
-	"keywords": ["spa",
-	"pwa",
-	"webapp"],
+	"keywords": [
+		"spa",
+		"pwa",
+		"webapp"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/englishextra/serguei-uwp-dev.git"
