@@ -1,6 +1,6 @@
 {
-	"name": "yuzhtushino",
-	"productName": "yuzhtushino",
+	"name": "yuzhtushino.github.io",
+	"productName": "yuzhtushino.github.io",
 	"companyName": "yuzhtushino.github.io",
 	"version": "0.1.0",
 	"description": "A Portfolio Web App",
@@ -18,7 +18,7 @@
 		"url": "https://github.com/yuzhtushino/yuzhtushino.github.io.git"
 	},
 	"dependencies": {
-		"npm": "^6.9.0"
+		"npm": "^6.10.1"
 	},
 	"devDependencies": {
 		"gulp": "^4.0.0",
