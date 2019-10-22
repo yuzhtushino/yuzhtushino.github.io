@@ -1,7 +1,6 @@
 {
 	"name": "yuzhtushino",
 	"short_name": "yuzhtushino",
-	"manifest_version": 2,
 	"icons": [{
 		"src": "/android-chrome-192x192.png",
 		"sizes": "192x192",
@@ -18,13 +17,9 @@
 		"type": "image/png"
 	}],
 	"scope": "/",
-	"mjs_access_whitelist": [{
-		"url": "https://yuzhtushino.github.io/"
-	}],
 	"start_url": "https://yuzhtushino.github.io/",
 	"display": "standalone",
 	"orientation": "any",
-	"ms_TileColor": "#0288d1",
 	"theme_color": "#0288d1",
 	"background_color": "#0288d1"
 }
