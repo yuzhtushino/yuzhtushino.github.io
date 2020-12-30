@@ -1,0 +1,23 @@
+/*! @import "englishextra-variables"; */
+
+/*!
+ * macy
+ */
+
+/*!
+ * the scrollbar will show
+ * if it is a child container
+ * that has no height 100%
+ */
+
+.macy.macy--pictures {
+	width: 100%;
+	background-color: transparent;
+	margin: 0;
+}
+
+.macy.macy--pictures:after {
+	content: "";
+	display: table;
+	clear: both;
+}
