@@ -1,0 +1,32 @@
+@import "../../../scss/variables";
+@import "../../../scss/material-color";
+@import "../../../scss/custom-color";
+
+/*!
+ * macy
+ */
+
+/*!
+ * the scrollbar will show
+ * if it is a child container
+ * that has no height 100%
+ */
+
+.macy.macy--home {
+	width: calc(100% - 40px);
+	background-color: transparent;
+	margin: 20px 20px 0 20px;
+}
+
+.macy.macy--home:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+@media screen and (max-width: 480px) {
+	.macy.macy--home {
+		width: 100%;
+		margin: 20px 0 0 0;
+	}
+}

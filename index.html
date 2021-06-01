@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- 1. use /tools/modularscale/index.html?15&px&1.25,1.125&web&text for font size and line height
+2. lazyload images
+3. remove font face, display block, opacity 1, visibility visible in critical inline css
+4. set font display swap in font face in css -->
+<html class="no-js" lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<!-- <meta http-equiv="x-ua-compatible" content="ie=edge" /> -->
+		<!-- https://content-security-policy.com/ --><meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' 'unsafe-inline' https:; frame-src 'self' https:; media-src 'self' https:; img-src 'self' 'unsafe-inline' https: data:" />
+		<meta name="HandheldFriendly" content="True" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta property="og:image" content="https://yuzhtushino.github.io/image_src.jpg" />
+		<meta property="og:title" content="Репетитор английского в Тушино" />
+		<meta property="og:description" content="«С нуля», подтянуть, улучшить, подготовка к ЕГЭ. Школьникам, студентам и взрослым в частном порядке в Тушино. Сайт: englishextra.gitlab.io" />
+		<meta property="og:url" content="https://yuzhtushino.github.io/" />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:image" content="https://yuzhtushino.github.io/image_src.jpg" />
+		<meta name="twitter:title" content="Репетитор английского в Тушино" />
+		<meta name="twitter:description" content="«С нуля», подтянуть, улучшить, подготовка к ЕГЭ. Школьникам, студентам и взрослым в частном порядке в Тушино. Сайт: englishextra.gitlab.io" />
+		<meta name="twitter:site" content="@englishextra" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="robots" content="index,follow" />
+		<meta name="keywords" content="веб,разработка,дизайн,сайт,портфолио,фронтенд" />
+		<meta name="description" content="Репетитор в Южном Тушино" /><title>Репетитор в Южном Тушино</title>
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" /><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" /><link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" /><link rel="dns-prefetch" href="https://farm9.staticflickr.com" /><link rel="dns-prefetch" href="https://farm8.staticflickr.com" /><link rel="dns-prefetch" href="https://farm7.staticflickr.com" /><link rel="dns-prefetch" href="https://farm6.staticflickr.com" /><link rel="dns-prefetch" href="https://farm5.staticflickr.com" /><link rel="dns-prefetch" href="https://farm4.staticflickr.com" /><link rel="dns-prefetch" href="https://farm3.staticflickr.com" /><link rel="dns-prefetch" href="https://farm2.staticflickr.com" /><link rel="dns-prefetch" href="https://farm1.staticflickr.com" /><link rel="dns-prefetch" href="https://i.vimeocdn.com" /><link rel="dns-prefetch" href="https://f.vimeocdn.com" /><link rel="dns-prefetch" href="https://w.soundcloud.com" /><link rel="dns-prefetch" href="https://a.disquscdn.com" /><link rel="dns-prefetch" href="https://api-maps.yandex.ru" /><link rel="dns-prefetch" href="https://chart.googleapis.com" /><link rel="dns-prefetch" href="https://connect.mail.ru" /><link rel="dns-prefetch" href="https://connect.ok.ru" /><link rel="dns-prefetch" href="https://disqus.com" /><link rel="dns-prefetch" href="https://graph.facebook.com" /><link rel="dns-prefetch" href="https://mc.yandex.ru" /><link rel="dns-prefetch" href="https://www.google-analytics.com" /><link rel="dns-prefetch" href="https://yastatic.net" /><link rel="dns-prefetch" href="https://audiomack.com" /><link rel="dns-prefetch" href="https://api.audiomack.com" /><link rel="dns-prefetch" href="https://platform.twitter.com" /><link rel="dns-prefetch" href="https://www.instagram.com" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" type="application/manifest+json" href="/manifest.webmanifest" />
+		<link rel="mask-icon" href="/mask-icon.svg" color="#0288d1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title" content="yuzhtushino" />
+		<meta name="application-name" content="yuzhtushino" />
+		<meta name="msapplication-TileColor" content="#0288d1" />
+		<meta name="theme-color" content="#0288d1" />
+		<link rel="yandex-tableau-widget" href="/yandex-tableau-widget.json" />
+		<link rel="image_src" href="/image_src.jpg" type="image/jpeg" title="UWP web framework" />
+		<link rel="sitemap" href="/sitemap.xml" type="application/xml" />
+		<style>
+			body {
+				font-family: Roboto, sans-serif;
+				color: #212121 !important;
+				background-color: #F2F2F2 !important;
+				margin: 0;
+			}
+			a {
+				color: transparent;
+			}
+			[hidden],
+			button,
+			canvas,
+			img,
+			input[type^=text],
+			select,
+			svg,
+			template {
+				display: none;
+			}
+			html,
+			body {
+				height: 100%;
+			}
+			a {
+				color: transparent;
+			}
+			[hidden],
+			button,
+			canvas,
+			img,
+			input[type^=text],
+			select,
+			svg,
+			template,
+			.macy img,
+			.macy iframe,
+			.uwp-menu-button,
+			.uwp-page-heading {
+				display: none;
+			}
+			.uwp-header,
+			.uwp-main {
+				visibility: hidden;
+				opacity: 0;
+			}
+			[data-layout-type="overlay"] .uwp-page-heading {
+				display: inline-block;
+			}
+			[data-layout-type="overlay"] .uwp-menu-button,
+			[data-layout-type="docked-minimized"] .uwp-menu-button {
+				display: block;
+			}
+			[data-layout-type="tabs"] .uwp-main {
+				margin-top: 66px;
+			}
+			[data-layout-type="overlay"] .uwp-main {
+				margin-top: 44px;
+			}
+			[data-layout-type="docked-minimized"] .uwp-main {
+				width: calc(100% - 44px);
+			}
+			[data-layout-type="docked"] .uwp-main {
+				margin-left: 250px;
+			}
+			.uwp-error {
+				text-align: center;
+				margin: 0;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				-webkit-transform: translate(-50%, -50%);
+						transform: translate(-50%, -50%);
+			}
+			/*!
+				* @see {@link http://epic-spinners.epicmax.co}
+				* @see {@link https://github.com/epicmaxco/epic-spinners}
+				*/
+			.uwp-loading,
+			.uwp-loading * {
+				-webkit-box-sizing: border-box;
+						box-sizing: border-box;
+			}
+			.uwp-loading {
+				visibility: hidden;
+				opacity: 0;
+				height: 60px;
+				width: 60px;
+				/*! @see {@link https://www.w3.org/Style/Examples/007/center.en.html#hv3} */
+				margin: 0;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-right: -50%;
+				-webkit-transform: translate(-50%, -50%);
+				-ms-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+				z-index: 1000000;
+			}
+			.uwp-loading.is-active {
+				visibility: visible;
+				opacity: 1;
+			}
+			[data-layout-type="tabs"] .uwp-loading {
+				top: calc(50% + 33px);
+				left: 50%;
+			}
+			[data-layout-type="overlay"] .uwp-loading {
+				top: calc(50% + 22px);
+				left: 50%;
+			}
+			[data-layout-type="docked-minimized"] .uwp-loading {
+				top: 50%;
+				left: calc(50% + 22px);
+			}
+			[data-layout-type="docked"] .uwp-loading {
+				top: 50%;
+				left: calc(50% + 125px);
+			}
+			.uwp-loading .uwp-loading__part {
+				overflow: hidden;
+				height: calc(60px / 2);
+				width: 60px;
+			}
+			.uwp-loading .uwp-loading__part.uwp-loading__part--bottom {
+				-webkit-transform: rotate(180deg) scale(-1, 1);
+						transform: rotate(180deg) scale(-1, 1);
+			}
+			.uwp-loading .uwp-loading__rotator {
+				width: 60px;
+				height: 60px;
+				border: calc(60px / 7) solid transparent;
+				border-right-color: #00b0ff;
+				border-top-color: #00b0ff;
+				border-radius: 50%;
+				-webkit-box-sizing: border-box;
+						box-sizing: border-box;
+				-webkit-animation: uwp-loading-animation 3s ease-in-out infinite;
+						animation: uwp-loading-animation 3s ease-in-out infinite;
+				-webkit-transform: rotate(-200deg);
+						transform: rotate(-200deg);
+			}
+			@-webkit-keyframes uwp-loading-animation {
+				0% {
+					border-width: calc(60px / 7);
+				}
+				25% {
+					border-width: calc(60px / 23.33);
+				}
+				50% {
+					-webkit-transform: rotate(115deg);
+							transform: rotate(115deg);
+					border-width: calc(60px / 7);
+				}
+				75% {
+					border-width: calc(60px / 23.33);
+				}
+				100% {
+					border-width: calc(60px / 7);
+				}
+			}
+			@keyframes uwp-loading-animation {
+				0% {
+					border-width: calc(60px / 7);
+				}
+				25% {
+					border-width: calc(60px / 23.33);
+				}
+				50% {
+					-webkit-transform: rotate(115deg);
+							transform: rotate(115deg);
+					border-width: calc(60px / 7);
+				}
+				75% {
+					border-width: calc(60px / 23.33);
+				}
+				100% {
+					border-width: calc(60px / 7);
+				}
+			}
+			.macy {
+				visibility: hidden;
+				opacity: 0;
+			}
+			.macy.macy--is-active {
+				visibility: visible;
+				opacity: 1;
+			}
+			.macy.macy--is-active img,
+			.macy.macy--is-active iframe {
+				display: block;
+			}
+			/*!
+			 * @see {@link https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.2/gh-fork-ribbon.css}
+			 */
+			.github-fork-ribbon{width:12.1em;height:12.1em;position:fixed;overflow:hidden;top:0;right:0;z-index:9999;pointer-events:none;font-size:13px;text-decoration:none;text-indent:-999999px;}.github-fork-ribbon.fixed{position:fixed;}.github-fork-ribbon:before,.github-fork-ribbon:after{position:absolute;display:block;width:15.38em;height:1.54em;top:3.23em;right:-3.23em;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);}.github-fork-ribbon:before{content:"";padding:.38em 0;background-color:#a00;background-image:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,0)),to(rgba(0,0,0,0.15)));background-image:-webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:-o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.15));background-image:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,0.15));-webkit-box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);box-shadow:0 .15em .23em 0 rgba(0,0,0,0.5);pointer-events:auto;}.github-fork-ribbon:after{content:attr(data-ribbon);color:#fff;font:700 1em "Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.54em;text-decoration:none;text-shadow:0 -.08em rgba(0,0,0,0.5);text-align:center;text-indent:0;padding:.15em 0;margin:.15em 0;border-width:.08em 0;border-style:dotted;border-color:#fff;border-color:rgba(255,255,255,0.7);}.github-fork-ribbon.left-top,.github-fork-ribbon.left-bottom{right:auto;left:0;}.github-fork-ribbon.left-bottom,.github-fork-ribbon.right-bottom{top:auto;bottom:0;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after{right:auto;left:-3.23em;}.github-fork-ribbon.left-bottom:before,.github-fork-ribbon.left-bottom:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{top:auto;bottom:3.23em;}.github-fork-ribbon.left-top:before,.github-fork-ribbon.left-top:after,.github-fork-ribbon.right-bottom:before,.github-fork-ribbon.right-bottom:after{-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);}
+		</style>
+		<noscript>
+			<link rel="stylesheet" href="./libs/serguei-uwp/css/vendors.min.css" />
+			<link rel="stylesheet" href="./libs/serguei-uwp/css/bundle.min.css" />
+			<style>
+				.uwp-header,
+				.uwp-main {
+					visibility: visible;
+					opacity: 1;
+				}
+				.uwp-loading.is-active {
+					visibility: hidden;
+					opacity: 0;
+				}
+				.macy {
+					visibility: visible;
+					opacity: 1;
+				}
+				.macy img,
+				.macy iframe {
+					display: block;
+				}
+			</style>
+		</noscript>
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Article",
+				"mainEntityOfPage": {
+					"@type": "WebPage",
+					"@id": "https://yuzhtushino.github.io/"
+				},
+				"headline": "Serguei Shimansky",
+				"description": "«С нуля», подтянуть, улучшить, подготовка к ЕГЭ, PET, FCE, IELTS. Школьникам, студентам и взрослым в частном порядке.",
+				"image": "https://yuzhtushino.github.io/image_src.jpg",
+				"author": {
+					"@type": "Person",
+					"name": "yuzhtushino"
+				},
+				"publisher": {
+					"@type": "Organization",
+					"name": "yuzhtushino",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://yuzhtushino.github.io/publisher-logo-600x60.jpg"
+					}
+				},
+				"datePublished": "2006-01-01",
+				"dateModified": "2021-05-24"
+			}
+		</script>
+		<script>
+			(function(){return (function templatePolyfill(){"use strict";if("content"in document.createElement("template")){return false;}var templates=document.getElementsByTagName("template");var plateLen=templates.length;for(var x=0;x<plateLen;++x){var template=templates[x];var content=template.childNodes;var fragment=document.createDocumentFragment();while(content[0]){fragment.appendChild(content[0]);}template.content=fragment;}}());})();
+			var imagesPreloaded=false;(function(m){m="[object Array]"===Object.prototype.toString.apply(m)?m:[m];var t=function(){return (imagesPreloaded=true);},f=function(){return (imagesPreloaded=false);},c=[];for(var i=0,l=m.length;i<l;i++){c[i]=new Image();c[i].onabort=f;c[i].onerror=f;c[i].onload=t;c[i].src=m[i];}}([
+			]));
+			console.log("Source code: https://github.com/englishextra/serguei-uwp-dev");
+		</script>
+	</head>
+	<body>
+		<!-- this is also generated by script if not exist -->
+		<div class="uwp-container" role="document">
+			<div class="uwp-header" role="navigation">
+				<button class="uwp-menu-button" aria-label="Menu"><svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="scale(1.75 1.75) translate(0 0)" d="M1024 320h-1024v-64h1024v64zm0 512h-1024v-64h1024v64zm0-256.5h-1024v-63.5h1024v63.5z"></path></svg></button>
+				<h1 class="uwp-page-heading"></h1>
+			</div>
+			<div class="uwp-main" role="main">
+				<noscript>
+					<div class="uwp-error">
+						<p>Загрузка контента невозможна,<br />поскольку Javascript отключен.</p>
+					</div>
+				</noscript>
+			</div>
+		</div>
+		<div class="uwp-loading is-active">
+			<div class="uwp-loading__part">
+				<div class="uwp-loading__rotator"></div>
+			</div>
+			<div class="uwp-loading__part uwp-loading__part--bottom">
+				<div class="uwp-loading__rotator"></div>
+			</div>
+		</div>
+		<!-- /this is also generated by script if not exist -->
+		<!-- <a class="github-fork-ribbon left-bottom" href="https://github.com/englishextra/serguei-uwp-dev" target="_blank" rel="noopener noreferrer" title="Fork me on GitHub" data-ribbon="Fork me on GitHub">Fork me on GitHub</a> -->
+		<script src="./libs/serguei-uwp/js/bundle.min.js" async=""></script>
+		<script>
+			(function(root,document){"use strict";if(root.location.protocol!=="https:"&&root.location.protocol!=="http:"){return;}var s=document.createElement("script");s.async=true;document.body.appendChild(s);s.setAttribute("src","/sw-register.min.js");s.setAttribute("data-service-worker","/sw.min.js");})("undefined"!==typeof window?window:this,document);
+		</script>
+		<!-- Yandex.Metrika counter --><script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments);};m[i].l=1*new Date();k=e.createElement(t);a=e.getElementsByTagName(t)[0];k.async=1;k.src=r;a.parentNode.insertBefore(k,a);}(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym"));try{if(window.ym){ym(51383887,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,trackHash:true});}}catch(e){}}</script><noscript><div><img src=".//mc.yandex.ru/watch/51383887" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter --><!-- Google Analytics --><script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments);};i[r].l=1*new Date();a=s.createElement(o);m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);}(window,document,"script","//www.google-analytics.com/analytics.js","ga"));ga("create","UA-130181189-1","auto");ga("send","pageview");}</script><!-- /Google Analytics -->
+	</body>
+</html>
